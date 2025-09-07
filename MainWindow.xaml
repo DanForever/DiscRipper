@@ -1,0 +1,26 @@
+﻿<Window x:Class="DiscRipper.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DiscRipper"
+        mc:Ignorable="d"
+        Title="Dan's magical media ripper" Height="450" Width="850">
+    <DockPanel>
+        <DockPanel Margin="5">
+            <TextBlock DockPanel.Dock="Top" Text="Drives" Margin="0,0,0,5" />
+            <DataGrid x:Name="Drives" DockPanel.Dock="Left" ItemsSource="{Binding Drives}" AutoGenerateColumns="False" Width="500" IsReadOnly="True" MouseDoubleClick="Drives_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Type" Binding="{Binding DiscType}" />
+                    <DataGridTextColumn Header="Path" Binding="{Binding DrivePath}" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding DriveName}" />
+                    <DataGridTextColumn Header="Detected Media" Binding="{Binding MediaTitle}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+        <DockPanel Margin="5">
+            <TextBlock DockPanel.Dock="Top" Text="Log" Margin="0,0,0,5" />
+            <local:Feedback x:Name="Feedback" />
+        </DockPanel>
+    </DockPanel>
+</Window>

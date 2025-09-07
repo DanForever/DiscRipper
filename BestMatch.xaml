@@ -1,0 +1,43 @@
+﻿<Window x:Class="DiscRipper.BestMatch"
+        x:ClassModifier="internal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DiscRipper"
+        mc:Ignorable="d"
+        Title="BestMatch" Height="450" Width="800">
+    <DockPanel>
+        <Button x:Name="Previous" DockPanel.Dock="Left">
+            <TextBlock Text="&#x2190;" FontSize="48" />
+        </Button>
+        <Button x:Name="Next" DockPanel.Dock="Right">
+            <TextBlock Text="&#x2192;" FontSize="48" />
+        </Button>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button DockPanel.Dock="Right" Margin="5" Click="Cancel_Click">
+                <TextBlock Text="Cancel" FontSize="24" Margin="5" />
+            </Button>
+            <Button DockPanel.Dock="Right" Margin="5" Click="Rip_Click">
+                <TextBlock Text="Rip!" FontSize="32" Margin="5" />
+            </Button>
+        </StackPanel>
+        <Image x:Name="CoverImage" Stretch="Uniform" DockPanel.Dock="Right" />
+        <DockPanel DockPanel.Dock="Bottom">
+            <Button DockPanel.Dock="Right" Click="PickFolder_Click">
+                <TextBlock Text="Pick folder" Margin="5" />
+            </Button>
+            <TextBox x:Name="OutputPath" />
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <TextBox x:Name="MediaTitle" IsReadOnly="True" DockPanel.Dock="Top" Text="{Binding Release.Title}" />
+            <DataGrid x:Name="FoundTitles" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Header="Rip" Binding="{Binding Rip}" />
+                    <DataGridTextColumn Header="Title" Binding="{Binding Title}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </DockPanel>
+</Window>
