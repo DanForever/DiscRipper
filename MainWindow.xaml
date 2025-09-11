@@ -7,6 +7,15 @@
         mc:Ignorable="d"
         Title="Dan's magical media ripper" Height="450" Width="850">
     <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Settings" Click="Settings_Click"/>
+                <Separator/>
+                <MenuItem Header="Rescan Drives" Click="RescanDrives_Click"/>
+                <Separator/>
+                <MenuItem Header="_Exit" Click="Exit_Click"/>
+            </MenuItem>
+        </Menu>
         <DockPanel Margin="5">
             <TextBlock DockPanel.Dock="Top" Text="Drives" Margin="0,0,0,5" />
             <DataGrid x:Name="Drives" DockPanel.Dock="Left" ItemsSource="{Binding Drives}" AutoGenerateColumns="False" Width="500" IsReadOnly="True" MouseDoubleClick="Drives_MouseDoubleClick">

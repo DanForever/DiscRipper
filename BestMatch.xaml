@@ -8,12 +8,26 @@
         mc:Ignorable="d"
         Title="BestMatch" Height="450" Width="800">
     <DockPanel>
-        <Button x:Name="Previous" DockPanel.Dock="Left">
+        <Button x:Name="Previous" DockPanel.Dock="Left" Click="Previous_Click">
             <TextBlock Text="&#x2190;" FontSize="48" />
         </Button>
-        <Button x:Name="Next" DockPanel.Dock="Right">
+        <Button x:Name="Next" DockPanel.Dock="Right" Click="Next_Click">
             <TextBlock Text="&#x2192;" FontSize="48" />
         </Button>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="60" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Title" Grid.RowSpan="2" Padding="5,0,5,0" Background="LightBlue" FontWeight="DemiBold" />
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Disc Index" Padding="5,0,5,0" Background="#ff7ec0d7" FontWeight="DemiBold" />
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding tddbRelease.Title }" Background="LightBlue" />
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding tddbDisc.Index }" Background="#ff7ec0d7" />
+        </Grid>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button DockPanel.Dock="Right" Margin="5" Click="Cancel_Click">
                 <TextBlock Text="Cancel" FontSize="24" Margin="5" />
@@ -30,7 +44,6 @@
             <TextBox x:Name="OutputPath" />
         </DockPanel>
         <DockPanel DockPanel.Dock="Top">
-            <TextBox x:Name="MediaTitle" IsReadOnly="True" DockPanel.Dock="Top" Text="{Binding Release.Title}" />
             <DataGrid x:Name="FoundTitles" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Header="Rip" Binding="{Binding Rip}" />

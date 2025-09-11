@@ -46,6 +46,22 @@ namespace DiscRipper
             }
         }
 
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            EditSettings settings = new() { Owner = this };
+            settings.Show();
+        }
+
+        private async void RescanDrives_Click(object sender, RoutedEventArgs e)
+        {
+            await ScanDrives();
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
         #endregion Event handlers
 
         #region Private methods

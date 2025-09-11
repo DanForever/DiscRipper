@@ -31,7 +31,7 @@ namespace DiscRipper
             if (MappedDiscs.Count == 0)
                 return;
 
-            SetDisc(ActiveDiscIndex);
+            SetDisc(0);
         }
 
         #endregion C-Tor
@@ -40,7 +40,26 @@ namespace DiscRipper
 
         private void SetDisc(int discIndex)
         {
-            Mapped.Disc disc = MappedDiscs[discIndex];
+            ActiveDiscIndex = discIndex;
+
+            // Enable or disable the prev/next buttons if their associated indices line up with another match
+            int prevIndex = discIndex - 1;
+            int nextIndex = discIndex + 1;
+
+            if (prevIndex < 0)
+                Previous.IsEnabled = false;
+            else
+                Previous.IsEnabled = true;
+
+            if (nextIndex >= MappedDiscs.Count)
+                Next.IsEnabled = false;
+            else
+                Next.IsEnabled = true;
+
+            if (ActiveDiscIndex >= MappedDiscs.Count || ActiveDiscIndex < 0)
+                return;
+
+            Mapped.Disc disc = MappedDiscs[ActiveDiscIndex];
 
             DataContext = disc;
 
@@ -58,20 +77,6 @@ namespace DiscRipper
             // Display the matched disc titles to the user so that they may choose to only rip some of them
             MappedTitleViewModelList = new MappedTitleViewModelList(disc.MatchedTitles);
             FoundTitles.ItemsSource = MappedTitleViewModelList;
-
-            // Enable or disable the prev/next buttons if their associated indices line up with another match
-            int prevIndex = discIndex - 1;
-            int nextIndex = discIndex + 1;
-
-            if (prevIndex < 0)
-                Previous.IsEnabled = false;
-            else
-                Previous.IsEnabled = true;
-
-            if(nextIndex >= MappedDiscs.Count)
-                Next.IsEnabled = false;
-            else
-                Next.IsEnabled = true;
         }
 
         #endregion Private methods
@@ -176,5 +181,15 @@ namespace DiscRipper
         }
 
         #endregion Private methods
+
+        private void Previous_Click(object sender, RoutedEventArgs e)
+        {
+            SetDisc(ActiveDiscIndex - 1);
+        }
+
+        private void Next_Click(object sender, RoutedEventArgs e)
+        {
+            SetDisc(ActiveDiscIndex + 1);
+        }
     }
 }

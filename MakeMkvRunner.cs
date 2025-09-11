@@ -14,9 +14,7 @@ namespace DiscRipper
 
         #region Public properties
 
-        public static string InstallDirectory { get; set; } = """C:\Program Files (x86)\MakeMKV""";
-
-        public static string MakeMkvConFilepath { get; set; } = Path.Join(InstallDirectory, "makemkvcon.exe");
+        public static string MakeMkvConFilepath => Path.Join(Settings.Default.MakeMkvInstallFolder, "makemkvcon64.exe");
 
         public string StandardOutput => _standardOutput;
 
@@ -51,6 +49,9 @@ namespace DiscRipper
 
         private async Task Run(string arguments)
         {
+            if (!File.Exists(MakeMkvConFilepath))
+                return;
+
             ProcessStartInfo psi = new()
             {
                 FileName = MakeMkvConFilepath,
