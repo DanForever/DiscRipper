@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="MakeMkvInstallFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\users</Value>
+      <Value Profile="(Default)">C:\Program Files (x86)\MakeMKV</Value>
     </Setting>
   </Settings>
 </SettingsFile>

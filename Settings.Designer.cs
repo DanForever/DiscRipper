@@ -25,7 +25,7 @@ namespace DiscRipper {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\users")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\MakeMKV")]
         public string MakeMkvInstallFolder {
             get {
                 return ((string)(this["MakeMkvInstallFolder"]));
