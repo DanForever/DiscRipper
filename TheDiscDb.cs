@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace DiscRipper
 {
-    namespace TheDiscDb
+    namespace TheDiscDb2
     {
         namespace GraphQL
         {

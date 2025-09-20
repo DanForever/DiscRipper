@@ -9,18 +9,18 @@ namespace DiscRipper
         {
             public MakeMkv.Title mmkvTitle { get; set; }
 
-            public TheDiscDb.GraphQL.Title tddbTitle { get; set; }
+            public TheDiscDb2.GraphQL.Title tddbTitle { get; set; }
         }
 
         class Disc
         {
-            public TheDiscDb.GraphQL.Node tddbNode { get; set; }
+            public TheDiscDb2.GraphQL.Node tddbNode { get; set; }
 
-            public TheDiscDb.GraphQL.Release tddbRelease { get; set; }
+            public TheDiscDb2.GraphQL.Release tddbRelease { get; set; }
 
-            public TheDiscDb.GraphQL.Disc tddbDisc { get; set; }
+            public TheDiscDb2.GraphQL.Disc tddbDisc { get; set; }
 
-            public List<TheDiscDb.GraphQL.Title> tddbTitlesSorted { get; set; }
+            public List<TheDiscDb2.GraphQL.Title> tddbTitlesSorted { get; set; }
 
             public List<MakeMkv.Title> mmkvTitlesSorted { get; set; }
 
@@ -32,7 +32,7 @@ namespace DiscRipper
     {
         #region Public methods
 
-        public static List<Mapped.Disc> Map(List<MakeMkv.Title> mmkvTitles, List<TheDiscDb.GraphQL.Node> nodes)
+        public static List<Mapped.Disc> Map(List<MakeMkv.Title> mmkvTitles, List<TheDiscDb2.GraphQL.Node> nodes)
         {
             List<MakeMkv.Title> mmkvTitlesSorted = [.. mmkvTitles];
             mmkvTitlesSorted.Sort((a, b) => b.DurationInSeconds.CompareTo(a.DurationInSeconds));
@@ -63,9 +63,9 @@ namespace DiscRipper
 
         #region Private methods
 
-        private static Mapped.Disc MapDisc(TheDiscDb.GraphQL.Disc tddbDisc, List<MakeMkv.Title> mmkvTitlesSorted)
+        private static Mapped.Disc MapDisc(TheDiscDb2.GraphQL.Disc tddbDisc, List<MakeMkv.Title> mmkvTitlesSorted)
         {
-            List<TheDiscDb.GraphQL.Title> tddbTitlesSorted = [.. tddbDisc.Titles];
+            List<TheDiscDb2.GraphQL.Title> tddbTitlesSorted = [.. tddbDisc.Titles];
             tddbTitlesSorted.Sort((a, b) => b.DurationInSeconds.CompareTo(a.DurationInSeconds));
 
             Mapped.Disc mappedDisc = new()

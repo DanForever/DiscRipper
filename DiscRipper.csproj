@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +22,36 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Themes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.9" />
+    <PackageReference Include="Neon.WinTTY" Version="4.0.18" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Fantastic.FileSystem">
+      <HintPath>ImportBuddy\Fantastic.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Fantastic.TheMovieDb">
+      <HintPath>ImportBuddy\Fantastic.TheMovieDb.dll</HintPath>
+    </Reference>
+    <Reference Include="ImportBuddy">
+      <HintPath>ImportBuddy\ImportBuddy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.WebUtilities">
+      <HintPath>ImportBuddy\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
+    </Reference>
+    <Reference Include="TheDiscDb.Core">
+      <HintPath>ImportBuddy\TheDiscDb.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -9,7 +9,7 @@ namespace DiscRipper
         #region Private fields
 
         private readonly Scanner _ripper = new();
-        private readonly TheDiscDb.Querier _querier = new();
+        private readonly TheDiscDb2.Querier _querier = new();
         private readonly TitleMapper _titleMapper = new();
 
         #endregion Private fields
@@ -114,7 +114,7 @@ namespace DiscRipper
 
             if (mappedDiscs.Count > 0)
             {
-                BestMatch bestMatch = new(mappedDiscs, null);
+                BestMatch bestMatch = new(mappedDiscs, null!);
                 bestMatch.ShowDialog();
             }
         }
