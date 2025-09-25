@@ -16,6 +16,23 @@ namespace DiscRipper
 
         public static string MakeMkvConFilepath => Path.Join(Settings.Default.MakeMkvInstallFolder, "makemkvcon64.exe");
 
+        public static string TitleCountRegex => """TCOUNT:(\d+)""";
+        public static string DriveRegex => """
+            DRV:(\d+),(\d+),(\d+),(\d+),"([^"]*)","([^"]*)","([^"]*)"
+            """;
+        public static string MessageRegex => """
+            MSG:(\d+),(\d+),(\d+),"([^"]*)"
+            """;
+        public static string DiscInfoRegex => """
+            CINFO:(\d+),(\d+),"([^"]*)"
+            """;
+        public static string TitleInfoRegex => """
+            TINFO:(\d+),(\d+),(\d+),"([^"]*)"
+            """;
+        public static string TrackInfoRegex => """
+            SINFO:(\d+),(\d+),(\d+),(\d+),"([^"]*)"
+            """;
+
         public string StandardOutput => _standardOutput;
 
         public string StandardError => _standardError;
@@ -25,8 +42,8 @@ namespace DiscRipper
         #region Events
 
         public delegate void OutputHandler(string output);
-        public event OutputHandler? StandardOutputRecieved;
-        public event OutputHandler? StandardErrorRecieved;
+        public event OutputHandler? StandardOutputReceived;
+        public event OutputHandler? StandardErrorReceived;
 
         #endregion Events
 
@@ -65,8 +82,8 @@ namespace DiscRipper
             using var process = new Process { StartInfo = psi };
 
             // Subscribe using a method instead of a lambda
-            process.OutputDataReceived += OnStandardOutRecieved;
-            process.ErrorDataReceived += OnStandardErrorRecieved;
+            process.OutputDataReceived += OnStandardOutReceived;
+            process.ErrorDataReceived += OnStandardErrorReceived;
 
             process.Start();
 
@@ -81,7 +98,7 @@ namespace DiscRipper
 
         #region Event Handlers
 
-        private void OnStandardOutRecieved(object sender, DataReceivedEventArgs e)
+        private void OnStandardOutReceived(object sender, DataReceivedEventArgs e)
         {
             if (e.Data != null)
             {
@@ -90,11 +107,11 @@ namespace DiscRipper
                 string sanitisedOutput = e.Data.Trim();
 
                 _standardOutput += $"{sanitisedOutput}\n";
-                StandardOutputRecieved?.Invoke(sanitisedOutput);
+                StandardOutputReceived?.Invoke(sanitisedOutput);
             }
         }
 
-        private void OnStandardErrorRecieved(object sender, DataReceivedEventArgs e)
+        private void OnStandardErrorReceived(object sender, DataReceivedEventArgs e)
         {
             if (e.Data != null)
             {
@@ -103,7 +120,7 @@ namespace DiscRipper
                 string sanitisedError = e.Data.Trim();
 
                 _standardError += $"\n{sanitisedError}";
-                StandardErrorRecieved?.Invoke(sanitisedError);
+                StandardErrorReceived?.Invoke(sanitisedError);
             }
         }
 

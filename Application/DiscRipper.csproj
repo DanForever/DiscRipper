@@ -37,6 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MakeMkv\DiscRipper.MakeMkv.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Fantastic.FileSystem">
       <HintPath>ImportBuddy\Fantastic.FileSystem.dll</HintPath>
     </Reference>

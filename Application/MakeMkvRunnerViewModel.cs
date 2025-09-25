@@ -19,16 +19,32 @@ namespace DiscRipper
 
         public static MakeMkvRunnerViewModel operator +(MakeMkvRunnerViewModel runnerViewModel, MakeMkvRunner runner)
         {
-            runner.StandardOutputRecieved += runnerViewModel.StandardOutputRecieved;
-            runner.StandardErrorRecieved += runnerViewModel.StandardErrorRecieved;
+            runner.StandardOutputReceived += runnerViewModel.StandardOutputReceived;
+            runner.StandardErrorReceived += runnerViewModel.StandardErrorReceived;
 
             return runnerViewModel;
         }
 
         public static MakeMkvRunnerViewModel operator -(MakeMkvRunnerViewModel runnerViewModel, MakeMkvRunner runner)
         {
-            runner.StandardOutputRecieved -= runnerViewModel.StandardOutputRecieved;
-            runner.StandardErrorRecieved -= runnerViewModel.StandardErrorRecieved;
+            runner.StandardOutputReceived -= runnerViewModel.StandardOutputReceived;
+            runner.StandardErrorReceived -= runnerViewModel.StandardErrorReceived;
+
+            return runnerViewModel;
+        }
+
+        public static MakeMkvRunnerViewModel operator +(MakeMkvRunnerViewModel runnerViewModel, MakeMkv.Log log)
+        {
+            log.StandardOutputReceived += runnerViewModel.StandardOutputReceived;
+            log.StandardErrorReceived += runnerViewModel.StandardErrorReceived;
+
+            return runnerViewModel;
+        }
+
+        public static MakeMkvRunnerViewModel operator -(MakeMkvRunnerViewModel runnerViewModel, MakeMkv.Log log)
+        {
+            log.StandardOutputReceived -= runnerViewModel.StandardOutputReceived;
+            log.StandardErrorReceived -= runnerViewModel.StandardErrorReceived;
 
             return runnerViewModel;
         }
@@ -37,14 +53,14 @@ namespace DiscRipper
 
         #region Event handlers
 
-        private void StandardOutputRecieved(string output)
+        private void StandardOutputReceived(string output)
         {
             StandardOutput += output;
             StandardOutput += "\n";
             OnPropertyChanged(nameof(StandardOutput));
         }
 
-        private void StandardErrorRecieved(string output)
+        private void StandardErrorReceived(string output)
         {
             StandardError += output;
             StandardError += "\n";

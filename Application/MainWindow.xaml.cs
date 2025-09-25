@@ -20,6 +20,8 @@ namespace DiscRipper
         {
             InitializeComponent();
 
+            //TextMakeMkv();
+
             DataContext = _ripper;
             Loaded += MainWindow_Loaded;
         }
@@ -42,7 +44,7 @@ namespace DiscRipper
             if (row != null && row.Item is MakeMkv.Drive drive)
             {
                 // See what's on the disc in the selected drive
-                await ScanDisc(drive);
+                await ScanDisc2(drive);
             }
         }
 
@@ -68,11 +70,32 @@ namespace DiscRipper
 
         private async Task ScanDrives()
         {
-            string output = await RipperUtils.ScanDrives(Feedback);
+            MakeMkv.Runner runner = new()
+            {
+                MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+                SynchronizationContext = SynchronizationContext.Current!,
+            };
 
-            var drives = Scanner.AnalyseDriveData(output);
-            foreach (var item in drives)
+            Feedback += runner.Log;
+            await runner.Drives();
+
+            foreach (var item in runner.Log.Drives)
                 _ripper.Drives.Add(item);
+        }
+
+        private async Task ScanDisc2(MakeMkv.Drive drive)
+        {
+            MakeMkv.Runner runner = new()
+            {
+                MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+                SynchronizationContext = SynchronizationContext.Current!,
+            };
+
+            Feedback += runner.Log;
+            await runner.Info(drive.Index);
+
+            MakeMkv.TitleEngine titleEngine = new();
+            await titleEngine.Read(runner.Log);
         }
 
         private async Task ScanDisc(MakeMkv.Drive drive)
@@ -101,6 +124,18 @@ namespace DiscRipper
         private async void TestQueryLayerCake()
         {
             await TestQuery(DummyData.LayerCake);
+        }
+
+        private async void TextMakeMkv()
+        {
+            MakeMkv.Runner runner = new()
+            {
+                MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+                SynchronizationContext = SynchronizationContext.Current!,
+            };
+
+            //await runner.RunDebug(DummyData.Avatar);
+            await runner.RunDebugSimulateCallback(DummyData.Avatar);
         }
 
         private async Task TestQuery(string data)

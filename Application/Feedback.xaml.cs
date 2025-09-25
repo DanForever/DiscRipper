@@ -39,6 +39,20 @@ namespace DiscRipper
             return feedback;
         }
 
+        public static Feedback operator +(Feedback feedback, MakeMkv.Log log)
+        {
+            feedback._runnerViewModel += log;
+
+            return feedback;
+        }
+
+        public static Feedback operator -(Feedback feedback, MakeMkv.Log log)
+        {
+            feedback._runnerViewModel -= log;
+
+            return feedback;
+        }
+
         #endregion Public methods
 
         #region Event Handlers

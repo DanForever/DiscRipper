@@ -6,42 +6,10 @@ namespace DiscRipper
 {
     namespace MakeMkv
     {
-        enum DriveStatus
-        {
-            Empty = 0,
-            Open = 1,
-            Closed = 2,
-            Loading = 3,
-            NotAttached = 256
-        }
-
-        enum DiscType
-        {
-            CD = 0,
-            DVD = 1,
-            BD = 12
-        }
-
         enum TitleEntryType
         {
             Duration = 9,
             Filename = 27
-        }
-
-        [DebuggerDisplay("{DriveName}")]
-        internal class Drive
-        {
-            public int Index { get; set; }
-
-            public DriveStatus DriveStatus { get; set; }
-
-            public DiscType DiscType { get; set; }
-
-            public required string DriveName { get; set; }
-
-            public required string MediaTitle { get; set; }
-
-            public required string DrivePath { get; set; }
         }
 
         [DebuggerDisplay("{Duration} ('{Filename,nq}')")]
