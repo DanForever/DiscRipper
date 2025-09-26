@@ -41,6 +41,48 @@ namespace DiscRipper
         }
     }
 
+    public class StringVisibilityConverter : System.Windows.Data.IValueConverter
+    {
+        public string Match { get; set; } = string.Empty;
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is string str)
+            {
+                var match = parameter as string ?? Match;
+                return str == match ? Visibility.Visible : Visibility.Collapsed;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+            => throw new NotImplementedException();
+    }
+
+    public static class DataGridColumnHelper
+    {
+        public static readonly DependencyProperty BindableVisibilityProperty =
+            DependencyProperty.RegisterAttached(
+                "BindableVisibility",
+                typeof(Visibility),
+                typeof(DataGridColumnHelper),
+                new PropertyMetadata(Visibility.Visible, OnBindableVisibilityChanged));
+
+        public static void SetBindableVisibility(DataGridColumn column, Visibility value) =>
+            column.SetValue(BindableVisibilityProperty, value);
+
+        public static Visibility GetBindableVisibility(DataGridColumn column) =>
+            (Visibility)column.GetValue(BindableVisibilityProperty);
+
+        private static void OnBindableVisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is DataGridColumn column)
+            {
+                column.Visibility = (Visibility)e.NewValue;
+            }
+        }
+    }
+
     /// <summary>
     /// Interaction logic for SubmitNewDisc.xaml
     /// </summary>
@@ -549,6 +591,25 @@ namespace DiscRipper
             if (grid.SelectedItem != null)
             {
                 SelectedTitleDetails.DataContext = grid.SelectedItem;
+            }
+        }
+
+        private void MediaType_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            var seasonColumn = TitleDetails.Columns.FirstOrDefault(c => c.Header?.ToString() == "Season");
+            var episodeColumn = TitleDetails.Columns.FirstOrDefault(c => c.Header?.ToString() == "Episode");
+
+            switch (Submission.MediaType)
+            {
+            case "Series":
+                seasonColumn.Visibility = Visibility.Visible;
+                episodeColumn.Visibility = Visibility.Visible;
+                break;
+
+                case "Movie":
+                seasonColumn.Visibility = Visibility.Collapsed;
+                episodeColumn.Visibility = Visibility.Collapsed;
+                break;
             }
         }
     }

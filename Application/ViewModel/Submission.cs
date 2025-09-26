@@ -5,11 +5,17 @@ internal class Submission : ViewModel
     public required TheDiscDb.Submission Model { get; init; }
 
     public string? TMDB
-    {   get => Model.TMDB; 
+    {
+        get => Model.TMDB; 
         set => ChangeProperty(Model, value);
     }
 
-    public string? MediaType { get; set; }
+    public string? MediaType
+    {
+        get => Model.MediaType;
+        set => ChangeProperty(Model, value);
+    }
+
     public string? DiscFormat { get; set; }
     public string? ReleaseSlug { get; set; }
     public string? UPC { get; set; }

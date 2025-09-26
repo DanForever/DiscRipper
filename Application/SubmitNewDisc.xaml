@@ -31,13 +31,13 @@
                     <TextBox Text="{Binding TMDB, UpdateSourceTrigger=PropertyChanged}" />
                 </local:Setting>
                 <local:Setting Label="Media type">
-                    <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.MediaTypes }}" SelectedValue="{Binding MediaType, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
+                    <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.MediaTypes }}" SelectedValue="{Binding MediaType}" SelectionChanged="MediaType_Changed"/>
                 </local:Setting>
                 <local:Setting Label="Disc format">
-                    <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.DiscFormats }}" SelectedValue="{Binding DiscFormat, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
+                    <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.DiscFormats }}" SelectedValue="{Binding DiscFormat}" />
                 </local:Setting>
                 <local:Setting Label="Release slug">
-                    <TextBox Text="{Binding ReleaseSlug, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
+                    <TextBox Text="{Binding ReleaseSlug}" />
                 </local:Setting>
                 <local:Setting Label="UPC">
                     <TextBox Text="{Binding UPC, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
@@ -68,7 +68,7 @@
                 <TextBlock DockPanel.Dock="Top" Text="Title details" Background="LightGray" Padding="5" />
                 <TextBox x:Name="SelectedTitleDetails" IsReadOnly="True" Text="{Binding Format, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </DockPanel>
-            <DataGrid DockPanel.Dock="Right" AutoGenerateColumns="False" ItemsSource="{Binding Titles}" AlternationCount="100" SelectionChanged="Title_Selected">
+            <DataGrid x:Name="TitleDetails" DockPanel.Dock="Right" AutoGenerateColumns="False" ItemsSource="{Binding Titles}" AlternationCount="100" SelectionChanged="Title_Selected">
                 <DataGrid.Resources>
 
                     <x:Array x:Key="TitleTypes" Type="{x:Type sys:String}" xmlns:sys="clr-namespace:System;assembly=mscorlib">
@@ -78,10 +78,12 @@
                         <sys:String>Extra</sys:String>
                         <sys:String>Episode</sys:String>
                     </x:Array>
+
+                    <local:StringVisibilityConverter x:Key="StringVisibility" />
                 </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="#" Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=AlternationIndex}" IsReadOnly="True" CanUserSort="False" />
-                    <!-- Text column: always editable -->
+
                     <DataGridTemplateColumn Header="Name" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -90,11 +92,26 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     
-                    <!-- ComboBox column: always editable -->
                     <DataGridTemplateColumn Header="Type" MinWidth="100">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ComboBox ItemsSource="{StaticResource TitleTypes}" SelectedItem="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Season" Width="40">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Season, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Episode" Width="40">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Episode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
