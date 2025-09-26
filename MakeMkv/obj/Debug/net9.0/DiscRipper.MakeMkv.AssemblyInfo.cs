@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DiscRipper.MakeMkv")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+25f35a7b60c1998e9d0c1d1697c7c79b3b6ad118")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0824c46868fbf972a5b07dd92da29d08264e362c")]
 [assembly: System.Reflection.AssemblyProductAttribute("DiscRipper.MakeMkv")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DiscRipper.MakeMkv")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

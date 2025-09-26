@@ -32,6 +32,8 @@ namespace DiscRipper
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            await ScanDiscDummy();
+
             // On startup we want to automatically populate the list of drives,
             // but we can't do it in the constructor because the gui hasn't yet
             // been initialized, and it can't be made async, so we do it here instead
@@ -96,6 +98,51 @@ namespace DiscRipper
 
             MakeMkv.TitleEngine titleEngine = new();
             await titleEngine.Read(runner.Log);
+
+            List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
+
+            if (mappedDiscs.Count > 0)
+            {
+                BestMatch bestMatch = new(mappedDiscs, drive) { Owner = this };
+                bestMatch.Show();
+            }
+            else
+            {
+                IEnumerable<TheDiscDb.Title> titles = MakeMkvToTheDiscDb.Convert(titleEngine.Titles);
+
+                SubmitNewDisc submitNewDisc = new(titles) { Owner = this };
+                submitNewDisc.Show();
+            }
+        }
+
+        private async Task ScanDiscDummy()
+        {
+            MakeMkv.Runner runner = new()
+            {
+                MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+                SynchronizationContext = SynchronizationContext.Current!,
+            };
+
+            Feedback += runner.Log;
+            await runner.RunDebugSimulateCallback(DummyData.TellNoOne);
+
+            MakeMkv.TitleEngine titleEngine = new();
+            await titleEngine.Read(runner.Log);
+
+            List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
+
+            if (mappedDiscs.Count > 0)
+            {
+                BestMatch bestMatch = new(mappedDiscs, null!) { Owner = this };
+                bestMatch.Show();
+            }
+            else
+            {
+                IEnumerable<TheDiscDb.Title> titles = MakeMkvToTheDiscDb.Convert(titleEngine.Titles);
+
+                SubmitNewDisc submitNewDisc = new(titles) { Owner = this };
+                submitNewDisc.Show();
+            }
         }
 
         private async Task ScanDisc(MakeMkv.Drive drive)

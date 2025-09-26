@@ -11,18 +11,6 @@ namespace DiscRipper
             Duration = 9,
             Filename = 27
         }
-
-        [DebuggerDisplay("{Duration} ('{Filename,nq}')")]
-        internal class Title
-        {
-            public int Index { get; set; }
-
-            public string Duration { get; set; } = "";
-
-            public int DurationInSeconds { get; set; }
-
-            public string Filename { get; set; } = "";
-        }
     }
 
     internal class Scanner

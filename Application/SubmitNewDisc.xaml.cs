@@ -3,20 +3,19 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 
 using DiscRipper.TheDiscDb2.GraphQL;
+using DiscRipper.ViewModel;
 
 using Fantastic.FileSystem;
-using Fantastic.TheMovieDb.Caching.FileSystem;
-using Fantastic.TheMovieDb.Models;
 
 using ImportBuddy;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-using TheDiscDb;
-using TheDiscDb.ImportModels;
+using TDDB = global::TheDiscDb;
 
 namespace DiscRipper
 {
@@ -47,30 +46,25 @@ namespace DiscRipper
     /// </summary>
     internal partial class SubmitNewDisc : Window
     {
+        private TheDiscDb.Submission _submission;
+        public ViewModel.Submission Submission { get; init; }
+
         public static string[] MediaTypes { get; } = ["Movie", "Series"];
         public static string[] DiscFormats { get; } = ["Blu-Ray", "UHD", "DVD"];
 
-        public string TMDB { get; set; } = "10795";
-        public string MediaType { get; set; } = MediaTypes[0];
-        public string DiscFormat { get; set; } = DiscFormats[0];
-        public string ReleaseSlug { get; set; }
-        public string UPC { get; set; }
-        public string ASIN { get; set; }
-        public DateTime PublicationDate { get; set; }
-        public string FrontCoverUrl { get; set; }
-        public string BackCoverUrl { get; set; }
-        public string EditionName { get; set; }
-        public string DiscTitle { get; set; }
-        public string DiscSlug { get; set; }
-
         IEnumerable<string> ExistingReleases { get; set; } = [];
 
-        IFileSystem FileSystem { get; } = new PhysicalFileSystem();
+        Fantastic.FileSystem.IFileSystem FileSystem { get; } = new Fantastic.FileSystem.PhysicalFileSystem();
 
-        public SubmitNewDisc()
+        public SubmitNewDisc(IEnumerable<TheDiscDb.Title> titles)
         {
             InitializeComponent();
 
+            IEnumerable<SubmissionTitle> submissionTitles = titles.Select(t => new SubmissionTitle { Model = t });
+
+            _submission = new() { Titles = titles };
+            Submission = new() { Model = _submission, Titles = submissionTitles };
+            DataContext = Submission;
             Loaded += Window_Loaded;
         }
 
@@ -80,7 +74,8 @@ namespace DiscRipper
 
         private async void Submit_Click(object sender, RoutedEventArgs e)
         {
-            FileSystemCacheOptions options = new()
+            /*
+            Fantastic.TheMovieDb.Caching.FileSystem.FileSystemCacheOptions options = new()
             {
                 BaseDirectory = """C:\Users\theme\Desktop\Import buddy\.TheMovieDbCache"""
             };
@@ -103,9 +98,9 @@ namespace DiscRipper
                 DataRepositoryPath = """J:\Reference\TheDiscDb\data""",
             };
 
-            IFileSystem fileSystem = FileSystem;
+            Fantastic.FileSystem.IFileSystem fileSystem = FileSystem;
             string name = "DanTestFS";
-            FileSystemCache fileSystemCache = new(name, options, fileSystem);
+            Fantastic.TheMovieDb.Caching.FileSystem.FileSystemCache fileSystemCache = new(name, options, fileSystem);
 
             IOptionsMonitor<Fantastic.TheMovieDb.TheMovieDbOptions> theMovieDbOptionsMonitor =
                 new StaticOptionsMonitor<Fantastic.TheMovieDb.TheMovieDbOptions>(theMovieDbOptions);
@@ -117,9 +112,9 @@ namespace DiscRipper
             ImportBuddy.RecentItemImportTask recentItemImportTask = new(fileSystem, wrappedOptions);
             ImportBuddy.TmdbByIdImportTask tmdbTask = new(client);
 
-            IImportTask[] tasks = { recentItemImportTask, tmdbTask };
+            ImportBuddy.IImportTask[] tasks = { recentItemImportTask, tmdbTask };
 
-            ImportItem? importItem = null;
+            ImportBuddy.ImportItem? importItem = null;
             foreach (var task in tasks)
             {
                 if (task.CanHandle(TMDB, MediaType))
@@ -137,7 +132,7 @@ namespace DiscRipper
                 return;
 
             int year = importItem.TryGetYear();
-            MetadataFile? metadata = BuildMetadata(importItem.ImdbTitle, importItem.GetTmdbItemToSerialize() as Fantastic.TheMovieDb.Models.Movie, importItem.GetTmdbItemToSerialize() as Fantastic.TheMovieDb.Models.Series, year, MediaType);
+            TDDB.ImportModels.MetadataFile? metadata = BuildMetadata(importItem.ImdbTitle, importItem.GetTmdbItemToSerialize() as Fantastic.TheMovieDb.Models.Movie, importItem.GetTmdbItemToSerialize() as Fantastic.TheMovieDb.Models.Series, year, MediaType);
 
             if (metadata != null && metadata.Title == null)
             {
@@ -180,7 +175,7 @@ namespace DiscRipper
                 await fileSystem.File.WriteAllText(imdbPath, JsonSerializer.Serialize(importItem.ImdbTitle, ImportBuddy.JsonHelper.JsonOptions));
             }
 
-            string metadataPath = fileSystem.Path.Combine(basePath, MetadataFile.Filename);
+            string metadataPath = fileSystem.Path.Combine(basePath, TDDB.ImportModels.MetadataFile.Filename);
             if (!await fileSystem.File.Exists(metadataPath))
             {
                 await fileSystem.File.WriteAllText(metadataPath, JsonSerializer.Serialize(metadata, ImportBuddy.JsonHelper.JsonOptions));
@@ -225,10 +220,10 @@ namespace DiscRipper
                     releaseYear = releaseDate.Year;
                 }
 
-                string releaseFile = fileSystem.Path.Combine(releaseFolder, ReleaseFile.Filename);
+                string releaseFile = fileSystem.Path.Combine(releaseFolder, TDDB.ImportModels.ReleaseFile.Filename);
                 if (!await fileSystem.Directory.Exists(releaseFile))
                 {
-                    var release = new ReleaseFile
+                    var release = new TDDB.ImportModels.ReleaseFile
                     {
                         Title = releaseName,
                         SortTitle = $"{releaseYear} {GetSortTitle(releaseName)}",
@@ -288,7 +283,7 @@ namespace DiscRipper
                 string discJsonFilePath = fileSystem.Path.Combine(releaseFolder, $"{discName.Name}.json");
                 if (!await fileSystem.File.Exists(discJsonFilePath))
                 {
-                    var discJsonFile = new DiscFile
+                    var discJsonFile = new TDDB.ImportModels.DiscFile
                     {
                         Index = discName.Index,
                         Slug = discSlug,
@@ -303,9 +298,10 @@ namespace DiscRipper
                // await this.makeMkv.WriteLogs(data.Drive!.Index, makeMkvLogPath);
                // await DiskContentHash.TryAppendHashInfo(fileSystem, makeMkvLogPath, data.HashInfo, cancellationToken);
             }
+            //*/
         }
 
-        internal async Task GetSeriesFilenamesTask_RunInternal(IFileSystem fileSystem, Fantastic.TheMovieDb.TheMovieDbClient tmdb, Fantastic.TheMovieDb.Models.Series? series, string basePath)
+        internal async Task GetSeriesFilenamesTask_RunInternal(Fantastic.FileSystem.IFileSystem fileSystem, Fantastic.TheMovieDb.TheMovieDbClient tmdb, Fantastic.TheMovieDb.Models.Series? series, string basePath)
         {
             if (series == null)
             {
@@ -317,7 +313,7 @@ namespace DiscRipper
             {
                 using (var writer = await fileSystem.File.CreateText(episodeListPath))
                 {
-                    List<Episode> season0Episodes = new();
+                    List<Fantastic.TheMovieDb.Models.Episode> season0Episodes = new();
                     foreach (var season in series.Seasons)
                     {
                         var fullSeason = await tmdb.GetSeason(series.Id, season.SeasonNumber);
@@ -396,10 +392,10 @@ namespace DiscRipper
         {
             if (year != default(int))
             {
-                return string.Format("{0}-{1}", name.Slugify(), year);
+                return string.Format("{0}-{1}", TDDB.StringExtensions.Slugify(name), year);
             }
 
-            return name.Slugify();
+            return TDDB.StringExtensions.Slugify(name);
         }
 
         private string? GetSortTitle(string? title)
@@ -419,9 +415,9 @@ namespace DiscRipper
             }
         }
 
-        private TheDiscDb.ImportModels.MetadataFile BuildMetadata(TheDiscDb.Imdb.TitleData? imdbTitle, Fantastic.TheMovieDb.Models.Movie? movie, Fantastic.TheMovieDb.Models.Series? series, int year, string importItemType)
+        private TDDB.ImportModels.MetadataFile BuildMetadata(TDDB.Imdb.TitleData? imdbTitle, Fantastic.TheMovieDb.Models.Movie? movie, Fantastic.TheMovieDb.Models.Series? series, int year, string importItemType)
         {
-            var metadata = new TheDiscDb.ImportModels.MetadataFile
+            var metadata = new TDDB.ImportModels.MetadataFile
             {
                 Year = year,
                 Type = importItemType,
@@ -545,6 +541,15 @@ namespace DiscRipper
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Title_Selected(object sender, RoutedEventArgs e)
+        {
+            var grid = (DataGrid)sender;
+            if (grid.SelectedItem != null)
+            {
+                SelectedTitleDetails.DataContext = grid.SelectedItem;
+            }
         }
     }
 }

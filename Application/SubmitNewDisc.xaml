@@ -19,7 +19,7 @@
                 </Button>
             </StackPanel>
             
-            <StackPanel>
+            <StackPanel DockPanel.Dock="Left" MinWidth="400">
                 <StackPanel.Resources>
                     <Style TargetType="TextBlock">
                     </Style>
@@ -28,7 +28,7 @@
                     </Style>
                 </StackPanel.Resources>
                 <local:Setting Label="TMDB ID">
-                    <TextBox Text="{Binding TMDB, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
+                    <TextBox Text="{Binding TMDB, UpdateSourceTrigger=PropertyChanged}" />
                 </local:Setting>
                 <local:Setting Label="Media type">
                     <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.MediaTypes }}" SelectedValue="{Binding MediaType, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
@@ -64,6 +64,42 @@
                     <TextBox Text="{Binding DiscSlug, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
                 </local:Setting>
             </StackPanel>
+            <DockPanel DockPanel.Dock="Right" Width="256">
+                <TextBlock DockPanel.Dock="Top" Text="Title details" Background="LightGray" Padding="5" />
+                <TextBox x:Name="SelectedTitleDetails" IsReadOnly="True" Text="{Binding Format, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+            <DataGrid DockPanel.Dock="Right" AutoGenerateColumns="False" ItemsSource="{Binding Titles}" AlternationCount="100" SelectionChanged="Title_Selected">
+                <DataGrid.Resources>
+
+                    <x:Array x:Key="TitleTypes" Type="{x:Type sys:String}" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                        <sys:String>MainMovie</sys:String>
+                        <sys:String>DeletedScene</sys:String>
+                        <sys:String>Trailer</sys:String>
+                        <sys:String>Extra</sys:String>
+                        <sys:String>Episode</sys:String>
+                    </x:Array>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="#" Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=AlternationIndex}" IsReadOnly="True" CanUserSort="False" />
+                    <!-- Text column: always editable -->
+                    <DataGridTemplateColumn Header="Name" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    
+                    <!-- ComboBox column: always editable -->
+                    <DataGridTemplateColumn Header="Type" MinWidth="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{StaticResource TitleTypes}" SelectedItem="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </DockPanel>
     </Grid>
 </Window>

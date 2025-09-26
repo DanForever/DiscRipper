@@ -1,1 +1,7 @@
 /.vs
+/Application/obj
+/Application/bin
+/TheDiscDb/obj
+/TheDiscDb/bin
+/MakeMkv/obj
+/MakeMkv/bin

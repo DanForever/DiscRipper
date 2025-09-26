@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscRipper", "Application\D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscRipper.MakeMkv", "MakeMkv\DiscRipper.MakeMkv.csproj", "{BDEEFA7D-D211-58B5-83F2-8BCEA3F01DE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheDiscDb", "TheDiscDb\DiscRipper.TheDiscDb.csproj", "{C83C4060-1060-4A48-8155-CDD151941DCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BDEEFA7D-D211-58B5-83F2-8BCEA3F01DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDEEFA7D-D211-58B5-83F2-8BCEA3F01DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDEEFA7D-D211-58B5-83F2-8BCEA3F01DE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C83C4060-1060-4A48-8155-CDD151941DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C83C4060-1060-4A48-8155-CDD151941DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C83C4060-1060-4A48-8155-CDD151941DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C83C4060-1060-4A48-8155-CDD151941DCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

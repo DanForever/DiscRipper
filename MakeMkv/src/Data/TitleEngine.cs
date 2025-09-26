@@ -19,14 +19,38 @@ public class TitleEngine
         {
             Title title = Titles[titleInfo.Id];
 
-            switch(titleInfo.Type)
+            switch (titleInfo.Type)
             {
-            case TitleType.Length:
+            case TitleInfoType.DiscName:
+                title.DiscName = titleInfo.Value;
+                break;
+
+            case TitleInfoType.SourceFilename:
+                title.SourceFilename = titleInfo.Value;
+                break;
+
+            case TitleInfoType.Length:
                 title.Duration = titleInfo.Value;
                 title.DurationInSeconds = (int)TimeSpan.Parse(titleInfo.Value).TotalSeconds;
                 break;
 
-            case TitleType.Filename:
+            case TitleInfoType.NumberOfChapters:
+                title.ChaptersCount = int.Parse(titleInfo.Value);
+                break;
+
+            case TitleInfoType.FileSizeGb:
+                title.Size = titleInfo.Value;
+                break;
+
+            case TitleInfoType.SegmentCount:
+                title.SegmentCount = int.Parse(titleInfo.Value);
+                break;
+
+            case TitleInfoType.SegmentMap:
+                title.SegmentMap = titleInfo.Value;
+                break;
+
+            case TitleInfoType.Filename:
                 title.Filename = titleInfo.Value;
                 break;
             }
