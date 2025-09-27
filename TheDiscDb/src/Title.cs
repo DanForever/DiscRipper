@@ -24,6 +24,17 @@ public class Title
         Size: {Size}
         Segment count: {SegmentCount}
         Segment map: {SegmentMap}
+        Type: {Type}
+
+        """ +
+
+        (Type == "Episode"? $"""
+        Season {Season}
+        Episode {Episode}
+
+        """ : string.Empty) +
+
+        $"""
         File name: {Filename}
         """;
 }

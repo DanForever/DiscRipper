@@ -596,8 +596,8 @@ namespace DiscRipper
 
         private void MediaType_Changed(object sender, SelectionChangedEventArgs e)
         {
-            var seasonColumn = TitleDetails.Columns.FirstOrDefault(c => c.Header?.ToString() == "Season");
-            var episodeColumn = TitleDetails.Columns.FirstOrDefault(c => c.Header?.ToString() == "Episode");
+            var seasonColumn = TitleDetails.Columns.First(c => c.Header?.ToString() == "Season");
+            var episodeColumn = TitleDetails.Columns.First(c => c.Header?.ToString() == "Episode");
 
             switch (Submission.MediaType)
             {
