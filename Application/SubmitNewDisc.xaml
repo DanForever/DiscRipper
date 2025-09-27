@@ -76,6 +76,9 @@
                 <local:Setting Label="Region code">
                     <ComboBox ItemsSource="{Binding Source={StaticResource RegionCodes}}" SelectedItem="{Binding RegionCode, UpdateSourceTrigger=PropertyChanged}" />
                 </local:Setting>
+                <local:Setting Label="Locale">
+                    <ComboBox ItemsSource="{Binding Mode=OneWay, Source={x:Static local:SubmitNewDisc.AllRegions }}" SelectedValuePath="Name" DisplayMemberPath="DisplayName" SelectedValue="{Binding Locale, UpdateSourceTrigger=PropertyChanged}" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" IsEditable="True" />
+                </local:Setting>
             </StackPanel>
             <DockPanel DockPanel.Dock="Right" Width="256">
                 <TextBlock DockPanel.Dock="Top" Text="Title details" Background="LightGray" Padding="5" />

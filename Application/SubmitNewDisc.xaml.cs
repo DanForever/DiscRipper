@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Globalization;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -93,19 +94,48 @@ namespace DiscRipper
 
         public static string[] MediaTypes { get; } = ["Movie", "Series"];
         public static string[] DiscFormats { get; } = ["Blu-Ray", "UHD", "DVD"];
+        public static IEnumerable<CultureInfo> AllRegions { get; private set; }
 
         IEnumerable<string> ExistingReleases { get; set; } = [];
 
         Fantastic.FileSystem.IFileSystem FileSystem { get; } = new Fantastic.FileSystem.PhysicalFileSystem();
 
-        public SubmitNewDisc(IEnumerable<TheDiscDb.Title> titles)
+        static SubmitNewDisc()
+        {
+            AllRegions = CultureInfo.GetCultures(CultureTypes.SpecificCultures).OrderBy(c => c.DisplayName);
+        }
+
+        public SubmitNewDisc(IEnumerable<TheDiscDb.Title> titles, MakeMkv.Drive? drive = null)
         {
             InitializeComponent();
 
             IEnumerable<SubmissionTitle> submissionTitles = titles.Select(t => new SubmissionTitle { Model = t });
 
             _submission = new() { Titles = titles };
-            Submission = new() { Model = _submission, Titles = submissionTitles };
+            Submission = new()
+            {
+                Model = _submission,
+                Titles = submissionTitles,
+
+                // sensible defaults
+                Locale = "en-US",
+                MediaType = MediaTypes[0],
+            };
+
+            if(drive != null)
+            {
+                switch(drive.DiscType)
+                {
+                case MakeMkv.DiscType.BD:
+                    Submission.DiscFormat = "Blu-Ray";
+                    break;
+
+                case MakeMkv.DiscType.DVD:
+                    Submission.DiscFormat = "DVD";
+                    break;
+                }
+            }
+
             DataContext = Submission;
             Loaded += Window_Loaded;
         }
@@ -135,7 +165,7 @@ namespace DiscRipper
                 ApiKey = "0d8d20c3421445e133f3c3d2ab3f956c"
             };
 
-            ImportBuddy.ImportBuddyOptions ibObtions = new()
+            ImportBuddy.ImportBuddyOptions ibOptions = new()
             {
                 DataRepositoryPath = """J:\Reference\TheDiscDb\data""",
             };
@@ -147,7 +177,7 @@ namespace DiscRipper
             IOptionsMonitor<Fantastic.TheMovieDb.TheMovieDbOptions> theMovieDbOptionsMonitor =
                 new StaticOptionsMonitor<Fantastic.TheMovieDb.TheMovieDbOptions>(theMovieDbOptions);
 
-            Microsoft.Extensions.Options.OptionsWrapper<ImportBuddy.ImportBuddyOptions> wrappedOptions = new(ibObtions);
+            Microsoft.Extensions.Options.OptionsWrapper<ImportBuddy.ImportBuddyOptions> wrappedOptions = new(ibOptions);
 
             Fantastic.TheMovieDb.TheMovieDbClient client = new(httpClient, theMovieDbOptionsMonitor, loggerFactory, fileSystemCache );
 
