@@ -4,7 +4,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:DiscRipper"
+        xmlns:localtddb="clr-namespace:DiscRipper.TheDiscDb;assembly=DiscRipper.TheDiscDb"
         mc:Ignorable="d"
         Title="SubmitNewDisc" Height="450" Width="800">
     <Grid IsSharedSizeScope="True">
@@ -26,6 +28,14 @@
                     <Style TargetType="TextBox">
                         <Setter Property="VerticalContentAlignment" Value="Center"/>
                     </Style>
+
+                    <ObjectDataProvider x:Key="RegionCodes"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="localtddb:RegionCode"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
                 </StackPanel.Resources>
                 <local:Setting Label="TMDB ID">
                     <TextBox Text="{Binding TMDB, UpdateSourceTrigger=PropertyChanged}" />
@@ -62,6 +72,9 @@
                 </local:Setting>
                 <local:Setting Label="Disc slug">
                     <TextBox Text="{Binding DiscSlug, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
+                </local:Setting>
+                <local:Setting Label="Region code">
+                    <ComboBox ItemsSource="{Binding Source={StaticResource RegionCodes}}" SelectedItem="{Binding RegionCode, UpdateSourceTrigger=PropertyChanged}" />
                 </local:Setting>
             </StackPanel>
             <DockPanel DockPanel.Dock="Right" Width="256">
