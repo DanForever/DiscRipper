@@ -50,28 +50,28 @@
                     <TextBox Text="{Binding ReleaseSlug}" />
                 </local:Setting>
                 <local:Setting Label="UPC">
-                    <TextBox Text="{Binding UPC, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
+                    <TextBox Text="{Binding UPC}" />
                 </local:Setting>
                 <local:Setting Label="ASIN">
-                    <TextBox Text="{Binding ASIN, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
+                    <TextBox Text="{Binding ASIN}" />
                 </local:Setting>
                 <local:Setting Label="Release publication date">
-                    <DatePicker SelectedDate="{Binding PublicationDate, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
+                    <DatePicker SelectedDate="{Binding PublicationDate}" />
                 </local:Setting>
                 <local:Setting Label="Front cover image URL">
-                    <TextBox Text="{Binding FrontCoverUrl, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
+                    <TextBox Text="{Binding FrontCoverUrl}" />
                 </local:Setting>
                 <local:Setting Label="Back cover image URL">
-                    <TextBox Text="{Binding BackCoverUrl, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
+                    <TextBox Text="{Binding BackCoverUrl}" />
                 </local:Setting>
                 <local:Setting Label="Name of release/edition">
-                    <TextBox Text="{Binding EditionName, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
+                    <TextBox Text="{Binding EditionName}" />
                 </local:Setting>
                 <local:Setting Label="Name of disc">
-                    <TextBox Text="{Binding DiscTitle, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
+                    <TextBox Text="{Binding DiscTitle}" />
                 </local:Setting>
                 <local:Setting Label="Disc slug">
-                    <TextBox Text="{Binding DiscSlug, RelativeSource={RelativeSource AncestorType=local:SubmitNewDisc}}" />
+                    <TextBox Text="{Binding DiscSlug}" />
                 </local:Setting>
                 <local:Setting Label="Region code">
                     <ComboBox ItemsSource="{Binding Source={StaticResource RegionCodes}}" SelectedItem="{Binding RegionCode, UpdateSourceTrigger=PropertyChanged}" />
