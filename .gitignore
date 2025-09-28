@@ -6,3 +6,4 @@
 /MakeMkv/obj
 /MakeMkv/bin
 TheDiscDb/src/ImportBuddy/TMDB_Apikey.cs
+TheDiscDb/src/ImportBuddy/TMDB_ApiKey.cs
