@@ -63,7 +63,7 @@ namespace DiscRipper
 
             if (dialog.ShowDialog(this) == true)
             {
-                Settings.Default.MakeMkvInstallFolder = dialog.FolderName;
+                Settings.Default.RepositoryFolder = dialog.FolderName;
             }
         }
     }
