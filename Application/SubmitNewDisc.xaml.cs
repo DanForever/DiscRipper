@@ -146,6 +146,12 @@ namespace DiscRipper
 
         private async void Submit_Click(object sender, RoutedEventArgs e)
         {
+            TheDiscDb.ImportBuddy.InitializationData initializationData = new(Settings.Default.RepositoryFolder);
+
+            TheDiscDb.Submit.TMDB_Fetch fetch = new();
+
+            await fetch.Fetch(_submission, initializationData);
+
             /*
             Fantastic.TheMovieDb.Caching.FileSystem.FileSystemCacheOptions options = new()
             {
@@ -159,11 +165,6 @@ namespace DiscRipper
                 builder
                     .SetMinimumLevel(LogLevel.Debug).AddDebug();
             });
-
-            Fantastic.TheMovieDb.TheMovieDbOptions theMovieDbOptions = new()
-            {
-                ApiKey = "0d8d20c3421445e133f3c3d2ab3f956c"
-            };
 
             ImportBuddy.ImportBuddyOptions ibOptions = new()
             {
