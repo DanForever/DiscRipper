@@ -14,6 +14,8 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Text="MakeMkv install path"  Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="5" />
         <DockPanel Grid.Column="1" Grid.Row="1" Margin="5">
@@ -21,6 +23,14 @@
                 <TextBlock Text="Pick folder" Margin="5" />
             </Button>
             <TextBox x:Name="MakeMkvPathTextBox" Padding="5" Text="{Binding Source={x:Static local:Settings.Default}, Path=MakeMkvInstallFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />
+        </DockPanel>
+        
+        <TextBlock Text="Repository path"  Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Margin="5" />
+        <DockPanel Grid.Column="1" Grid.Row="3" Margin="5">
+            <Button DockPanel.Dock="Right" Click="Click_SelectRepositoryDirectory" Margin="5" >
+                <TextBlock Text="Pick folder" Margin="5" />
+            </Button>
+            <TextBox x:Name="RepositoryPathTextBox" Padding="5" Text="{Binding Source={x:Static local:Settings.Default}, Path=RepositoryFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />
         </DockPanel>
     </Grid>
 </Window>

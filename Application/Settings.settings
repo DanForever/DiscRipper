@@ -5,5 +5,8 @@
     <Setting Name="MakeMkvInstallFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Program Files (x86)\MakeMKV</Value>
     </Setting>
+    <Setting Name="RepositoryFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

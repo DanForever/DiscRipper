@@ -34,5 +34,17 @@ namespace DiscRipper {
                 this["MakeMkvInstallFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RepositoryFolder {
+            get {
+                return ((string)(this["RepositoryFolder"]));
+            }
+            set {
+                this["RepositoryFolder"] = value;
+            }
+        }
     }
 }

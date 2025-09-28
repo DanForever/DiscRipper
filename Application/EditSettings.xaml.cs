@@ -51,5 +51,20 @@ namespace DiscRipper
         }
 
         #endregion Event handlers
+
+        private void Click_SelectRepositoryDirectory(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFolderDialog dialog = new()
+            {
+                Multiselect = false,
+                Title = "Select the folder containing your local clone of TheDiscDb repository",
+                InitialDirectory = Settings.Default.MakeMkvInstallFolder,
+            };
+
+            if (dialog.ShowDialog(this) == true)
+            {
+                Settings.Default.MakeMkvInstallFolder = dialog.FolderName;
+            }
+        }
     }
 }
