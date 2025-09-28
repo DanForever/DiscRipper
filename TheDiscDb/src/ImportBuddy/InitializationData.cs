@@ -29,11 +29,24 @@ public class StaticOptionsMonitor<T> : IOptionsMonitor<T>
 
 public class InitializationData
 {
-    OGIB.ImportBuddyOptions ibOptions = new();
-    OptionsWrapper<OGIB.ImportBuddyOptions> wrappedOptions;
+    #region Import buddy options
 
-    Fantastic.TheMovieDb.Caching.FileSystem.FileSystemCacheOptions filesystemCachingOptions = new();
+    readonly OGIB.ImportBuddyOptions _importBuddyOptions = new();
+    readonly OptionsWrapper<OGIB.ImportBuddyOptions> _wrappedInputBuddyOptions;
+
+    #endregion // Import buddy options
+
+    #region File system
+
+    Fantastic.TheMovieDb.Caching.FileSystem.FileSystemCacheOptions _filesystemCacheOptions = new();
     Fantastic.FileSystem.IFileSystem _fileSystem = new Fantastic.FileSystem.PhysicalFileSystem();
+
+    readonly string _fileSystemCacheName = "DiscRipper";
+    readonly Fantastic.TheMovieDb.Caching.FileSystem.FileSystemCache fileSystemCache;
+
+    #endregion // File system
+
+    #region The movie database
 
     HttpClient httpClient = new();
     ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
@@ -49,24 +62,22 @@ public class InitializationData
     Fantastic.TheMovieDb.TheMovieDbClient tmdbClient;
     IOptionsMonitor<Fantastic.TheMovieDb.TheMovieDbOptions> _theMovieDbOptionsMonitor;
 
+    #endregion The movie database
 
-
-    string _fileSystemCacheName = "DiscRipper";
-    Fantastic.TheMovieDb.Caching.FileSystem.FileSystemCache fileSystemCache;
 
     public Fantastic.FileSystem.IFileSystem FileSystem => _fileSystem;
-    public OptionsWrapper<OGIB.ImportBuddyOptions> WrappedOptions => wrappedOptions;
+    public OptionsWrapper<OGIB.ImportBuddyOptions> WrappedOptions => _wrappedInputBuddyOptions;
 
     public Fantastic.TheMovieDb.TheMovieDbClient TmdbClient => tmdbClient;
 
     public InitializationData(string dataRepositoryPath)
     {
-        ibOptions.DataRepositoryPath = dataRepositoryPath;
+        _importBuddyOptions.DataRepositoryPath = dataRepositoryPath;
 
-        wrappedOptions = new(ibOptions);
+        _wrappedInputBuddyOptions = new(_importBuddyOptions);
 
-        filesystemCachingOptions.BaseDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DiscRipper", "FilesystemCache");
-        fileSystemCache = new(_fileSystemCacheName, filesystemCachingOptions, FileSystem);
+        _filesystemCacheOptions.BaseDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DiscRipper", "FilesystemCache");
+        fileSystemCache = new(_fileSystemCacheName, _filesystemCacheOptions, FileSystem);
         _theMovieDbOptionsMonitor = new StaticOptionsMonitor<Fantastic.TheMovieDb.TheMovieDbOptions>(theMovieDbOptions);
         tmdbClient = new(httpClient, _theMovieDbOptionsMonitor, loggerFactory, fileSystemCache);
 

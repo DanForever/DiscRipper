@@ -1,19 +1,11 @@
 ﻿using System.Globalization;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 
-using DiscRipper.TheDiscDb2.GraphQL;
 using DiscRipper.ViewModel;
-
-using Fantastic.FileSystem;
 
 using ImportBuddy;
 
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using TDDB = global::TheDiscDb;
@@ -146,11 +138,17 @@ namespace DiscRipper
 
         private async void Submit_Click(object sender, RoutedEventArgs e)
         {
-            TheDiscDb.ImportBuddy.InitializationData initializationData = new(Settings.Default.RepositoryFolder);
+            DiscRipper.TheDiscDb.Submit.SubmissionContext context = new()
+            {
+                Submission = _submission,
+                InitializationData = new(Settings.Default.RepositoryFolder)
+            };
 
-            TheDiscDb.Submit.TMDB_Fetch fetch = new();
+            TheDiscDb.Submit.TmdbFetch fetch = new();
+            await fetch.Run(context);
 
-            await fetch.Fetch(_submission, initializationData);
+            TheDiscDb.Submit.BuildMetadata buildMetadata = new();
+            await buildMetadata.Run(context);
 
             /*
             Fantastic.TheMovieDb.Caching.FileSystem.FileSystemCacheOptions options = new()
