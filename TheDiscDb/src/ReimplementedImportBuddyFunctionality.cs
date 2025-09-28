@@ -2,30 +2,30 @@
 
 using Fantastic.FileSystem;
 
-namespace DiscRipper.TheDiscDb
+namespace DiscRipper.TheDiscDb;
+
+public class ReimplementedImportBuddyFunctionality
 {
-    public class ReimplementedImportBuddyFunctionality
+    public static async Task CreateDiscSummaryFile(CopiedImportBuddyFunctions copiedImportBuddyFunctions, string releaseFolder, Submission submission)
     {
-        public static async Task CreateDiscSummaryFile(CopiedImportBuddyFunctions copiedImportBuddyFunctions, string releaseFolder, Submission submission)
+        var discName = await copiedImportBuddyFunctions.GetDiscName(releaseFolder);
+
+        string makeMkvLogPath = copiedImportBuddyFunctions.FileSystem.Path.Combine(releaseFolder, $"{discName.Name}.txt");
+        if (!await copiedImportBuddyFunctions.FileSystem.File.Exists(makeMkvLogPath))
         {
-            var discName = await copiedImportBuddyFunctions.GetDiscName(releaseFolder);
+            var summaryContents = new StringBuilder();
 
-            string makeMkvLogPath = copiedImportBuddyFunctions.FileSystem.Path.Combine(releaseFolder, $"{discName.Name}.txt");
-            if (!await copiedImportBuddyFunctions.FileSystem.File.Exists(makeMkvLogPath))
+            foreach(var title in submission.Titles)
             {
-                var summaryContents = new StringBuilder();
-
-                foreach(var title in submission.Titles)
-                {
-                    summaryContents.AppendLine(title.Format);
-                    summaryContents.AppendLine();
-                }
-
-                string summaryPath = copiedImportBuddyFunctions.FileSystem.Path.Combine(releaseFolder, $"{discName.Name}-summary.txt");
-                if (!await copiedImportBuddyFunctions.FileSystem.File.Exists(summaryPath))
-                {
-                    await copiedImportBuddyFunctions.FileSystem.File.WriteAllText(summaryPath, summaryContents.ToString());
-                }
+                summaryContents.AppendLine(title.Format);
+                summaryContents.AppendLine();
             }
-    }
+
+            string summaryPath = copiedImportBuddyFunctions.FileSystem.Path.Combine(releaseFolder, $"{discName.Name}-summary.txt");
+            if (!await copiedImportBuddyFunctions.FileSystem.File.Exists(summaryPath))
+            {
+                await copiedImportBuddyFunctions.FileSystem.File.WriteAllText(summaryPath, summaryContents.ToString());
+            }
+        }
+}
 }
