@@ -46,9 +46,14 @@ public class InitializationData
 
     #endregion // File system
 
+    #region HTTP
+
+    HttpClient _httpClient = new();
+
+    #endregion HTTP
+
     #region The movie database
 
-    HttpClient httpClient = new();
     ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
     {
         builder.SetMinimumLevel(LogLevel.Debug).AddDebug();
@@ -64,10 +69,9 @@ public class InitializationData
 
     #endregion The movie database
 
-
     public Fantastic.FileSystem.IFileSystem FileSystem => _fileSystem;
     public OptionsWrapper<OGIB.ImportBuddyOptions> WrappedOptions => _wrappedInputBuddyOptions;
-
+    public HttpClient HttpClient => _httpClient;
     public Fantastic.TheMovieDb.TheMovieDbClient TmdbClient => tmdbClient;
 
     public InitializationData(string dataRepositoryPath)
@@ -79,8 +83,6 @@ public class InitializationData
         _filesystemCacheOptions.BaseDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DiscRipper", "FilesystemCache");
         fileSystemCache = new(_fileSystemCacheName, _filesystemCacheOptions, FileSystem);
         _theMovieDbOptionsMonitor = new StaticOptionsMonitor<Fantastic.TheMovieDb.TheMovieDbOptions>(theMovieDbOptions);
-        tmdbClient = new(httpClient, _theMovieDbOptionsMonitor, loggerFactory, fileSystemCache);
-
-
+        tmdbClient = new(_httpClient, _theMovieDbOptionsMonitor, loggerFactory, fileSystemCache);
     }
 }

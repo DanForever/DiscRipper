@@ -16,9 +16,8 @@ public class BuildMetadata : IStep
             throw new ArgumentException("Submission MediaType must be set in context before building metadata.");
         }
 
-        int year = context.ImportItem.TryGetYear();
-        context.Metadata = BuildMetadataInternal(context.ImportItem.ImdbTitle, context.ImportItem.GetTmdbItemToSerialize() as Fantastic.TheMovieDb.Models.Movie, context.ImportItem.GetTmdbItemToSerialize() as Fantastic.TheMovieDb.Models.Series, year, context.Submission.MediaType);
-
+        context.Year = context.ImportItem.TryGetYear();
+        context.Metadata = BuildMetadataInternal(context.ImportItem.ImdbTitle, context.ImportItem.GetTmdbItemToSerialize() as Fantastic.TheMovieDb.Models.Movie, context.ImportItem.GetTmdbItemToSerialize() as Fantastic.TheMovieDb.Models.Series, context.Year, context.Submission.MediaType);
 
         return Task.CompletedTask;
     }

@@ -12,4 +12,7 @@ public class SubmissionContext
 
     public OGIb.ImportItem? ImportItem { get; set; }
     public OGTddb.ImportModels.MetadataFile? Metadata { get; set; }
+
+    public string? BasePath { get; set; }
+    public int Year { get; set; }
 }

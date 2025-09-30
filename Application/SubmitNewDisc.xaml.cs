@@ -1,7 +1,9 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 
+using DiscRipper.TheDiscDb.Submit;
 using DiscRipper.ViewModel;
 
 using ImportBuddy;
@@ -144,11 +146,21 @@ namespace DiscRipper
                 InitializationData = new(Settings.Default.RepositoryFolder)
             };
 
-            TheDiscDb.Submit.TmdbFetch fetch = new();
-            await fetch.Run(context);
+            IStep[] steps =
+            [
+                new TheDiscDb.Submit.TmdbFetch(),
+                new TheDiscDb.Submit.BuildMetadata(),
+                new TheDiscDb.Submit.CreateDirectory(),
+                new TheDiscDb.Submit.SeriesFilenames(),
+                new TheDiscDb.Submit.DownloadPoster(),
+            ];
 
-            TheDiscDb.Submit.BuildMetadata buildMetadata = new();
-            await buildMetadata.Run(context);
+            foreach(var step in steps)
+            {
+                await step.Run(context);
+            }
+
+            Debug.WriteLine("Done");
 
             /*
             Fantastic.TheMovieDb.Caching.FileSystem.FileSystemCacheOptions options = new()
