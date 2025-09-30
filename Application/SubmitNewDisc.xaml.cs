@@ -153,6 +153,9 @@ namespace DiscRipper
                 new TheDiscDb.Submit.CreateDirectory(),
                 new TheDiscDb.Submit.SeriesFilenames(),
                 new TheDiscDb.Submit.DownloadPoster(),
+                new TheDiscDb.Submit.WriteTmdb(),
+                new TheDiscDb.Submit.WriteImdb(),
+                new TheDiscDb.Submit.WriteMetadata(),
             ];
 
             foreach(var step in steps)
