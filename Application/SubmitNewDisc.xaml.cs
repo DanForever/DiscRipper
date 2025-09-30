@@ -156,11 +156,20 @@ namespace DiscRipper
                 new TheDiscDb.Submit.WriteTmdb(),
                 new TheDiscDb.Submit.WriteImdb(),
                 new TheDiscDb.Submit.WriteMetadata(),
+                new TheDiscDb.Submit.WriteRelease(),
             ];
 
-            foreach(var step in steps)
+            try
             {
-                await step.Run(context);
+                foreach (var step in steps)
+                {
+                    await step.Run(context);
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(this, ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
 
             Debug.WriteLine("Done");

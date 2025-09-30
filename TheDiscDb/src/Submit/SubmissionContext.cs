@@ -15,4 +15,5 @@ public class SubmissionContext
 
     public string? BasePath { get; set; }
     public int Year { get; set; }
+    public string? ReleaseFolder { get; set; }
 }

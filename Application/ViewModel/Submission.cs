@@ -16,16 +16,65 @@ internal class Submission : ViewModel
         set => ChangeProperty(Model, value);
     }
 
-    public string? DiscFormat { get; set; }
-    public string? ReleaseSlug { get; set; }
-    public string? UPC { get; set; }
-    public string? ASIN { get; set; }
-    public DateTime? PublicationDate { get; set; }
-    public string? FrontCoverUrl { get; set; }
-    public string? BackCoverUrl { get; set; }
-    public string? EditionName { get; set; }
-    public string? DiscTitle { get; set; }
-    public string? DiscSlug { get; set; }
+    public string? DiscFormat
+    {
+        get => Model.DiscFormat;
+        set => ChangeProperty(Model, value);
+    }
+
+    public string? ReleaseSlug
+    {
+        get => Model.ReleaseSlug;
+        set => ChangeProperty(Model, value);
+    }
+
+    public string? UPC
+    {
+        get => Model.UPC;
+        set => ChangeProperty(Model, value);
+    }
+
+    public string? ASIN
+    {
+        get => Model.ASIN;
+        set => ChangeProperty(Model, value);
+    }
+
+    public DateTime? PublicationDate
+    {
+        get => Model.PublicationDate;
+        set => ChangeProperty(Model, value);
+    }
+
+    public string? FrontCoverUrl
+    {
+        get => Model.FrontCoverUrl;
+        set => ChangeProperty(Model, value);
+    }
+
+    public string? BackCoverUrl
+    {
+        get => Model.BackCoverUrl;
+        set => ChangeProperty(Model, value);
+    }
+
+    public string? EditionName
+    {
+        get => Model.EditionName;
+        set => ChangeProperty(Model, value);
+    }
+
+    public string? DiscTitle
+    {
+        get => Model.DiscTitle;
+        set => ChangeProperty(Model, value);
+    }
+
+    public string? DiscSlug
+    {
+        get => Model.DiscSlug;
+        set => ChangeProperty(Model, value);
+    }
 
     public TheDiscDb.RegionCode RegionCode
     {
