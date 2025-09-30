@@ -34,6 +34,7 @@ namespace DiscRipper
                     if (File.Exists(path))
                     {
                         Settings.Default.MakeMkvInstallFolder = dialog.FolderName;
+                        Settings.Default.Save();
 
                         break;
                     }
@@ -44,13 +45,6 @@ namespace DiscRipper
                 }
             }
         }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            Settings.Default.Save();
-        }
-
-        #endregion Event handlers
 
         private void Click_SelectRepositoryDirectory(object sender, RoutedEventArgs e)
         {
@@ -64,7 +58,16 @@ namespace DiscRipper
             if (dialog.ShowDialog(this) == true)
             {
                 Settings.Default.RepositoryFolder = dialog.FolderName;
+
+                Settings.Default.Save();
             }
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Settings.Default.Save();
+        }
+
+        #endregion Event handlers
     }
 }
