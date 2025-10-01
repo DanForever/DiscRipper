@@ -9,6 +9,7 @@ public class SubmissionContext
 {
     public required Submission Submission { get; init; }
     public required InitializationData InitializationData { get; init; }
+    public required string Log { get; init; }
 
     public OGIb.ImportItem? ImportItem { get; set; }
     public OGTddb.ImportModels.MetadataFile? Metadata { get; set; }
@@ -16,4 +17,6 @@ public class SubmissionContext
     public string? BasePath { get; set; }
     public int Year { get; set; }
     public string? ReleaseFolder { get; set; }
+    public string? DiscName { get; set; }
+    public int DiscIndex { get; set; }
 }

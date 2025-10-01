@@ -1,4 +1,6 @@
 ﻿using System.Collections.Concurrent;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DiscRipper.MakeMkv;
 
@@ -56,5 +58,31 @@ public class Log
         }
 
         Console.WriteLine($"No match: {line}");
+    }
+
+    public string ExportRawLog(bool anonymize = false)
+    {
+        StringBuilder builder = new();
+
+        // todo: unify with the pattern in drive parser
+        const string Pattern = """
+            DRV:(\d+),(\d+),(\d+),(\d+),"([^"]*)","([^"]*)","([^"]*)"
+            """;
+
+        const string Replacement = """
+            DRV:$1:$2:$3:$4:"***":"$6":"***"
+            """;
+
+        var lines = _raw.OrderBy(line => line.Index).Select(line => line.Line);
+
+        foreach (string line in lines)
+        {
+            if (anonymize)
+                builder.AppendLine(Regex.Replace(line, Pattern, Replacement));
+            else
+                builder.AppendLine(line);
+        }
+
+        return builder.ToString();
     }
 }

@@ -110,7 +110,7 @@ namespace DiscRipper
             {
                 IEnumerable<TheDiscDb.Title> titles = MakeMkvToTheDiscDb.Convert(titleEngine.Titles);
 
-                SubmitNewDisc submitNewDisc = new(titles) { Owner = this };
+                SubmitNewDisc submitNewDisc = new(runner.Log, titles) { Owner = this };
                 submitNewDisc.Show();
             }
         }
@@ -140,7 +140,7 @@ namespace DiscRipper
             {
                 IEnumerable<TheDiscDb.Title> titles = MakeMkvToTheDiscDb.Convert(titleEngine.Titles);
 
-                SubmitNewDisc submitNewDisc = new(titles) { Owner = this };
+                SubmitNewDisc submitNewDisc = new(runner.Log,titles) { Owner = this };
                 submitNewDisc.Show();
             }
         }

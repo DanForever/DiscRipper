@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 
-using DiscRipper.TheDiscDb.Submit;
 using DiscRipper.ViewModel;
 
 using ImportBuddy;
@@ -85,6 +84,7 @@ namespace DiscRipper
     {
         private TheDiscDb.Submission _submission;
         public ViewModel.Submission Submission { get; init; }
+        public MakeMkv.Log Log { get; init; }
 
         public static string[] MediaTypes { get; } = ["Movie", "Series"];
         public static string[] DiscFormats { get; } = ["Blu-Ray", "UHD", "DVD"];
@@ -99,12 +99,13 @@ namespace DiscRipper
             AllRegions = CultureInfo.GetCultures(CultureTypes.SpecificCultures).OrderBy(c => c.DisplayName);
         }
 
-        public SubmitNewDisc(IEnumerable<TheDiscDb.Title> titles, MakeMkv.Drive? drive = null)
+        public SubmitNewDisc(MakeMkv.Log log, IEnumerable<TheDiscDb.Title> titles, MakeMkv.Drive? drive = null)
         {
             InitializeComponent();
 
             IEnumerable<SubmissionTitle> submissionTitles = titles.Select(t => new SubmissionTitle { Model = t });
 
+            Log = log;
             _submission = new() { Titles = titles };
             Submission = new()
             {
@@ -140,13 +141,14 @@ namespace DiscRipper
 
         private async void Submit_Click(object sender, RoutedEventArgs e)
         {
-            DiscRipper.TheDiscDb.Submit.SubmissionContext context = new()
+            TheDiscDb.Submit.SubmissionContext context = new()
             {
                 Submission = _submission,
-                InitializationData = new(Settings.Default.RepositoryFolder)
+                InitializationData = new(Settings.Default.RepositoryFolder),
+                Log = Log.ExportRawLog(true),
             };
 
-            IStep[] steps =
+            TheDiscDb.Submit.IStep[] steps =
             [
                 new TheDiscDb.Submit.TmdbFetch(),
                 new TheDiscDb.Submit.BuildMetadata(),
@@ -157,6 +159,7 @@ namespace DiscRipper
                 new TheDiscDb.Submit.WriteImdb(),
                 new TheDiscDb.Submit.WriteMetadata(),
                 new TheDiscDb.Submit.WriteRelease(),
+                new TheDiscDb.Submit.WriteDiscMakemkvLog(),
             ];
 
             try

@@ -4,9 +4,15 @@ using System.Threading.Channels;
 
 namespace DiscRipper.MakeMkv;
 
+struct Line
+{
+    public int Index { get; set; }
+    public string Text { get; set; }
+}
+
 public class Runner
 {
-    private Channel<string>? _channel = null;
+    private Channel<Line>? _channel = null;
     private int _lineCount = 0;
     private Task[]? _consumers = null;
 
@@ -79,7 +85,7 @@ public class Runner
         Debug.Assert(_channel is not null);
 
         if(e.Data is not null)
-            await _channel.Writer.WriteAsync(e.Data);
+            await _channel.Writer.WriteAsync(new Line() { Index = _lineCount++, Text = e.Data });
     }
 
     public async Task RunDebug(string dummyText)
@@ -106,7 +112,7 @@ public class Runner
 
         foreach(var line in lines)
         {
-            await _channel.Writer.WriteAsync(line);
+            await _channel.Writer.WriteAsync(new Line() { Index = _lineCount++, Text = line });
         }
 
         await StopConsumers();
@@ -115,7 +121,7 @@ public class Runner
     [MemberNotNull(nameof(_channel))]
     private void ConfigureConsumers()
     {
-        _channel = Channel.CreateUnbounded<string>();
+        _channel = Channel.CreateUnbounded<Line>();
         _lineCount = 0;
         var cts = new System.Threading.CancellationTokenSource();
 
@@ -129,10 +135,9 @@ public class Runner
             {
                 await foreach (var line in _channel.Reader.ReadAllAsync(cts.Token))
                 {
-                    Debug.WriteLine($"Debug parsing line: {line}");
+                    Debug.WriteLine($"Debug parsing line: {line.Text}");
 
-                    Log.Parse(_lineCount, line);
-                    ++_lineCount;
+                    Log.Parse(line.Index, line.Text);
                 }
             });
         }
