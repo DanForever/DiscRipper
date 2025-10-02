@@ -160,6 +160,7 @@ namespace DiscRipper
                 new TheDiscDb.Submit.WriteMetadata(),
                 new TheDiscDb.Submit.WriteRelease(),
                 new TheDiscDb.Submit.WriteDiscMakemkvLog(),
+                new TheDiscDb.Submit.WriteDiscSummary(),
             ];
 
             try

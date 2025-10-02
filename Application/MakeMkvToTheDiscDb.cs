@@ -14,7 +14,7 @@ public static class MakeMkvToTheDiscDb
             SegmentCount = source.SegmentCount,
             SegmentMap = source.SegmentMap,
 
-            Type = string.Empty,
+            Type = TheDiscDb.TitleType.Ignore,
             Season = 0,
             Episode = 0,
 

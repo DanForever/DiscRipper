@@ -1,5 +1,16 @@
 ﻿namespace DiscRipper.TheDiscDb;
 
+public enum TitleType
+{
+    Ignore,
+
+    MainMovie,
+    DeletedScene,
+    Trailer,
+    Extra,
+    Episode,
+}
+
 public class Title
 {
     public string Name { get; set; } = string.Empty;
@@ -10,7 +21,7 @@ public class Title
     public int SegmentCount { get; set; } = 0;
     public string SegmentMap { get; set; } = string.Empty;
 
-    public string Type { get; set; } = string.Empty;
+    public TitleType Type { get; set; } = TitleType.Ignore;
     public int? Season { get; set; }
     public int? Episode { get; set; }
 
@@ -28,7 +39,7 @@ public class Title
 
         """ +
 
-        (Type == "Episode"? $"""
+        (Type == TitleType.Episode? $"""
         Season {Season}
         Episode {Episode}
 

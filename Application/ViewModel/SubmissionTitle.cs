@@ -49,7 +49,7 @@ internal class SubmissionTitle : ViewModel
         set => ChangeProperty(value);
     }
 
-    public string Type
+    public TheDiscDb.TitleType Type
     {
         get => Model.Type;
         set => ChangeProperty(value);

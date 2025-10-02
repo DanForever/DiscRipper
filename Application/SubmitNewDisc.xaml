@@ -86,15 +86,11 @@
             </DockPanel>
             <DataGrid x:Name="TitleDetails" DockPanel.Dock="Right" AutoGenerateColumns="False" ItemsSource="{Binding Titles}" AlternationCount="100" SelectionChanged="Title_Selected">
                 <DataGrid.Resources>
-
-                    <x:Array x:Key="TitleTypes" Type="{x:Type sys:String}" xmlns:sys="clr-namespace:System;assembly=mscorlib">
-                        <sys:String>MainMovie</sys:String>
-                        <sys:String>DeletedScene</sys:String>
-                        <sys:String>Trailer</sys:String>
-                        <sys:String>Extra</sys:String>
-                        <sys:String>Episode</sys:String>
-                    </x:Array>
-
+                    <ObjectDataProvider x:Key="TitleTypes" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="localtddb:TitleType" />
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
                     <local:StringVisibilityConverter x:Key="StringVisibility" />
                 </DataGrid.Resources>
                 <DataGrid.Columns>
@@ -111,7 +107,7 @@
                     <DataGridTemplateColumn Header="Type" MinWidth="100">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox ItemsSource="{StaticResource TitleTypes}" SelectedItem="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                                <ComboBox ItemsSource="{Binding Source={StaticResource TitleTypes}}" SelectedItem="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
