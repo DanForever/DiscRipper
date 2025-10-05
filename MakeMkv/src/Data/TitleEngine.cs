@@ -6,6 +6,8 @@ public class TitleEngine
 {
     public Title[]? Titles { get; private set; }
 
+    public Title? LongestTitle => Titles?.MaxBy(title => title.DurationInSeconds);
+
     [MemberNotNull(nameof(Titles))]
     public async Task Read(Log log)
     {

@@ -32,7 +32,7 @@ namespace DiscRipper
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            await ScanDiscDummy();
+            //await ScanDiscDummy();
 
             // On startup we want to automatically populate the list of drives,
             // but we can't do it in the constructor because the gui hasn't yet
@@ -99,18 +99,20 @@ namespace DiscRipper
             MakeMkv.TitleEngine titleEngine = new();
             await titleEngine.Read(runner.Log);
 
+            await _querier.Query(titleEngine.LongestTitle?.Duration);
+
             List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
+
+            IEnumerable<TheDiscDb.Title> titles = MakeMkvToTheDiscDb.Convert(titleEngine.Titles);
+            SubmitNewDisc submitNewDisc = new(runner.Log, titles, drive) { Owner = this };
 
             if (mappedDiscs.Count > 0)
             {
-                BestMatch bestMatch = new(mappedDiscs, drive) { Owner = this };
+                BestMatch bestMatch = new(mappedDiscs, drive) { Owner = this, SubmitNewDisc = submitNewDisc };
                 bestMatch.Show();
             }
             else
             {
-                IEnumerable<TheDiscDb.Title> titles = MakeMkvToTheDiscDb.Convert(titleEngine.Titles);
-
-                SubmitNewDisc submitNewDisc = new(runner.Log, titles) { Owner = this };
                 submitNewDisc.Show();
             }
         }
@@ -131,47 +133,37 @@ namespace DiscRipper
 
             List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
 
+            IEnumerable<TheDiscDb.Title> titles = MakeMkvToTheDiscDb.Convert(titleEngine.Titles);
+            SubmitNewDisc submitNewDisc = new(runner.Log, titles, null) { Owner = this };
+
             if (mappedDiscs.Count > 0)
             {
-                BestMatch bestMatch = new(mappedDiscs, null!) { Owner = this };
+                BestMatch bestMatch = new(mappedDiscs, null!) { Owner = this, SubmitNewDisc = submitNewDisc };
                 bestMatch.Show();
             }
             else
             {
-                IEnumerable<TheDiscDb.Title> titles = MakeMkvToTheDiscDb.Convert(titleEngine.Titles);
-
-                SubmitNewDisc submitNewDisc = new(runner.Log,titles) { Owner = this };
                 submitNewDisc.Show();
             }
         }
 
-        private async Task ScanDisc(MakeMkv.Drive drive)
-        {
-            string output = await RipperUtils.ScanDisc(Feedback, drive);
+        //private async Task ScanDisc(MakeMkv.Drive drive)
+        //{
+        //    string output = await RipperUtils.ScanDisc(Feedback, drive);
 
-            var titles = Scanner.AnalyseTitleData(output);
-            var longestTitle = Scanner.GetLongestTitle(titles);
+        //    var titles = Scanner.AnalyseTitleData(output);
+        //    var longestTitle = Scanner.GetLongestTitle(titles);
 
-            await _querier.Query(longestTitle.Duration);
+        //    await _querier.Query(longestTitle.Duration);
 
-            List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titles, _querier.Nodes);
+        //    List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titles, _querier.Nodes);
 
-            if (mappedDiscs.Count > 0)
-            {
-                BestMatch bestMatch = new(mappedDiscs, drive) { Owner = this };
-                bestMatch.Show();
-            }
-        }
-
-        private async void TestQueryAvatar()
-        {
-            await TestQuery(DummyData.Avatar);
-        }
-
-        private async void TestQueryLayerCake()
-        {
-            await TestQuery(DummyData.LayerCake);
-        }
+        //    if (mappedDiscs.Count > 0)
+        //    {
+        //        BestMatch bestMatch = new(mappedDiscs, drive) { Owner = this };
+        //        bestMatch.Show();
+        //    }
+        //}
 
         private async void TextMakeMkv()
         {
@@ -183,22 +175,6 @@ namespace DiscRipper
 
             //await runner.RunDebug(DummyData.Avatar);
             await runner.RunDebugSimulateCallback(DummyData.Avatar);
-        }
-
-        private async Task TestQuery(string data)
-        {
-            var titles = Scanner.AnalyseTitleData(data);
-            var longestTitle = Scanner.GetLongestTitle(titles);
-
-            await _querier.Query(longestTitle.Duration);
-
-            List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titles, _querier.Nodes);
-
-            if (mappedDiscs.Count > 0)
-            {
-                BestMatch bestMatch = new(mappedDiscs, null!);
-                bestMatch.ShowDialog();
-            }
         }
 
         #endregion Private methods

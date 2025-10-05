@@ -85,6 +85,7 @@ namespace DiscRipper
         private TheDiscDb.Submission _submission;
         public ViewModel.Submission Submission { get; init; }
         public MakeMkv.Log Log { get; init; }
+        public MakeMkv.Drive? Drive { get; init; }
 
         public static string[] MediaTypes { get; } = ["Movie", "Series"];
         public static string[] DiscFormats { get; } = ["Blu-Ray", "UHD", "DVD"];
@@ -106,6 +107,8 @@ namespace DiscRipper
             IEnumerable<SubmissionTitle> submissionTitles = titles.Select(t => new SubmissionTitle { Model = t });
 
             Log = log;
+            Drive = drive;
+
             _submission = new() { Titles = titles };
             Submission = new()
             {
@@ -117,26 +120,19 @@ namespace DiscRipper
                 MediaType = MediaTypes[0],
             };
 
-            if(drive != null)
+            switch (Drive?.DiscType)
             {
-                switch(drive.DiscType)
-                {
-                case MakeMkv.DiscType.BD:
-                    Submission.DiscFormat = "Blu-Ray";
-                    break;
+            case MakeMkv.DiscType.DVD:
+                Submission.DiscFormat = "DVD";
+                break;
 
-                case MakeMkv.DiscType.DVD:
-                    Submission.DiscFormat = "DVD";
-                    break;
-                }
+            case MakeMkv.DiscType.BD:
+            default:
+                Submission.DiscFormat = "Blu-Ray";
+                break;
             }
 
             DataContext = Submission;
-            Loaded += Window_Loaded;
-        }
-
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
         }
 
         private async void Submit_Click(object sender, RoutedEventArgs e)
@@ -146,10 +142,13 @@ namespace DiscRipper
                 Submission = _submission,
                 InitializationData = new(Settings.Default.RepositoryFolder),
                 Log = Log.ExportRawLog(true),
+                DriveIndex = Drive?.Index,
+                DrivePath = Drive?.DrivePath,
             };
 
             TheDiscDb.Submit.IStep[] steps =
             [
+                new TheDiscDb.Submit.GenerateHashData(),
                 new TheDiscDb.Submit.TmdbFetch(),
                 new TheDiscDb.Submit.BuildMetadata(),
                 new TheDiscDb.Submit.CreateDirectory(),
@@ -159,8 +158,11 @@ namespace DiscRipper
                 new TheDiscDb.Submit.WriteImdb(),
                 new TheDiscDb.Submit.WriteMetadata(),
                 new TheDiscDb.Submit.WriteRelease(),
-                new TheDiscDb.Submit.WriteDiscMakemkvLog(),
+                new TheDiscDb.Submit.SetDiscName(),
+                //new TheDiscDb.Submit.WriteDiscMakemkvLog(), // Writing the makemkv log is currently done in AppendHashesToMakemkvLog because the "fantastic" filesystem doesn't actually allow for appending to files
                 new TheDiscDb.Submit.WriteDiscSummary(),
+                new TheDiscDb.Submit.AppendHashesToMakemkvLog(),
+                new TheDiscDb.Submit.WriteDiscJson(),
             ];
 
             try
