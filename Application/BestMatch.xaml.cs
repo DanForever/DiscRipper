@@ -19,6 +19,8 @@ namespace DiscRipper
 
         #endregion Private properties
 
+        public required SubmitNewDisc SubmitNewDisc { get; init; }
+
         #region C-Tor
 
         internal BestMatch(List<Mapped.Disc> mappedDiscs, MakeMkv.Drive drive)
@@ -190,6 +192,11 @@ namespace DiscRipper
         private void Next_Click(object sender, RoutedEventArgs e)
         {
             SetDisc(ActiveDiscIndex + 1);
+        }
+
+        private void SubmitNewDisc_Click(object sender, RoutedEventArgs e)
+        {
+            SubmitNewDisc.Show();
         }
     }
 }
