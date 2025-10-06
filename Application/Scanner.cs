@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
+using DiscRipper.Types;
+
 namespace DiscRipper
 {
     namespace MakeMkv
@@ -37,9 +39,9 @@ namespace DiscRipper
 
         public ObservableCollection<MakeMkv.Drive> Drives { get; set; } = [];
 
-        public List<MakeMkv.Title> Titles { get; set; } = [];
+        public List<Title> Titles { get; set; } = [];
 
-        public MakeMkv.Title LongestTitle => GetLongestTitle(Titles);
+        public Title LongestTitle => GetLongestTitle(Titles);
 
         #endregion Public properties
 
@@ -97,9 +99,9 @@ namespace DiscRipper
             Titles = AnalyseTitleData(titleInfo);
         }
 
-        public static List<MakeMkv.Title> AnalyseTitleData(string data)
+        public static List<Title> AnalyseTitleData(string data)
         {
-            List<MakeMkv.Title> titles = [];
+            List<Title> titles = [];
 
             MatchCollection matches = Regex.Matches(data, TitleRegex);
 
@@ -110,7 +112,7 @@ namespace DiscRipper
 
                 int index = int.Parse(match.Groups[1].Value);
 
-                MakeMkv.Title title = GetTitle(index, titles);
+                Title title = GetTitle(index, titles);
 
                 MakeMkv.TitleEntryType entryType = (MakeMkv.TitleEntryType)int.Parse(match.Groups[2].Value);
 
@@ -132,9 +134,9 @@ namespace DiscRipper
             return titles;
         }
 
-        public static MakeMkv.Title GetLongestTitle(List<MakeMkv.Title> titles)
+        public static Title GetLongestTitle(List<Title> titles)
         {
-            MakeMkv.Title longestTitle = titles[0];
+            Title longestTitle = titles[0];
 
             for (int i = 1; i < titles.Count; ++i)
             {
@@ -149,15 +151,15 @@ namespace DiscRipper
 
         #region Private methods
 
-        private MakeMkv.Title GetTitle(int index)
+        private Title GetTitle(int index)
         {
             
             return GetTitle(index, Titles);
         }
 
-        private static MakeMkv.Title GetTitle(int index, List<MakeMkv.Title> titles)
+        private static Title GetTitle(int index, List<Title> titles)
         {
-            MakeMkv.Title title;
+            Title title;
 
             int arrayIndex = titles.FindIndex(t => t.Index == index);
 
@@ -178,7 +180,7 @@ namespace DiscRipper
             return title;
         }
 
-        private static void DebugPrintTitles(IEnumerable<MakeMkv.Title> titles)
+        private static void DebugPrintTitles(IEnumerable<Title> titles)
         {
             Debug.WriteLine($"Found {titles.Count()} titles");
 

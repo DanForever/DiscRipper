@@ -7,6 +7,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:DiscRipper"
         xmlns:localtddb="clr-namespace:DiscRipper.TheDiscDb;assembly=DiscRipper.TheDiscDb"
+        xmlns:types="clr-namespace:DiscRipper.Types;assembly=DiscRipper.Types"
         mc:Ignorable="d"
         Title="SubmitNewDisc" Height="450" Width="800">
     <Grid IsSharedSizeScope="True">
@@ -88,7 +89,7 @@
                 <DataGrid.Resources>
                     <ObjectDataProvider x:Key="TitleTypes" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
                         <ObjectDataProvider.MethodParameters>
-                            <x:Type TypeName="localtddb:TitleType" />
+                            <x:Type TypeName="types:TitleType" />
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
                     <local:StringVisibilityConverter x:Key="StringVisibility" />

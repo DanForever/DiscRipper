@@ -14,7 +14,7 @@ internal class SubmissionTitle : ViewModel
 
     public string SourceFileName
     {
-        get => Model.SourceFileName;
+        get => Model.SourceFilename;
         set => ChangeProperty(value);
     }
 

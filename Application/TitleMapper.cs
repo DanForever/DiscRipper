@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 
+using DiscRipper.Types;
+
 namespace DiscRipper
 {
     namespace Mapped
@@ -7,7 +9,7 @@ namespace DiscRipper
         [DebuggerDisplay("{QueriedTitle}")]
         class Title
         {
-            public MakeMkv.Title mmkvTitle { get; set; }
+            public Types.Title mmkvTitle { get; set; }
 
             public TheDiscDb2.GraphQL.Title tddbTitle { get; set; }
         }
@@ -22,7 +24,7 @@ namespace DiscRipper
 
             public List<TheDiscDb2.GraphQL.Title> tddbTitlesSorted { get; set; }
 
-            public List<MakeMkv.Title> mmkvTitlesSorted { get; set; }
+            public List<Types.Title> mmkvTitlesSorted { get; set; }
 
             public List<Title> MatchedTitles { get; set; } = [];
         }
@@ -32,10 +34,10 @@ namespace DiscRipper
     {
         #region Public methods
 
-        public static List<Mapped.Disc> Map(List<MakeMkv.Title> mmkvTitles, List<TheDiscDb2.GraphQL.Node> nodes)
+        public static List<Mapped.Disc> Map(IEnumerable<Title> titles, List<TheDiscDb2.GraphQL.Node> nodes)
         {
-            List<MakeMkv.Title> mmkvTitlesSorted = [.. mmkvTitles];
-            mmkvTitlesSorted.Sort((a, b) => b.DurationInSeconds.CompareTo(a.DurationInSeconds));
+            List<Title> titlesSorted = [.. titles];
+            titlesSorted.Sort((a, b) => b.DurationInSeconds.CompareTo(a.DurationInSeconds));
 
             List<Mapped.Disc> mappedDiscs = [];
 
@@ -45,7 +47,7 @@ namespace DiscRipper
                 {
                     foreach (var disc in release.Discs)
                     {
-                        Mapped.Disc mappedDisc = MapDisc(disc, mmkvTitlesSorted);
+                        Mapped.Disc mappedDisc = MapDisc(disc, titlesSorted);
                         mappedDisc.tddbNode = node;
                         mappedDisc.tddbRelease = release;
 
@@ -63,7 +65,7 @@ namespace DiscRipper
 
         #region Private methods
 
-        private static Mapped.Disc MapDisc(TheDiscDb2.GraphQL.Disc tddbDisc, List<MakeMkv.Title> mmkvTitlesSorted)
+        private static Mapped.Disc MapDisc(TheDiscDb2.GraphQL.Disc tddbDisc, List<Title> mmkvTitlesSorted)
         {
             List<TheDiscDb2.GraphQL.Title> tddbTitlesSorted = [.. tddbDisc.Titles];
             tddbTitlesSorted.Sort((a, b) => b.DurationInSeconds.CompareTo(a.DurationInSeconds));

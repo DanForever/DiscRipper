@@ -20,6 +20,7 @@ public class Runner
     {
         init => Log = new() { SynchronizationContext = value };
     }
+
     public Log Log { get; private init; }
 
     public required string MakeMkvDir { get; set; }

@@ -11,11 +11,15 @@ public enum TitleType
     Episode,
 }
 
+[System.Diagnostics.DebuggerDisplay("{Duration} ('{Filename,nq}')")]
 public class Title
 {
+    public int Index { get; set; }
     public string Name { get; set; } = string.Empty;
-    public string SourceFileName { get; set; } = string.Empty;
+    public string DiscName { get; set; } = string.Empty;
+    public string SourceFilename { get; set; } = string.Empty;
     public string Duration { get; set; } = string.Empty;
+    public int DurationInSeconds { get; set; }
     public int ChaptersCount { get; set; } = 0;
     public string Size { get; set; } = string.Empty;
     public int SegmentCount { get; set; } = 0;
@@ -29,7 +33,7 @@ public class Title
 
     public string Format => $"""
         Name: {Name}
-        Source file name: {SourceFileName}
+        Source file name: {SourceFilename}
         Duration: {Duration}
         Chapters count: {ChaptersCount}
         Size: {Size}

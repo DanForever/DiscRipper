@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
+using DiscRipper.Types;
+
 namespace DiscRipper.MakeMkv;
 
 public class TitleEngine
