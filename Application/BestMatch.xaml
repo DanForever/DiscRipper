@@ -52,8 +52,8 @@
             <DataGrid x:Name="FoundTitles" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Header="Rip" Binding="{Binding Rip}" />
-                    <DataGridTextColumn Header="Title" Binding="{Binding Title}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Title" Binding="{Binding Title}" IsReadOnly="True" Width="*" />
+                    <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
