@@ -103,7 +103,7 @@ namespace DiscRipper
 
             List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
 
-            IEnumerable<TheDiscDb.Title> titles = MakeMkvToTheDiscDb.Convert(titleEngine.Titles);
+            IEnumerable<Types.Title> titles = MakeMkvToTheDiscDb.Convert(titleEngine.Titles);
             SubmitNewDisc submitNewDisc = new(runner.Log, titles, drive) { Owner = this };
 
             if (mappedDiscs.Count > 0)
@@ -133,7 +133,7 @@ namespace DiscRipper
 
             List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
 
-            IEnumerable<TheDiscDb.Title> titles = MakeMkvToTheDiscDb.Convert(titleEngine.Titles);
+            IEnumerable<Types.Title> titles = MakeMkvToTheDiscDb.Convert(titleEngine.Titles);
             SubmitNewDisc submitNewDisc = new(runner.Log, titles, null) { Owner = this };
 
             if (mappedDiscs.Count > 0)

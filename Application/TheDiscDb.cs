@@ -104,8 +104,11 @@ namespace DiscRipper
 
             #region Public methods
 
-            public async Task Query(string duration)
+            public async Task Query(string? duration)
             {
+                if (duration == null)
+                    return;
+
                 var gqlQuery = new
                 {
                     query = """

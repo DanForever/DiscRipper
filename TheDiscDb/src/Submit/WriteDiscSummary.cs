@@ -12,7 +12,7 @@ public class WriteDiscSummary : IStep
 
         foreach(var title in context.Submission.Titles)
         {
-            if (title.Type == TitleType.Ignore)
+            if (title.Type == Types.TitleType.Ignore)
                 continue;
 
             contents.Append(title.Format);

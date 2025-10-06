@@ -41,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DiscRipper.Types\DiscRipper.Types.csproj" />
     <ProjectReference Include="..\MakeMkv\DiscRipper.MakeMkv.csproj" />
     <ProjectReference Include="..\TheDiscDb\DiscRipper.TheDiscDb.csproj" />
   </ItemGroup>

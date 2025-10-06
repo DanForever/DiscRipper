@@ -1,4 +1,4 @@
-﻿namespace DiscRipper.TheDiscDb;
+﻿namespace DiscRipper.Types;
 
 public enum TitleType
 {

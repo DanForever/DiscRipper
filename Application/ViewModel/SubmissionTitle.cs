@@ -1,11 +1,10 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace DiscRipper.ViewModel;
 
 internal class SubmissionTitle : ViewModel
 {
-    public required TheDiscDb.Title Model { get; init; }
+    public required Types.Title Model { get; init; }
 
     public string Name
     {
@@ -49,7 +48,7 @@ internal class SubmissionTitle : ViewModel
         set => ChangeProperty(value);
     }
 
-    public TheDiscDb.TitleType Type
+    public Types.TitleType Type
     {
         get => Model.Type;
         set => ChangeProperty(value);

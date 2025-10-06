@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DiscRipper.Types\DiscRipper.Types.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Fantastic.FileSystem">
       <HintPath>ImportBuddy\Fantastic.FileSystem.dll</HintPath>
     </Reference>

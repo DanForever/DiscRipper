@@ -31,5 +31,5 @@ public class Submission
     public RegionCode RegionCode { get; set; }
     public string? Locale { get; set; }
 
-    public required IEnumerable<Title> Titles { get; init; }
+    public required IEnumerable<Types.Title> Titles { get; init; }
 }

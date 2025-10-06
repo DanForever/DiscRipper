@@ -2,9 +2,9 @@
 
 public static class MakeMkvToTheDiscDb
 {
-    public static TheDiscDb.Title Convert(MakeMkv.Title source)
+    public static Types.Title Convert(MakeMkv.Title source)
     {
-        TheDiscDb.Title title = new()
+        Types.Title title = new()
         {
             Name = source.DiscName,
             SourceFileName = source.SourceFilename,
@@ -14,7 +14,7 @@ public static class MakeMkvToTheDiscDb
             SegmentCount = source.SegmentCount,
             SegmentMap = source.SegmentMap,
 
-            Type = TheDiscDb.TitleType.Ignore,
+            Type = Types.TitleType.Ignore,
             Season = 0,
             Episode = 0,
 
@@ -24,9 +24,9 @@ public static class MakeMkvToTheDiscDb
         return title;
     }
 
-    public static IEnumerable<TheDiscDb.Title> Convert(IEnumerable< MakeMkv.Title> source)
+    public static IEnumerable<Types.Title> Convert(IEnumerable< MakeMkv.Title> source)
     {
-        List<TheDiscDb.Title> outTitles = [];
+        List<Types.Title> outTitles = [];
 
         foreach (var title in source)
         {

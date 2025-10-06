@@ -100,7 +100,7 @@ namespace DiscRipper
             AllRegions = CultureInfo.GetCultures(CultureTypes.SpecificCultures).OrderBy(c => c.DisplayName);
         }
 
-        public SubmitNewDisc(MakeMkv.Log log, IEnumerable<TheDiscDb.Title> titles, MakeMkv.Drive? drive = null)
+        public SubmitNewDisc(MakeMkv.Log log, IEnumerable<Types.Title> titles, MakeMkv.Drive? drive = null)
         {
             InitializeComponent();
 
