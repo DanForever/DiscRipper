@@ -2,20 +2,25 @@
 
 namespace DiscRipper.MakeMkv;
 
-enum TrackInfoType
+public enum TrackInfoType
 {
     // Shared
+    Unknown = -1,
+
     Type = 1, // Audio / Video
-    Name = 2,
-    Codec = 7,
+    Name = 7,
 
     // Video
     Resolution = 19,
     AspectRatio = 20,
     FrameRate = 21,
 
-    // Audio
+    // Audio / Subtitles
+    LanguageCode = 3,
     Language = 4,
+
+    // Audio
+    AudioType = 2,
     Channels = 14,
     ChannelLayout = 40,
     SampleRate = 17,

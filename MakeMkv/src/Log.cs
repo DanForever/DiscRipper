@@ -26,7 +26,7 @@ public class Log
     public ConcurrentBag<RawLine> Raw => _raw;
     public ConcurrentBag<Drive> Drives => _drives;
     public ConcurrentBag<TitleInfo> TitleInfo => _titleInfo;
-    //    public List<Message> Messages => _messages;
+    public ConcurrentBag<TrackInfo> TrackInfo  => _trackInfo;
 
     private IParser[] Parsers =>
     [

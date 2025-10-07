@@ -31,6 +31,8 @@ public class Title
 
     public string Filename { get; set; } = string.Empty;
 
+    public Track[] Tracks { get; set; } = [];
+
     public string Format => $"""
         Name: {Name}
         Source file name: {SourceFilename}

@@ -7,4 +7,6 @@ public class TrackInfo
     public int Code { get; set; }
     public int Unknown { get; set; }
     public required string Value { get; set; }
+
+    public TrackInfoType Type => Enum.IsDefined(typeof(TrackInfoType), Code)? (TrackInfoType) Code : TrackInfoType.Unknown;
 }
