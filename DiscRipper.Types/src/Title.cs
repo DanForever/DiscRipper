@@ -22,6 +22,7 @@ public class Title
     public int DurationInSeconds { get; set; }
     public int ChaptersCount { get; set; } = 0;
     public string Size { get; set; } = string.Empty;
+    public long SizeInBytes { get; set; }
     public int SegmentCount { get; set; } = 0;
     public string SegmentMap { get; set; } = string.Empty;
 

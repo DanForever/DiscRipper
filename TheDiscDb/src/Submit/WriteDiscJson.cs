@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
 
+using DiscRipper.TheDiscDb.ImportBuddy;
+
 using Fantastic.FileSystem;
 
 using OGIb = global::ImportBuddy;
@@ -19,7 +21,7 @@ public class WriteDiscJson : IStep
         string discJsonFilePath = fileSystem.Path.Combine(context.ReleaseFolder, $"{context.DiscName}.json");
         if (!await fileSystem.File.Exists(discJsonFilePath))
         {
-            var discJsonFile = new OGTddb.ImportModels.DiscFile
+            var discJsonFile = new OGTddb.InputModels.Disc
             {
                 Index = context.DiscIndex,
                 Slug = context.Submission.DiscSlug,
@@ -27,6 +29,39 @@ public class WriteDiscJson : IStep
                 Format = context.Submission.DiscFormat,
                 ContentHash = context.DiscHashInfo?.Hash
             };
+
+            foreach(var title in context.Submission.Titles)
+            {
+                OGTddb.InputModels.Title tddbTitle = new()
+                {
+                    Index = title.Index,
+                    SourceFile = title.SourceFilename,
+                    SegmentMap = title.SegmentMap,
+                    Duration = title.Duration,
+                    Size = title.SizeInBytes,
+                    DisplaySize = title.Size,
+                };
+
+                foreach(var track in title.Tracks)
+                {
+                    switch(track)
+                    {
+                    case Types.VideoTrack videoTrack:
+                        tddbTitle.Tracks.Add(videoTrack.CreateTddbExportType());
+                        break;
+
+                    case Types.AudioTrack audioTrack:
+                        tddbTitle.Tracks.Add(audioTrack.CreateTddbExportType());
+                        break;
+
+                    case Types.SubtitleTrack subtitleTrack:
+                        tddbTitle.Tracks.Add(subtitleTrack.CreateTddbExportType());
+                        break;
+                    }
+                }
+
+                discJsonFile.Titles.Add(tddbTitle);
+            }
 
             await fileSystem.File.WriteAllText(discJsonFilePath, JsonSerializer.Serialize(discJsonFile, OGIb.JsonHelper.JsonOptions));
         }

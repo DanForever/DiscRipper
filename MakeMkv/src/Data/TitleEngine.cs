@@ -25,7 +25,7 @@ public class TitleEngine
             Titles[i] = new Title() { Index = i };
         }
 
-        await Parallel.ForEachAsync<TitleInfo>(log.TitleInfo, (titleInfo, _) =>
+        await Parallel.ForEachAsync(log.TitleInfo, (titleInfo, _) =>
         {
             Title title = Titles[titleInfo.Id];
 
@@ -50,6 +50,10 @@ public class TitleEngine
 
             case TitleInfoType.FileSizeGb:
                 title.Size = titleInfo.Value;
+                break;
+
+            case TitleInfoType.FileSizeBytes:
+                title.SizeInBytes = long.Parse(titleInfo.Value);
                 break;
 
             case TitleInfoType.SegmentCount:
