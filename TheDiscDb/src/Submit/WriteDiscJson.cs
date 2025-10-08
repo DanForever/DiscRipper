@@ -40,7 +40,19 @@ public class WriteDiscJson : IStep
                     Duration = title.Duration,
                     Size = title.SizeInBytes,
                     DisplaySize = title.Size,
+                    Comment = title.Filename,
                 };
+
+                if(title.Type != Types.TitleType.Ignore)
+                {
+                    tddbTitle.Item = new()
+                    {
+                        Title = title.Name,
+                        Type = title.Type.ToString(),
+                        Season = title.Season?.ToString(),
+                        Episode = title.Episode?.ToString()
+                    };
+                }
 
                 foreach(var track in title.Tracks)
                 {
