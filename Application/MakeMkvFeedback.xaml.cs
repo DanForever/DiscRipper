@@ -16,15 +16,15 @@ namespace DiscRipper
 
         #region Public methods
 
-        public static MakeMkvFeedback operator +(MakeMkvFeedback feedback, MakeMkvRunner runner)
+        public static MakeMkvFeedback operator +(MakeMkvFeedback feedback, MakeMkv.Log log)
         {
-            feedback.Feedback += runner;
+            feedback.Feedback += log;
             return feedback;
         }
 
-        public static MakeMkvFeedback operator -(MakeMkvFeedback feedback, MakeMkvRunner runner)
+        public static MakeMkvFeedback operator -(MakeMkvFeedback feedback, MakeMkv.Log log)
         {
-            feedback.Feedback -= runner;
+            feedback.Feedback -= log;
             return feedback;
         }
 

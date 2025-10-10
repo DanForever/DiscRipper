@@ -25,20 +25,6 @@ namespace DiscRipper
 
         #region Public methods
 
-        public static Feedback operator +(Feedback feedback, MakeMkvRunner runner)
-        {
-            feedback._runnerViewModel += runner;
-
-            return feedback;
-        }
-
-        public static Feedback operator -(Feedback feedback, MakeMkvRunner runner)
-        {
-            feedback._runnerViewModel -= runner;
-
-            return feedback;
-        }
-
         public static Feedback operator +(Feedback feedback, MakeMkv.Log log)
         {
             feedback._runnerViewModel += log;

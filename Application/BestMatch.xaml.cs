@@ -105,9 +105,14 @@ namespace DiscRipper
             // Append a properly named folder for the disc we're ripping to the path specified by the user
             string destinationFolder = Path.Join(OutputPath.Text, disc.tddbNode.DirectoryName);
 
-            MakeMkvRunner runner = new();
+            MakeMkv.Runner runner = new()
+            {
+                MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+                SynchronizationContext = SynchronizationContext.Current!,
+            };
+
             MakeMkvFeedback feedback = new() { Title = "Ripping disc", Owner = this };
-            feedback += runner;
+            feedback += runner.Log;
             feedback.Show();
 
             // Disable this window so that the user can't interact with it
@@ -132,7 +137,7 @@ namespace DiscRipper
                         titleDestinationFolder = Path.Join(destinationFolder, "Trailers");
                         break;
 
-                    // "TheDiscDB" has a generic "extra" category, so we can't differenciate BTS/Featurettes/Interviews
+                    // "TheDiscDB" has a generic "extra" category, so we can't differentiate BTS/Featurettes/Interviews
                     case "Extra":
                         titleDestinationFolder = Path.Join(destinationFolder, "Behind The Scenes");
                         break;

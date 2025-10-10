@@ -54,22 +54,4 @@
     <ProjectReference Include="..\TheDiscDb\DiscRipper.TheDiscDb.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Fantastic.FileSystem">
-      <HintPath>ImportBuddy\Fantastic.FileSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="Fantastic.TheMovieDb">
-      <HintPath>ImportBuddy\Fantastic.TheMovieDb.dll</HintPath>
-    </Reference>
-    <Reference Include="ImportBuddy">
-      <HintPath>ImportBuddy\ImportBuddy.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.WebUtilities">
-      <HintPath>ImportBuddy\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
-    </Reference>
-    <Reference Include="TheDiscDb.Core">
-      <HintPath>ImportBuddy\TheDiscDb.Core.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

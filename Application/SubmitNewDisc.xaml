@@ -92,7 +92,6 @@
                             <x:Type TypeName="types:TitleType" />
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
-                    <local:StringVisibilityConverter x:Key="StringVisibility" />
                 </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="#" Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=AlternationIndex}" IsReadOnly="True" CanUserSort="False" />
