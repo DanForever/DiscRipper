@@ -56,8 +56,13 @@ jobs:
           # Create folder structure inside temp folder
           New-Item -ItemType Directory -Path "$tempFolder/DiscRipper" | Out-Null
 
-          # Copy all files from publish folder, including *.exe, *.dll, *.dll.config, native DLLs, etc.
-          Copy-Item -Path publish/* -Destination "$tempFolder/DiscRipper" -Recurse
+          # Copy all files EXCEPT *.pdb
+          Get-ChildItem -Path publish -Recurse | Where-Object { $_.Extension -ne ".pdb" } | ForEach-Object {
+              $dest = Join-Path "$tempFolder/MyApp" ($_.FullName.Substring((Get-Item publish).FullName.Length + 1))
+              $destDir = Split-Path $dest
+              if (-not (Test-Path $destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out-Null }
+              Copy-Item $_.FullName $dest
+          }
 
           # Remove old zip if exists
           if (Test-Path $zipPath) { Remove-Item $zipPath }
@@ -89,8 +94,8 @@ jobs:
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          name: "DiscRipper v${{ github.ref_name }}"
-          tag_name: ${{ github.ref_name }}
+          name: "DiscRipper v${{ github.event.inputs.version  }}"
+          tag_name: ${{ github.event.inputs.version  }}
           files: release/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
