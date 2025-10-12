@@ -7,6 +7,10 @@ on:
         description: 'Version for the build (e.g., 1.2.3)'
         required: true
         default: '0.0.0'
+      description:
+        description: 'Release notes / description (supports Markdown)'
+        required: false
+        default: 'No description provided.'
 
 jobs:
   build:
@@ -58,7 +62,7 @@ jobs:
 
           # Copy all files EXCEPT *.pdb
           Get-ChildItem -Path publish -Recurse | Where-Object { $_.Extension -ne ".pdb" } | ForEach-Object {
-              $dest = Join-Path "$tempFolder/MyApp" ($_.FullName.Substring((Get-Item publish).FullName.Length + 1))
+              $dest = Join-Path "$tempFolder/DiscRipper" ($_.FullName.Substring((Get-Item publish).FullName.Length + 1))
               $destDir = Split-Path $dest
               if (-not (Test-Path $destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out-Null }
               Copy-Item $_.FullName $dest
@@ -98,6 +102,7 @@ jobs:
         with:
           name: "DiscRipper v${{ github.event.inputs.version  }}"
           tag_name: ${{ github.event.inputs.version  }}
+          body: "${{ github.event.inputs.description }}"
           files: release/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
