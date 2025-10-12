@@ -1,12 +1,16 @@
-name: Build and Release WPF App
+name: Build and Release DiscRipper
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version for the build (e.g., 1.2.3)'
+        description: 'Version for the build (e.g. 1.2.3)'
         required: true
         default: '0.0.0'
+      prerelease:
+        description: 'Mark as pre-release?'
+        required: false
+        type: boolean
       description:
         description: 'Release notes / description (supports Markdown)'
         required: false
@@ -103,6 +107,7 @@ jobs:
           name: "DiscRipper v${{ github.event.inputs.version  }}"
           tag_name: ${{ github.event.inputs.version  }}
           body: "${{ github.event.inputs.description }}"
+          prerelease: ${{ github.event.inputs.prerelease }}
           files: release/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
