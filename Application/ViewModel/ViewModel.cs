@@ -4,10 +4,12 @@ using System.Runtime.CompilerServices;
 
 namespace DiscRipper.ViewModel;
 
+
 public class ViewModel : INotifyPropertyChanged
 {
-    #region INotifyPropertyChanged
+    #region PropertyChanged Wrappers
 
+    // View models should use this method to change properties on their models, and not set them directly.
     protected void ChangeProperty<TModel, TValue>(TModel model, TValue value, [CallerMemberName] string propertyName = "")
     {
         PropertyInfo? prop = typeof(TModel).GetProperty(propertyName);
@@ -29,6 +31,9 @@ public class ViewModel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    #endregion PropertyChanged Wrappers
+
+    #region INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 

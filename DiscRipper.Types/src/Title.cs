@@ -1,4 +1,6 @@
-﻿namespace DiscRipper.Types;
+﻿using System.Xml.Serialization;
+
+namespace DiscRipper.Types;
 
 public enum TitleType
 {
@@ -34,6 +36,7 @@ public class Title
 
     public Track[] Tracks { get; set; } = [];
 
+    [XmlIgnore]
     public string Format => $"""
         Name: {Name}
         Source file name: {SourceFilename}

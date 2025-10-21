@@ -1,5 +1,10 @@
-﻿namespace DiscRipper.Types;
+﻿using System.Xml.Serialization;
 
+namespace DiscRipper.Types;
+
+[XmlInclude(typeof(VideoTrack))]
+[XmlInclude(typeof(SubtitleTrack))]
+[XmlInclude(typeof(AudioTrack))]
 public abstract class Track
 {
     public int Index { get; set; }

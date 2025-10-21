@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 
+using DiscRipper.Sessions;
 using DiscRipper.ViewModel;
 
 using Microsoft.Extensions.Options;
@@ -11,7 +12,7 @@ namespace DiscRipper
 {
     internal partial class SubmitNewDisc : Window
     {
-        private TheDiscDb.Submission _submission;
+        public Session Session { get; init; }
         public ViewModel.Submission Submission { get; init; }
         public MakeMkv.Log Log { get; init; }
         public MakeMkv.Drive? Drive { get; init; }
@@ -25,7 +26,7 @@ namespace DiscRipper
             AllRegions = CultureInfo.GetCultures(CultureTypes.SpecificCultures).OrderBy(c => c.DisplayName);
         }
 
-        public SubmitNewDisc(MakeMkv.Log log, IEnumerable<Types.Title> titles, MakeMkv.Drive? drive = null)
+        public SubmitNewDisc(MakeMkv.Log log, List<Types.Title> titles, MakeMkv.Drive? drive = null)
         {
             InitializeComponent();
 
@@ -34,10 +35,10 @@ namespace DiscRipper
             Log = log;
             Drive = drive;
 
-            _submission = new() { Titles = titles };
+            Session = SessionManager.Instance.Value.CreateSession(titles);
             Submission = new()
             {
-                Model = _submission,
+                Model = Session.Submission,
                 Titles = submissionTitles,
 
                 // sensible defaults
@@ -64,7 +65,7 @@ namespace DiscRipper
         {
             TheDiscDb.Submit.SubmissionContext context = new()
             {
-                Submission = _submission,
+                Submission = Session.Submission,
                 InitializationData = new(Settings.Default.RepositoryFolder),
                 Log = Log.ExportRawLog(true),
                 DriveIndex = Drive?.Index,
