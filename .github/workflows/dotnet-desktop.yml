@@ -1,0 +1,113 @@
+name: Build and Release DiscRipper
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version for the build (e.g. 1.2.3)'
+        required: true
+        default: '0.0.0'
+      prerelease:
+        description: 'Mark as pre-release?'
+        required: false
+        type: boolean
+      description:
+        description: 'Release notes / description (supports Markdown)'
+        required: false
+        default: 'No description provided.'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Set version
+        id: get_version
+        run: |
+          $version = "${{ github.event.inputs.version }}"
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Restore dependencies
+        run: dotnet restore DiscRipper.sln
+
+      - name: Publish WPF app
+        run: |
+          dotnet publish Application/DiscRipper.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained true `
+            /p:PublishSingleFile=true `
+            /p:EnableCompressionInSingleFile=true `
+            /p:AssemblyVersion=${{ steps.get_version.outputs.version }} `
+            /p:FileVersion=${{ steps.get_version.outputs.version }} `
+            /p:InformationalVersion=${{ steps.get_version.outputs.version }} `
+            -o publish
+
+      - name: Zip publish folder
+        run: |
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+          $version = "${{ steps.get_version.outputs.version }}"
+          $zipPath = "DiscRipper_v$version.zip"
+          $tempFolder = "publish_temp"
+
+          # Remove old temp folder if exists
+          if (Test-Path $tempFolder) { Remove-Item $tempFolder -Recurse -Force }
+
+          # Create folder structure inside temp folder
+          New-Item -ItemType Directory -Path "$tempFolder/DiscRipper" | Out-Null
+
+          # Copy all files EXCEPT *.pdb
+          Get-ChildItem -Path publish -Recurse | Where-Object { $_.Extension -ne ".pdb" } | ForEach-Object {
+              $dest = Join-Path "$tempFolder/DiscRipper" ($_.FullName.Substring((Get-Item publish).FullName.Length + 1))
+              $destDir = Split-Path $dest
+              if (-not (Test-Path $destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out-Null }
+              Copy-Item $_.FullName $dest
+          }
+
+          # Remove old zip if exists
+          if (Test-Path $zipPath) { Remove-Item $zipPath }
+
+          # Create zip from temp folder contents
+          [System.IO.Compression.ZipFile]::CreateFromDirectory("$tempFolder", $zipPath)
+
+          # Cleanup temp folder
+          Remove-Item $tempFolder -Recurse -Force
+
+          Write-Output "Created zip: $zipPath"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DiscRipper
+          path: DiscRipper_v${{ steps.get_version.outputs.version }}.zip
+
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: build
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: DiscRipper
+          path: release
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "DiscRipper v${{ github.event.inputs.version  }}"
+          tag_name: ${{ github.event.inputs.version  }}
+          body: "${{ github.event.inputs.description }}"
+          prerelease: ${{ github.event.inputs.prerelease }}
+          files: release/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
