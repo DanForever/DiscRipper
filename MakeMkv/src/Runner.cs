@@ -105,16 +105,21 @@ public class Runner
         });
     }
 
-    public async Task RunDebugSimulateCallback(string dummyText)
+    public async Task RunPreloaded(string fullLogText)
     {
-        string[] lines = dummyText.Split(["\r\n", "\r", "\n"], StringSplitOptions.None);
+        string[] lines = fullLogText.Split(["\r\n", "\r", "\n"], StringSplitOptions.None);
 
         ConfigureConsumers();
 
-        foreach(var line in lines)
+        Task[] tasks = new Task[lines.Length];
+
+        for(int i = 0; i < lines.Length; ++i)
         {
-            await _channel.Writer.WriteAsync(new Line() { Index = _lineCount++, Text = line });
+            var line = lines[i];
+            tasks[i] = _channel.Writer.WriteAsync(new Line() { Index = _lineCount++, Text = line }).AsTask();
         }
+
+        await Task.WhenAll(tasks);
 
         await StopConsumers();
     }
@@ -124,7 +129,6 @@ public class Runner
     {
         _channel = Channel.CreateUnbounded<Line>();
         _lineCount = 0;
-        var cts = new System.Threading.CancellationTokenSource();
 
         // Start consumer tasks (parallel processing)
         int consumerCount = Environment.ProcessorCount;
@@ -134,7 +138,7 @@ public class Runner
         {
             _consumers[i] = Task.Run(async () =>
             {
-                await foreach (var line in _channel.Reader.ReadAllAsync(cts.Token))
+                await foreach (var line in _channel.Reader.ReadAllAsync())
                 {
                     Debug.WriteLine($"Debug parsing line: {line.Text}");
 

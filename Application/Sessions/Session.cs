@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
+using DiscRipper.MakeMkv;
+
 namespace DiscRipper.Sessions
 {
     public class Session
@@ -74,8 +76,8 @@ namespace DiscRipper.Sessions
                 if(!session.LogDirty)
                     continue;
 
-                string logPath = string.Join(LogsDirectoryPath, $"{session.Id}.log");
-                File.WriteAllTextAsync(logPath, session.Log);
+                string logPath = GetLogPath(session);
+                File.WriteAllText(logPath, session.Log);
                 session.LogDirty = false;
             }
         }
@@ -104,6 +106,39 @@ namespace DiscRipper.Sessions
         public async Task LoadAsync()
         {
             await Task.Run(() => Load());
+        }
+
+        public async Task<Log?> LoadLog(Session session)
+        {
+            string logPath = GetLogPath(session);
+
+            string logText;
+
+            try
+            {
+                logText = await File.ReadAllTextAsync(logPath);
+            }
+            catch(FileNotFoundException ex)
+            {
+                return null;
+            }
+
+            MakeMkv.Runner runner = new()
+            {
+                MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+                SynchronizationContext = SynchronizationContext.Current!,
+            };
+
+            await runner.RunPreloaded(logText);
+
+            return runner.Log;
+        }
+
+        private static string GetLogPath(Session session)
+        {
+            string logPath = Path.Join(LogsDirectoryPath, $"{session.Id}.log");
+
+            return logPath;
         }
     }
 }

@@ -1,0 +1,19 @@
+﻿<Window x:Class="DiscRipper.Windows.SessionPicker"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DiscRipper.Windows"
+        mc:Ignorable="d"
+        Title="SessionPicker" Height="450" Width="800">
+    <Grid>
+        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Sessions}" MouseDoubleClick="Session_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Created" Binding="{Binding CreatedOn}" Width="*"/>
+                <DataGridTextColumn Header="TMDB ID" Binding="{Binding Submission.TMDB}" Width="*"/>
+                <DataGridTextColumn Header="Edition/Release Name" Binding="{Binding Submission.EditionName}" Width="*"/>
+                <DataGridTextColumn Header="Disc Name" Binding="{Binding Submission.DiscTitle}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

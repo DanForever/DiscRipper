@@ -2,6 +2,8 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
+using DiscRipper.Windows;
+
 namespace DiscRipper
 {
     public partial class MainWindow : Window
@@ -65,6 +67,12 @@ namespace DiscRipper
             Close();
         }
 
+        private void LoadPreviousSession_Click(object sender, RoutedEventArgs e)
+        {
+            SessionPicker picker = new() { Owner = this };
+            picker.Show();
+        }
+
         #endregion Event handlers
 
         #region Private methods
@@ -124,7 +132,7 @@ namespace DiscRipper
             };
 
             Feedback += runner.Log;
-            await runner.RunDebugSimulateCallback(DummyData.TellNoOne);
+            await runner.RunPreloaded(DummyData.TellNoOne);
 
             MakeMkv.TitleEngine titleEngine = new();
             await titleEngine.Read(runner.Log);

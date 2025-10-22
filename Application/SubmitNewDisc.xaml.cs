@@ -36,6 +36,8 @@ namespace DiscRipper
             Drive = drive;
 
             Session = SessionManager.Instance.Value.CreateSession(titles);
+            Session.Log = Log.ExportRawLog();
+
             Submission = new()
             {
                 Model = Session.Submission,
@@ -57,6 +59,24 @@ namespace DiscRipper
                 Submission.DiscFormat = "Blu-Ray";
                 break;
             }
+
+            DataContext = Submission;
+        }
+
+        public SubmitNewDisc(Session session, MakeMkv.Log log)
+        {
+            InitializeComponent();
+
+            Log = log;
+            Session = session;
+
+            IEnumerable<SubmissionTitle> submissionTitles = Session.Submission.Titles.Select(t => new SubmissionTitle { Model = t });
+
+            Submission = new()
+            {
+                Model = Session.Submission,
+                Titles = submissionTitles,
+            };
 
             DataContext = Submission;
         }
