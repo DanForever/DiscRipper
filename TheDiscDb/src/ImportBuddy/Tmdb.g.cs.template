@@ -1,0 +1,9 @@
+﻿namespace DiscRipper.ImportBuddy;
+
+internal static partial class TMDB
+{
+    static TMDB()
+    {
+        ApiKey = "{0}";
+    }
+}
