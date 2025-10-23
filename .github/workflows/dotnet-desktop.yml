@@ -38,7 +38,7 @@ jobs:
 
           # Read template, replace token, write new .cs file
           $templateContent = Get-Content $templatePath -Raw
-          $fileContent = $templateContent -replace "{0}", $env:TMDB_API_KEY
+          $fileContent = $templateContent.Replace("{0}", $env:TMDB_API_KEY)
           Set-Content -Path $outputPath -Value $fileContent
 
           Write-Output "Successfully generated $outputPath"
