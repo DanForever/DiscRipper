@@ -70,7 +70,7 @@ public class Log
             """;
 
         const string Replacement = """
-            DRV:$1:$2:$3:$4:"***":"$6":"***"
+            DRV:$1,$2,$3,$4,"***","$6","***"
             """;
 
         var lines = _raw.OrderBy(line => line.Index).Select(line => line.Line);
