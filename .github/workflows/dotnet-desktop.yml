@@ -101,12 +101,24 @@ jobs:
           Remove-Item $tempFolder -Recurse -Force
 
           Write-Output "Created zip: $zipPath"
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: DiscRipper
+          name: DiscRipper-Build
           path: DiscRipper_v${{ steps.get_version.outputs.version }}.zip
+
+      - name: Generate changelog
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v5
+        with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            output-file: "changelog-body.md"
+
+      - name: Upload changelog artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DiscRipper-Changelog
+          path: changelog-body.md
 
   release:
     runs-on: ubuntu-latest
@@ -117,16 +129,31 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: DiscRipper
+          name: DiscRipper-Build
           path: release
+
+      - name: Download changelog artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: DiscRipper-Changelog
+          path: . # Download to the current directory
+
+      - name: Read changelog
+        id: changelog
+        run: |
+          echo "body=$(cat changelog-body.md)" >> $GITHUB_OUTPUT
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           name: "DiscRipper v${{ github.event.inputs.version  }}"
           tag_name: ${{ github.event.inputs.version  }}
-          body: "${{ github.event.inputs.description }}"
-          generate_release_notes: true
+          body: |
+            ${{ github.event.inputs.description }}
+
+            ## What's Changed
+            ${{ steps.changelog.outputs.body }}
+          generate_release_notes: false
           prerelease: ${{ github.event.inputs.prerelease }}
           files: release/*.zip
         env:
