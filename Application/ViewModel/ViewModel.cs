@@ -26,7 +26,7 @@ public class ViewModel : INotifyPropertyChanged
         }
     }
 
-    protected void AnnouncePropertyChanged(string propertyName)
+    protected void AnnouncePropertyChanged([CallerMemberName] string propertyName = "")
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
