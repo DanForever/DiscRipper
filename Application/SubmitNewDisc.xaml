@@ -39,7 +39,7 @@
                     </ObjectDataProvider>
                 </StackPanel.Resources>
                 <local:Setting Label="TMDB ID">
-                    <TextBox Text="{Binding TMDB, UpdateSourceTrigger=PropertyChanged}" Background="{Binding TmdbBackgroundBrush, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox Text="{Binding TMDB, UpdateSourceTrigger=PropertyChanged}" />
                 </local:Setting>
                 <local:Setting Label="Media type">
                     <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.MediaTypes }}" SelectedValue="{Binding MediaType}" SelectionChanged="MediaType_Changed"/>
