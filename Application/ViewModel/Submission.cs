@@ -13,7 +13,20 @@ internal class Submission : ViewModel
 	private static string AsinUrlPattern = """(?:https:\/\/)?(?:www\.)?amazon\.[\w\.]+\/[\w\d-]+\/dp\/([A-Z\d]{10})""";
 	private static Regex AsinRegex = new Regex(AsinUrlPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-	public SolidColorBrush? TmdbInputBackgroundBrush { get; set; }
+	private bool _generateReleaseSlug = true;
+
+	private void GenerateReleaseSlug()
+	{
+		if (!_generateReleaseSlug)
+			return;
+
+		int year = PublicationDate?.Year ?? 0;
+		string discFormat = DiscFormat ?? "unknown";
+		string locale = Locale ?? "unknown";
+
+		string generatedReleaseSlug = $"{year:D4}-{discFormat.ToLower()}-{locale.ToLower()}";
+		ChangeProperty(Model, generatedReleaseSlug, nameof(ReleaseSlug));
+	}
 
 	public required TheDiscDb.Submission Model { get; init; }
 
@@ -56,13 +69,26 @@ internal class Submission : ViewModel
 	public string? DiscFormat
 	{
 		get => Model.DiscFormat;
-		set => ChangeProperty(Model, value);
+		set
+		{
+			ChangeProperty(Model, value);
+
+			GenerateReleaseSlug();
+		}
 	}
 
 	public string? ReleaseSlug
 	{
 		get => Model.ReleaseSlug;
-		set => ChangeProperty(Model, value);
+		set
+		{
+			if (string.IsNullOrEmpty(value))
+				_generateReleaseSlug = true;
+			else
+				_generateReleaseSlug = false;
+
+			ChangeProperty(Model, value);
+		}
 	}
 
 	public string? UPC
@@ -92,7 +118,12 @@ internal class Submission : ViewModel
 	public DateTime? PublicationDate
 	{
 		get => Model.PublicationDate;
-		set => ChangeProperty(Model, value);
+		set
+		{
+			ChangeProperty(Model, value);
+
+			GenerateReleaseSlug();
+		}
 	}
 
 	public string? FrontCoverUrl
@@ -134,7 +165,12 @@ internal class Submission : ViewModel
 	public string? Locale
 	{
 		get => Model.Locale;
-		set => ChangeProperty(Model, value);
+		set
+		{
+			ChangeProperty(Model, value);
+
+			GenerateReleaseSlug();
+		}
 	}
 
 	public required IEnumerable<SubmissionTitle> Titles { get; init; }
