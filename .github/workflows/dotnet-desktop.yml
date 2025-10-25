@@ -153,7 +153,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: "DiscRipper v${{ github.event.inputs.version  }}"
-          tag_name: ${{ github.event.inputs.version  }}
+          tag_name: v${{ github.event.inputs.version  }}
           body: |
             ${{ github.event.inputs.description }}
 
