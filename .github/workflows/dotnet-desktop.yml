@@ -112,6 +112,10 @@ jobs:
         uses: TriPSs/conventional-changelog-action@v5
         with:
             github-token: ${{ secrets.GITHUB_TOKEN }}
+            git-push: "false"
+            skip-commit: "true"
+            skip-tag: "true"
+            skip-version-file: "true"
             output-file: "changelog-body.md"
 
       - name: Upload changelog artifact
