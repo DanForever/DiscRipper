@@ -14,7 +14,6 @@ on:
       description:
         description: 'Release notes / description (supports Markdown)'
         required: false
-        default: 'No description provided.'
 
 jobs:
   build:
@@ -127,6 +126,7 @@ jobs:
           name: "DiscRipper v${{ github.event.inputs.version  }}"
           tag_name: ${{ github.event.inputs.version  }}
           body: "${{ github.event.inputs.description }}"
+          generate_release_notes: true
           prerelease: ${{ github.event.inputs.prerelease }}
           files: release/*.zip
         env:
