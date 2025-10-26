@@ -14,6 +14,7 @@ internal class Submission : ViewModel
 	private static Regex AsinRegex = new Regex(AsinUrlPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
 	private bool _generateReleaseSlug = true;
+	private bool _generateDiscSlug = true;
 
 	private void GenerateReleaseSlug()
 	{
@@ -26,6 +27,17 @@ internal class Submission : ViewModel
 
 		string generatedReleaseSlug = $"{year:D4}-{discFormat.ToLower()}-{locale.ToLower()}";
 		ChangeProperty(Model, generatedReleaseSlug, nameof(ReleaseSlug));
+	}
+
+	private void GenerateDiscSlug()
+	{
+		if (!_generateDiscSlug)
+			return;
+
+		string discFormat = DiscFormat ?? "unknown";
+
+		string generatedDiscSlug = $"{discFormat.ToLower()}";
+		ChangeProperty(Model, generatedDiscSlug, nameof(DiscSlug));
 	}
 
 	public required TheDiscDb.Submission Model { get; init; }
@@ -43,13 +55,13 @@ internal class Submission : ViewModel
 
 				// We can also deduce the media type from the TMDB URL
 				string mediaType = match.Groups[1].Value;
-				switch(mediaType)
+				switch (mediaType)
 				{
-					case "movie":
-						MediaType = "Movie";
-						break;
-					case "tv":
-						MediaType = "Series";
+				case "movie":
+					MediaType = "Movie";
+					break;
+				case "tv":
+					MediaType = "Series";
 					break;
 				}
 			}
@@ -74,6 +86,7 @@ internal class Submission : ViewModel
 			ChangeProperty(Model, value);
 
 			GenerateReleaseSlug();
+			GenerateDiscSlug();
 		}
 	}
 
@@ -153,7 +166,15 @@ internal class Submission : ViewModel
 	public string? DiscSlug
 	{
 		get => Model.DiscSlug;
-		set => ChangeProperty(Model, value);
+		set
+		{
+			if (string.IsNullOrEmpty(value))
+				_generateDiscSlug = true;
+			else
+				_generateDiscSlug = false;
+
+			ChangeProperty(Model, value);
+		}
 	}
 
 	public TheDiscDb.RegionCode RegionCode
