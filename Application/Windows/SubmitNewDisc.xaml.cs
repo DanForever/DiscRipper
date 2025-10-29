@@ -33,7 +33,7 @@ namespace DiscRipper
 		{
 			InitializeComponent();
 
-			IEnumerable<SubmissionTitle> submissionTitles = titles.Select(t => new SubmissionTitle { Model = t });
+			IList<SubmissionTitle> submissionTitles = titles.Select(t => new SubmissionTitle { Model = t }).ToList();
 
 			Log = log;
 			Drive = drive;
@@ -73,7 +73,7 @@ namespace DiscRipper
 			Log = log;
 			Session = session;
 
-			IEnumerable<SubmissionTitle> submissionTitles = Session.Submission.Titles.Select(t => new SubmissionTitle { Model = t });
+			IList<SubmissionTitle> submissionTitles = Session.Submission.Titles.Select(t => new SubmissionTitle { Model = t }).ToList();
 
 			Submission = new()
 			{

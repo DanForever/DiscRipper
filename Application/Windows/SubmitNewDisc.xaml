@@ -8,8 +8,12 @@
         xmlns:local="clr-namespace:DiscRipper"
         xmlns:localtddb="clr-namespace:DiscRipper.TheDiscDb;assembly=DiscRipper.TheDiscDb"
         xmlns:types="clr-namespace:DiscRipper.Types;assembly=DiscRipper.Types"
+        xmlns:converters="clr-namespace:DiscRipper.Converters"
         mc:Ignorable="d"
-        Title="SubmitNewDisc" Height="450" Width="800">
+        Title="SubmitNewDisc" Height="600" Width="1024">
+    <Window.Resources>
+        <converters:StringToCollapsedConverter x:Key="CollapseOnMovie" MatchString="Movie" />
+    </Window.Resources>
     <Grid IsSharedSizeScope="True">
         <DockPanel>
             
@@ -41,11 +45,14 @@
                 <local:Setting Label="TMDB ID">
                     <TextBox Text="{Binding TMDB, UpdateSourceTrigger=PropertyChanged}" />
                 </local:Setting>
+                <local:Setting Label="Disc format">
+                    <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.DiscFormats }}" SelectedValue="{Binding DiscFormat}" />
+                </local:Setting>
                 <local:Setting Label="Media type">
                     <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.MediaTypes }}" SelectedValue="{Binding MediaType}" SelectionChanged="MediaType_Changed"/>
                 </local:Setting>
-                <local:Setting Label="Disc format">
-                    <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.DiscFormats }}" SelectedValue="{Binding DiscFormat}" />
+                <local:Setting Label="Season" Visibility="{Binding MediaType, Mode=OneWay, Converter={StaticResource CollapseOnMovie}}">
+                    <TextBox Text="{Binding Season, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" />
                 </local:Setting>
                 <local:Setting Label="Release slug">
                     <TextBox Text="{Binding ReleaseSlug, UpdateSourceTrigger=PropertyChanged}" />
@@ -115,7 +122,7 @@
                     <DataGridTemplateColumn Header="Season" Width="40">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox Text="{Binding Season, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                                <TextBox Text="{Binding Season, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" BorderThickness="0" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -123,7 +130,7 @@
                     <DataGridTemplateColumn Header="Episode" Width="40">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox Text="{Binding Episode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                                <TextBox Text="{Binding Episode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" BorderThickness="0" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

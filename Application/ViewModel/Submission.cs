@@ -15,6 +15,7 @@ internal class Submission : ViewModel
 
 	private bool _generateReleaseSlug = true;
 	private bool _generateDiscSlug = true;
+	private int? _season;
 
 	private void GenerateReleaseSlug()
 	{
@@ -194,5 +195,21 @@ internal class Submission : ViewModel
 		}
 	}
 
-	public required IEnumerable<SubmissionTitle> Titles { get; init; }
+	public int? Season
+	{
+		get => _season;
+		set
+		{
+			_season = value;
+
+			foreach (SubmissionTitle title in Titles)
+			{
+				title.AutoSeason = _season;
+			}
+
+			AnnouncePropertyChanged();
+		}
+	}
+
+	public required IList<SubmissionTitle> Titles { get; init; }
 }
