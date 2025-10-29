@@ -31,9 +31,9 @@ public class Runner
         await Run($"-r --cache=1 info disc:9999");
     }
 
-    public async Task Info(int driveIndex)
+    public async Task Info(int driveIndex, int minimumTitleLength = 30)
     {
-        await Run($"-r --cache=1 info disc:{driveIndex}");
+        await Run($"-r --cache=1 --minlength={minimumTitleLength} info disc:{driveIndex}");
     }
 
     public async Task Mkv(int driveIndex, int titleIndex, string outputDirectory)

@@ -105,7 +105,7 @@ namespace DiscRipper
             };
 
             Feedback += runner.Log;
-            await runner.Info(drive.Index);
+            await runner.Info(drive.Index, Settings.Default.MakeMkvMinimumTitleLength);
 
             MakeMkv.TitleEngine titleEngine = new();
             await titleEngine.Read(runner.Log);
