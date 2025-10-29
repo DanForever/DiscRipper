@@ -92,7 +92,7 @@
                 <TextBlock DockPanel.Dock="Top" Text="Title details" Background="LightGray" Padding="5" />
                 <TextBox x:Name="SelectedTitleDetails" IsReadOnly="True" Text="{Binding Format, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </DockPanel>
-            <DataGrid x:Name="TitleDetails" DockPanel.Dock="Right" AutoGenerateColumns="False" ItemsSource="{Binding Titles}" AlternationCount="100" SelectionChanged="Title_Selected">
+            <DataGrid x:Name="TitleDetails" DockPanel.Dock="Right" AutoGenerateColumns="False" ItemsSource="{Binding Titles}" AlternationCount="100" SelectionChanged="Title_Selected" CanUserAddRows="False">
                 <DataGrid.Resources>
                     <ObjectDataProvider x:Key="TitleTypes" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
                         <ObjectDataProvider.MethodParameters>
