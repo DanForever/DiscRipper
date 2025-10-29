@@ -38,14 +38,14 @@ public class WriteRelease : IStep
 
             var release = new OGTddb.ImportModels.ReleaseFile
             {
-                Title = context.Submission.EditionName,
+                Title = context.Submission.EditionName?.Trim(),
                 SortTitle = $"{year} {GetSortTitle(context.Submission.EditionName)}",
-                Slug = context.Submission.ReleaseSlug,
-                Upc = context.Submission.UPC,
+                Slug = context.Submission.ReleaseSlug.Trim(),
+                Upc = context.Submission.UPC?.Trim(),
                 Locale = context.Submission.Locale,
                 Year = year,
                 RegionCode = $"{(int)context.Submission.RegionCode}",
-                Asin = context.Submission.ASIN,
+                Asin = context.Submission.ASIN?.Trim(),
                 ReleaseDate = context.Submission.PublicationDate ?? default,
                 DateAdded = DateTimeOffset.UtcNow.Date
             };
