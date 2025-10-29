@@ -112,6 +112,10 @@ jobs:
         uses: TriPSs/conventional-changelog-action@v5
         with:
             github-token: ${{ secrets.GITHUB_TOKEN }}
+            git-push: "false"
+            skip-commit: "true"
+            skip-tag: "true"
+            skip-version-file: "true"
             output-file: "changelog-body.md"
 
       - name: Upload changelog artifact
@@ -141,13 +145,15 @@ jobs:
       - name: Read changelog
         id: changelog
         run: |
-          echo "body=$(cat changelog-body.md)" >> $GITHUB_OUTPUT
+          echo 'body<<EOF' >> $GITHUB_OUTPUT
+          cat changelog-body.md >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           name: "DiscRipper v${{ github.event.inputs.version  }}"
-          tag_name: ${{ github.event.inputs.version  }}
+          tag_name: v${{ github.event.inputs.version  }}
           body: |
             ${{ github.event.inputs.description }}
 
