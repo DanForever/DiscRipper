@@ -31,5 +31,5 @@ public class Submission
     public RegionCode RegionCode { get; set; }
     public string? Locale { get; set; }
 
-    public required List<Types.Title> Titles { get; init; }
+    public required List<DiscRipper.Types.Title> Titles { get; init; }
 }

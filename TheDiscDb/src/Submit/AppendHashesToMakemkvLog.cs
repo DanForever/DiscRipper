@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 
+using DiscRipper.TheDiscDb.Types;
+
 using Fantastic.FileSystem;
 
 using OGTddb = global::TheDiscDb;
@@ -17,13 +19,13 @@ public class AppendHashesToMakemkvLog : IStep
             throw new ArgumentException("ReleaseFolder must be set in context before appending to makemkv log.");
         }
 
-        if (context.DiscHashInfo == null)
+        if (context.DiscHash == null)
         {
             throw new ArgumentException("DiscHashInfo must be set in context before appending to makemkv log.");
         }
 
         AddBaseLogLines(context);
-        AddHashLines(context.DiscHashInfo);
+        AddHashLines(context.DiscHash.ToImportBuddyType());
         await WriteLog(context);
     }
 

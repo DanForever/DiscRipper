@@ -1,15 +1,17 @@
-﻿using DiscRipper.Sessions;
-using DiscRipper.ViewModel;
-
-using Microsoft.Extensions.Options;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+
+using DiscRipper.Sessions;
+using DiscRipper.ViewModel;
+using DiscRipper.TheDiscDb.Types;
+
+using Microsoft.Extensions.Options;
 
 namespace DiscRipper
 {
@@ -51,7 +53,12 @@ namespace DiscRipper
 				MediaType = MediaTypes[0],
 			};
 
-			switch (Drive?.DiscType)
+			DataContext = Submission;
+
+			if(Drive is null)
+				return;
+
+			switch (Drive.DiscType)
 			{
 			case MakeMkv.DiscType.DVD:
 				Submission.DiscFormat = "DVD";
@@ -63,7 +70,7 @@ namespace DiscRipper
 				break;
 			}
 
-			DataContext = Submission;
+			Loaded += async (_, _) => await GenerateHashData();
 		}
 
 		public SubmitNewDisc(Session session, MakeMkv.Log log)
@@ -83,7 +90,8 @@ namespace DiscRipper
 
 			DataContext = Submission;
 		}
-		private async void Submit_Click(object sender, RoutedEventArgs e)
+
+		private async Task<TheDiscDb.Submit.SubmissionContext> RunSteps(IList<TheDiscDb.Submit.IStep> steps)
 		{
 			TheDiscDb.Submit.SubmissionContext context = new()
 			{
@@ -92,11 +100,40 @@ namespace DiscRipper
 				Log = Log.ExportRawLog(true),
 				DriveIndex = Drive?.Index,
 				DrivePath = Drive?.DrivePath,
+				DiscHash = Session.DiscHash,
 			};
 
+			try
+			{
+				foreach (var step in steps)
+				{
+					await step.Run(context);
+				}
+			}
+			catch (ArgumentException ex)
+			{
+				MessageBox.Show(this, ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+
+			return context;
+		}
+
+		private async Task GenerateHashData()
+		{
 			TheDiscDb.Submit.IStep[] steps =
 			[
 				new TheDiscDb.Submit.GenerateHashData(),
+			];
+
+			var context = await RunSteps(steps);
+			Session.DiscHash = context.DiscHash;
+		}
+
+		private async void Submit_Click(object sender, RoutedEventArgs e)
+		{
+			TheDiscDb.Submit.IStep[] steps =
+			[
+				//new TheDiscDb.Submit.GenerateHashData(),
 				new TheDiscDb.Submit.TmdbFetch(),
 				new TheDiscDb.Submit.BuildMetadata(),
 				new TheDiscDb.Submit.CreateDirectory(),
@@ -113,18 +150,7 @@ namespace DiscRipper
 				new TheDiscDb.Submit.WriteDiscJson(),
 			];
 
-			try
-			{
-				foreach (var step in steps)
-				{
-					await step.Run(context);
-				}
-			}
-			catch (ArgumentException ex)
-			{
-				MessageBox.Show(this, ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
-			}
+			await RunSteps(steps);
 
 			Debug.WriteLine("Done");
 		}

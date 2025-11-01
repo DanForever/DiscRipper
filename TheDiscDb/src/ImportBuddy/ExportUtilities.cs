@@ -4,7 +4,7 @@ namespace DiscRipper.TheDiscDb.ImportBuddy
 {
     public static class ExportUtilities
     {
-        public static OGTddb.InputModels.Track CreateTddbExportType(this Types.VideoTrack track)
+        public static OGTddb.InputModels.Track CreateTddbExportType(this DiscRipper.Types.VideoTrack track)
         {
             return new OGTddb.InputModels.Track()
             {
@@ -17,7 +17,7 @@ namespace DiscRipper.TheDiscDb.ImportBuddy
             };
         }
 
-        public static OGTddb.InputModels.Track CreateTddbExportType(this Types.AudioTrack track)
+        public static OGTddb.InputModels.Track CreateTddbExportType(this DiscRipper.Types.AudioTrack track)
         {
             return new OGTddb.InputModels.Track()
             {
@@ -31,7 +31,7 @@ namespace DiscRipper.TheDiscDb.ImportBuddy
             };
         }
 
-        public static OGTddb.InputModels.Track CreateTddbExportType(this Types.SubtitleTrack track)
+        public static OGTddb.InputModels.Track CreateTddbExportType(this DiscRipper.Types.SubtitleTrack track)
         {
             return new OGTddb.InputModels.Track()
             {

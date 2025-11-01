@@ -27,7 +27,7 @@ public class WriteDiscJson : IStep
                 Slug = context.Submission.DiscSlug,
                 Name = context.Submission.DiscTitle,
                 Format = context.Submission.DiscFormat,
-                ContentHash = context.DiscHashInfo?.Hash
+                ContentHash = context.DiscHash?.Hash
             };
 
             foreach(var title in context.Submission.Titles)
@@ -43,7 +43,7 @@ public class WriteDiscJson : IStep
                     Comment = title.Filename,
                 };
 
-                if(title.Type != Types.TitleType.Ignore)
+                if(title.Type != DiscRipper.Types.TitleType.Ignore)
                 {
                     tddbTitle.Item = new()
                     {
@@ -58,15 +58,15 @@ public class WriteDiscJson : IStep
                 {
                     switch(track)
                     {
-                    case Types.VideoTrack videoTrack:
+                    case DiscRipper.Types.VideoTrack videoTrack:
                         tddbTitle.Tracks.Add(videoTrack.CreateTddbExportType());
                         break;
 
-                    case Types.AudioTrack audioTrack:
+                    case DiscRipper.Types.AudioTrack audioTrack:
                         tddbTitle.Tracks.Add(audioTrack.CreateTddbExportType());
                         break;
 
-                    case Types.SubtitleTrack subtitleTrack:
+                    case DiscRipper.Types.SubtitleTrack subtitleTrack:
                         tddbTitle.Tracks.Add(subtitleTrack.CreateTddbExportType());
                         break;
                     }
