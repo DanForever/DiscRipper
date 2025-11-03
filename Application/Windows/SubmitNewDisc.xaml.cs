@@ -160,30 +160,16 @@ namespace DiscRipper
 
 		}
 
-		private void Title_Selected(object sender, RoutedEventArgs e)
-		{
-			var grid = (DataGrid)sender;
-			if (grid.SelectedItem != null)
-			{
-				SelectedTitleDetails.DataContext = grid.SelectedItem;
-			}
-		}
-
 		private void MediaType_Changed(object sender, SelectionChangedEventArgs e)
 		{
-			var seasonColumn = TitleDetails.Columns.First(c => c.Header?.ToString() == "Season");
-			var episodeColumn = TitleDetails.Columns.First(c => c.Header?.ToString() == "Episode");
-
 			switch (Submission.MediaType)
 			{
 			case "Series":
-				seasonColumn.Visibility = Visibility.Visible;
-				episodeColumn.Visibility = Visibility.Visible;
+				DiscTitles.SetSeriesPropertiesVisible(true);
 				break;
 
 			case "Movie":
-				seasonColumn.Visibility = Visibility.Collapsed;
-				episodeColumn.Visibility = Visibility.Collapsed;
+				DiscTitles.SetSeriesPropertiesVisible(visible: false);
 				break;
 			}
 		}
