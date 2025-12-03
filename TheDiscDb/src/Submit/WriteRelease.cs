@@ -17,36 +17,36 @@ public class WriteRelease : IStep
             throw new ArgumentException("BasePath must be set in context before writing release data.");
         }
 
-        if (string.IsNullOrWhiteSpace(context.Submission.ReleaseSlug))
+        if (string.IsNullOrWhiteSpace(context.Release?.ReleaseSlug))
         {
             throw new ArgumentException("Submission must have ReleaseSlug set before writing release data.");
         }
 
         var fileSystem = context.InitializationData.FileSystem;
-        context.ReleaseFolder = fileSystem.Path.Combine(context.BasePath, context.Submission.ReleaseSlug);
+        context.ReleaseFolder = fileSystem.Path.Combine(context.BasePath, context.Release.ReleaseSlug);
 
         await fileSystem.Directory.CreateDirectory(context.ReleaseFolder);
 
-        await Download(context, context.Submission.FrontCoverUrl, "front.jpg");
-        await Download(context, context.Submission.BackCoverUrl, "back.jpg");
+        await Download(context, context.Release.FrontCoverUrl, "front.jpg");
+        await Download(context, context.Release.BackCoverUrl, "back.jpg");
 
 
         string releaseFile = fileSystem.Path.Combine(context.ReleaseFolder, OGTddb.ImportModels.ReleaseFile.Filename);
         if (!await fileSystem.Directory.Exists(releaseFile))
         {
-            int year = context.Submission.PublicationDate?.Year ?? context.Year;
+            int year = context.Release.PublicationDate?.Year ?? context.Year;
 
             var release = new OGTddb.ImportModels.ReleaseFile
             {
-                Title = context.Submission.EditionName?.Trim(),
-                SortTitle = $"{year} {GetSortTitle(context.Submission.EditionName)}",
-                Slug = context.Submission.ReleaseSlug.Trim(),
-                Upc = context.Submission.UPC?.Trim(),
-                Locale = context.Submission.Locale,
+                Title = context.Release.EditionName?.Trim(),
+                SortTitle = $"{year} {GetSortTitle(context.Release.EditionName)}",
+                Slug = context.Release.ReleaseSlug.Trim(),
+                Upc = context.Release.UPC?.Trim(),
+                Locale = context.Release.Locale,
                 Year = year,
-                RegionCode = $"{(int)context.Submission.RegionCode}",
-                Asin = context.Submission.ASIN?.Trim(),
-                ReleaseDate = context.Submission.PublicationDate ?? default,
+                RegionCode = $"{(int)context.Release.RegionCode}",
+                Asin = context.Release.ASIN?.Trim(),
+                ReleaseDate = context.Release.PublicationDate ?? default,
                 DateAdded = DateTimeOffset.UtcNow.Date
             };
 

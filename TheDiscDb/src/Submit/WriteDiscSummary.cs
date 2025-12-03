@@ -10,7 +10,7 @@ public class WriteDiscSummary : IStep
     {
         StringBuilder contents = new();
 
-        foreach(var title in context.Submission.Titles)
+        foreach(var title in context.Disc.Titles)
         {
             if (title.Type == DiscRipper.Types.TitleType.Ignore)
                 continue;

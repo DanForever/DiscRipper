@@ -50,8 +50,8 @@ public class Title
         """ +
 
         (Type == TitleType.Episode? $"""
-        Season {Season}
-        Episode {Episode}
+        Season: {Season}
+        Episode: {Episode}
 
         """ : string.Empty) +
 

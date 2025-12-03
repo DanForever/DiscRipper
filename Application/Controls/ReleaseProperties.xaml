@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="DiscRipper.Controls.ReleaseProperties"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:localtddb="clr-namespace:DiscRipper.TheDiscDb;assembly=DiscRipper.TheDiscDb"
+             xmlns:local="clr-namespace:DiscRipper"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid IsSharedSizeScope="True">
+
+        <StackPanel DockPanel.Dock="Left" MinWidth="400">
+            <StackPanel.Resources>
+                <Style TargetType="TextBox">
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                </Style>
+
+                <ObjectDataProvider x:Key="RegionCodes"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+                    <ObjectDataProvider.MethodParameters>
+                        <x:Type TypeName="localtddb:RegionCode"/>
+                    </ObjectDataProvider.MethodParameters>
+                </ObjectDataProvider>
+            </StackPanel.Resources>
+
+            <TextBlock Text="Release" />
+
+            <local:Setting Label="TMDB ID">
+                <TextBox Text="{Binding TMDB, UpdateSourceTrigger=PropertyChanged}" />
+            </local:Setting>
+            <local:Setting Label="Media type">
+                <!--ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.MediaTypes }}" SelectedValue="{Binding MediaType}" SelectionChanged="MediaType_Changed"/-->
+                <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.MediaTypes }}" SelectedValue="{Binding MediaType}" />
+            </local:Setting>
+            <local:Setting Label="Season" Visibility="{Binding MediaType, Mode=OneWay, Converter={StaticResource CollapseOnMovie}}">
+                <TextBox Text="{Binding Season, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" />
+            </local:Setting>
+            <local:Setting Label="Release slug">
+                <TextBox Text="{Binding ReleaseSlug, UpdateSourceTrigger=PropertyChanged}" />
+            </local:Setting>
+            <local:Setting Label="UPC">
+                <TextBox Text="{Binding UPC, UpdateSourceTrigger=PropertyChanged}" />
+            </local:Setting>
+            <local:Setting Label="ASIN">
+                <TextBox Text="{Binding ASIN, UpdateSourceTrigger=PropertyChanged}" />
+            </local:Setting>
+            <local:Setting Label="Release publication date">
+                <DatePicker SelectedDate="{Binding PublicationDate, UpdateSourceTrigger=PropertyChanged}" />
+            </local:Setting>
+            <local:Setting Label="Front cover image URL">
+                <TextBox Text="{Binding FrontCoverUrl, UpdateSourceTrigger=PropertyChanged}" />
+            </local:Setting>
+            <local:Setting Label="Back cover image URL">
+                <TextBox Text="{Binding BackCoverUrl, UpdateSourceTrigger=PropertyChanged}" />
+            </local:Setting>
+            <local:Setting Label="Name of release/edition">
+                <TextBox Text="{Binding EditionName, UpdateSourceTrigger=PropertyChanged}" />
+            </local:Setting>
+            <local:Setting Label="Region code">
+                <ComboBox ItemsSource="{Binding Source={StaticResource RegionCodes}}" SelectedItem="{Binding RegionCode, UpdateSourceTrigger=PropertyChanged}" />
+            </local:Setting>
+            <local:Setting Label="Locale">
+                <ComboBox ItemsSource="{Binding Mode=OneWay, Source={x:Static local:SubmitNewDisc.AllRegions }}" SelectedValuePath="Name" DisplayMemberPath="DisplayName" SelectedValue="{Binding Locale, UpdateSourceTrigger=PropertyChanged}" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" IsEditable="True" />
+            </local:Setting>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

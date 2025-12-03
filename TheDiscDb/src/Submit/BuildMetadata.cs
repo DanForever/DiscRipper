@@ -11,13 +11,13 @@ public class BuildMetadata : IStep
             throw new ArgumentException("ImportItem must be set in context before building metadata.");
         }
 
-        if(context.Submission.MediaType == null)
+        if(context.Release?.MediaType == null)
         {
             throw new ArgumentException("Submission MediaType must be set in context before building metadata.");
         }
 
         context.Year = context.ImportItem.TryGetYear();
-        context.Metadata = BuildMetadataInternal(context.ImportItem.ImdbTitle, context.ImportItem.GetTmdbItemToSerialize() as Fantastic.TheMovieDb.Models.Movie, context.ImportItem.GetTmdbItemToSerialize() as Fantastic.TheMovieDb.Models.Series, context.Year, context.Submission.MediaType);
+        context.Metadata = BuildMetadataInternal(context.ImportItem.ImdbTitle, context.ImportItem.GetTmdbItemToSerialize() as Fantastic.TheMovieDb.Models.Movie, context.ImportItem.GetTmdbItemToSerialize() as Fantastic.TheMovieDb.Models.Series, context.Year, context.Release.MediaType);
 
         return Task.CompletedTask;
     }

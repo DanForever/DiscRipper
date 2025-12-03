@@ -8,8 +8,8 @@ using System.Windows;
 using System.Windows.Controls;
 
 using DiscRipper.Sessions;
-using DiscRipper.ViewModel;
 using DiscRipper.TheDiscDb.Types;
+using DiscRipper.ViewModel;
 
 using Microsoft.Extensions.Options;
 
@@ -45,7 +45,8 @@ namespace DiscRipper
 
 			Submission = new()
 			{
-				Model = Session.Submission,
+				DiscModel = Session.Disc,
+				Model = Session.Release,
 				Titles = submissionTitles,
 
 				// sensible defaults
@@ -55,7 +56,7 @@ namespace DiscRipper
 
 			DataContext = Submission;
 
-			if(Drive is null)
+			if (Drive is null)
 				return;
 
 			switch (Drive.DiscType)
@@ -80,11 +81,12 @@ namespace DiscRipper
 			Log = log;
 			Session = session;
 
-			IList<SubmissionTitle> submissionTitles = Session.Submission.Titles.Select(t => new SubmissionTitle { Model = t }).ToList();
+			IList<SubmissionTitle> submissionTitles = Session.Disc.Titles.Select(t => new SubmissionTitle { Model = t }).ToList();
 
 			Submission = new()
 			{
-				Model = Session.Submission,
+				DiscModel = Session.Disc,
+				Model = Session.Release,
 				Titles = submissionTitles,
 			};
 
@@ -95,7 +97,8 @@ namespace DiscRipper
 		{
 			TheDiscDb.Submit.SubmissionContext context = new()
 			{
-				Submission = Session.Submission,
+				Disc = Session.Disc,
+				Release = Session.Release,
 				InitializationData = new(Settings.Default.RepositoryFolder),
 				Log = Log.ExportRawLog(true),
 				DriveIndex = Drive?.Index,
@@ -144,8 +147,8 @@ namespace DiscRipper
 				new TheDiscDb.Submit.WriteMetadata(),
 				new TheDiscDb.Submit.WriteRelease(),
 				new TheDiscDb.Submit.SetDiscName(),
-                //new TheDiscDb.Submit.WriteDiscMakemkvLog(), // Writing the makemkv log is currently done in AppendHashesToMakemkvLog because the "fantastic" filesystem doesn't actually allow for appending to files
-                new TheDiscDb.Submit.WriteDiscSummary(),
+				//new TheDiscDb.Submit.WriteDiscMakemkvLog(), // Writing the makemkv log is currently done in AppendHashesToMakemkvLog because the "fantastic" filesystem doesn't actually allow for appending to files
+				new TheDiscDb.Submit.WriteDiscSummary(),
 				new TheDiscDb.Submit.AppendHashesToMakemkvLog(),
 				new TheDiscDb.Submit.WriteDiscJson(),
 			];

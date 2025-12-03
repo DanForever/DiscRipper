@@ -22,6 +22,9 @@ internal class Submission : ViewModel
 		if (!_generateReleaseSlug)
 			return;
 
+		if (Model == null)
+			return;
+
 		int year = PublicationDate?.Year ?? 0;
 		string discFormat = DiscFormat ?? "unknown";
 		string locale = Locale ?? "unknown";
@@ -38,11 +41,47 @@ internal class Submission : ViewModel
 		string discFormat = DiscFormat ?? "unknown";
 
 		string generatedDiscSlug = $"{discFormat.ToLower()}";
-		ChangeProperty(Model, generatedDiscSlug, nameof(DiscSlug));
+		ChangeProperty(DiscModel, generatedDiscSlug, nameof(DiscSlug));
 	}
 
-	public required TheDiscDb.Submission Model { get; init; }
+	public required TheDiscDb.Submission.Disc DiscModel { get; init; }
+	public required TheDiscDb.Submission.Release Model { get; init; }
+	public required IList<SubmissionTitle> Titles { get; init; }
 
+	// Disc
+	public string? DiscFormat
+	{
+		get => DiscModel.DiscFormat;
+		set
+		{
+			ChangeProperty(DiscModel, value);
+
+			GenerateReleaseSlug();
+			GenerateDiscSlug();
+		}
+	}
+
+	public string? DiscTitle
+	{
+		get => DiscModel.DiscTitle;
+		set => ChangeProperty(DiscModel, value);
+	}
+
+	public string? DiscSlug
+	{
+		get => DiscModel.DiscSlug;
+		set
+		{
+			if (string.IsNullOrEmpty(value))
+				_generateDiscSlug = true;
+			else
+				_generateDiscSlug = false;
+
+			ChangeProperty(DiscModel, value);
+		}
+	}
+
+	// Release
 	public string? TMDB
 	{
 		get => Model.TMDB;
@@ -77,18 +116,6 @@ internal class Submission : ViewModel
 	{
 		get => Model.MediaType;
 		set => ChangeProperty(Model, value);
-	}
-
-	public string? DiscFormat
-	{
-		get => Model.DiscFormat;
-		set
-		{
-			ChangeProperty(Model, value);
-
-			GenerateReleaseSlug();
-			GenerateDiscSlug();
-		}
 	}
 
 	public string? ReleaseSlug
@@ -131,7 +158,7 @@ internal class Submission : ViewModel
 
 	public DateTime? PublicationDate
 	{
-		get => Model.PublicationDate;
+		get => Model?.PublicationDate;
 		set
 		{
 			ChangeProperty(Model, value);
@@ -158,26 +185,6 @@ internal class Submission : ViewModel
 		set => ChangeProperty(Model, value);
 	}
 
-	public string? DiscTitle
-	{
-		get => Model.DiscTitle;
-		set => ChangeProperty(Model, value);
-	}
-
-	public string? DiscSlug
-	{
-		get => Model.DiscSlug;
-		set
-		{
-			if (string.IsNullOrEmpty(value))
-				_generateDiscSlug = true;
-			else
-				_generateDiscSlug = false;
-
-			ChangeProperty(Model, value);
-		}
-	}
-
 	public TheDiscDb.RegionCode RegionCode
 	{
 		get => Model.RegionCode;
@@ -186,7 +193,7 @@ internal class Submission : ViewModel
 
 	public string? Locale
 	{
-		get => Model.Locale;
+		get => Model?.Locale;
 		set
 		{
 			ChangeProperty(Model, value);
@@ -210,6 +217,4 @@ internal class Submission : ViewModel
 			AnnouncePropertyChanged();
 		}
 	}
-
-	public required IList<SubmissionTitle> Titles { get; init; }
 }

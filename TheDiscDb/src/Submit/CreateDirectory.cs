@@ -11,13 +11,13 @@ public class CreateDirectory : IStep
             throw new ArgumentException("Repository directory path is not set");
         }
 
-        if (context.Submission.MediaType == null)
+        if (context.Release?.MediaType == null)
         {
             throw new ArgumentException("Submission MediaType must be set in context before building metadata.");
         }
 
         string folderName = $"{context.InitializationData.FileSystem.CleanPath(context.Metadata!.Title!)} ({context.Year})";
-        string subFolderName = context.Submission.MediaType.ToLower();
+        string subFolderName = context.Release.MediaType.ToLower();
 
         context.BasePath = context.InitializationData.FileSystem.Path.Combine(context.InitializationData.WrappedOptions.Value.DataRepositoryPath, subFolderName, folderName);
 

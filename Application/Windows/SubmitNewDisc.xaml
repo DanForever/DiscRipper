@@ -29,8 +29,6 @@
             
             <StackPanel DockPanel.Dock="Left" MinWidth="400">
                 <StackPanel.Resources>
-                    <Style TargetType="TextBlock">
-                    </Style>
                     <Style TargetType="TextBox">
                         <Setter Property="VerticalContentAlignment" Value="Center"/>
                     </Style>

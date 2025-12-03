@@ -24,13 +24,13 @@ public class WriteDiscJson : IStep
             var discJsonFile = new OGTddb.InputModels.Disc
             {
                 Index = context.DiscIndex,
-                Slug = context.Submission.DiscSlug,
-                Name = context.Submission.DiscTitle,
-                Format = context.Submission.DiscFormat,
+                Slug = context.Disc.DiscSlug,
+                Name = context.Disc.DiscTitle,
+                Format = context.Disc.DiscFormat,
                 ContentHash = context.DiscHash?.Hash
             };
 
-            foreach(var title in context.Submission.Titles)
+            foreach(var title in context.Disc.Titles)
             {
                 OGTddb.InputModels.Title tddbTitle = new()
                 {

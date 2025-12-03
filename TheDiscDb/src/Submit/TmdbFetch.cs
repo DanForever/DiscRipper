@@ -6,12 +6,12 @@ public class TmdbFetch : IStep
 {
     public async Task Run(SubmissionContext context)
     {
-        if (string.IsNullOrWhiteSpace(context.Submission.TMDB))
+        if (string.IsNullOrWhiteSpace(context.Release?.TMDB))
         {
             throw new ArgumentException("Submission must have TMDB set.");
         }
 
-        if (string.IsNullOrWhiteSpace(context.Submission.MediaType))
+        if (string.IsNullOrWhiteSpace(context.Release?.MediaType))
         {
             throw new ArgumentException("Submission must have MediaType set.");
         }
@@ -23,9 +23,9 @@ public class TmdbFetch : IStep
 
         foreach (var task in tasks)
         {
-            if (task.CanHandle(context.Submission.TMDB, context.Submission.MediaType))
+            if (task.CanHandle(context.Release.TMDB, context.Release.MediaType))
             {
-                var importedItem = await task.GetImportItem(context.Submission.TMDB, context.Submission.MediaType);
+                var importedItem = await task.GetImportItem(context.Release.TMDB, context.Release.MediaType);
                 if (importedItem != null)
                 {
                     context.ImportItem = importedItem;

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiscRipper"
         mc:Ignorable="d"
-        Title="Dan's magical media ripper" Height="450" Width="850">
+        Title="Dan's magical media ripper" Height="700" Width="1250">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -17,6 +17,8 @@
             </MenuItem>
             <MenuItem Header="_Session">
                 <MenuItem Header="_Load previous session" Click="LoadPreviousSession_Click"/>
+                <Separator/>
+                <MenuItem Header="Add new disc to existing release" Click="AddNewDisc_Click"/>
             </MenuItem>
         </Menu>
         <DockPanel Margin="5">
@@ -30,6 +32,24 @@
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
+        <StackPanel Margin="5" Width="200">
+            <TextBlock DockPanel.Dock="Top" Text="What do you want to do today?" Margin="0,0,0,25" />
+            <Button Margin="5,5,5,10" Click="Rip_Click">
+                <TextBlock Text="Rip" FontSize="48" Margin="10" />
+            </Button>
+            <Button Margin="5,5,5,10" Click="SubmitNewRelease_Click">
+                <TextBlock Text="Submit new release" FontSize="48" Margin="10" TextWrapping="Wrap" />
+            </Button>
+            <Button Margin="5,5,5,10" Click="AddNewDisc_Click">
+                <TextBlock Text="Add disc to release" FontSize="48" Margin="10" TextWrapping="Wrap" />
+            </Button>
+            <Button Margin="5,5,5,10" Click="TestRelease_Click">
+                <TextBlock Text="Test new release" FontSize="48" Margin="10" TextWrapping="Wrap" />
+            </Button>
+            <Button Margin="5,5,5,10" Click="TestDisc_Click">
+                <TextBlock Text="Test new disc" FontSize="48" Margin="10" TextWrapping="Wrap" />
+            </Button>
+        </StackPanel>
         <DockPanel Margin="5">
             <TextBlock DockPanel.Dock="Top" Text="Log" Margin="0,0,0,5" />
             <local:Feedback x:Name="Feedback" />

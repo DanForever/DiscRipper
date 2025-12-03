@@ -11,7 +11,7 @@ public class SeriesFilenames : IStep
             throw new ArgumentException("ImportItem must be set in context before building series filenames.");
         }
 
-        if (string.IsNullOrWhiteSpace(context.Submission.MediaType))
+        if (string.IsNullOrWhiteSpace(context.Release?.MediaType))
         {
             throw new ArgumentException("MediaType must be set in context.Submission before building series filenames.");
         }
@@ -21,7 +21,7 @@ public class SeriesFilenames : IStep
             throw new ArgumentException("BasePath must be set in context before building series filenames.");
         }
 
-        if (context.Submission.MediaType.Equals("Series", StringComparison.CurrentCultureIgnoreCase))
+        if (context.Release.MediaType.Equals("Series", StringComparison.CurrentCultureIgnoreCase))
         {
             await GetSeriesFilenamesTask_RunInternal(context.InitializationData.FileSystem, context.InitializationData.TmdbClient, context.ImportItem.GetTmdbItemToSerialize() as Fantastic.TheMovieDb.Models.Series, context.BasePath);
         }

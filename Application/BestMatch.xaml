@@ -29,8 +29,11 @@
             <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding tddbDisc.Index }" Background="#ff7ec0d7" />
         </Grid>
         <DockPanel DockPanel.Dock="Bottom">
-            <Button DockPanel.Dock="Left" Margin="5" Click="SubmitNewDisc_Click">
-                <TextBlock Text="Submit new disc" FontSize="24" Margin="5" />
+            <Button DockPanel.Dock="Left" Margin="5" Click="AddNewRelease_Click">
+                <TextBlock Text="Add new release" FontSize="24" Margin="5" />
+            </Button>
+            <Button DockPanel.Dock="Left" Margin="5" Click="AddDiscToRelease_Click">
+                <TextBlock Text="Add disc to release" FontSize="24" Margin="5" />
             </Button>
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Margin="5" Click="Cancel_Click">

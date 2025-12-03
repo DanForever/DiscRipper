@@ -16,7 +16,8 @@ namespace DiscRipper.Sessions
 
 		public Guid Id { get; init; } = Guid.NewGuid();
 		public DateTime CreatedOn { get; init; } = DateTime.UtcNow;
-		public required TheDiscDb.Submission Submission { get; set; }
+		public required TheDiscDb.Submission.Disc Disc { get; set; }
+		public TheDiscDb.Submission.Release? Release { get; set; }
 		public Types.Hash.Disc? DiscHash { get; set; }
 
 		[XmlIgnore]
@@ -54,7 +55,22 @@ namespace DiscRipper.Sessions
 
 		public Session CreateSession(List<Types.Title> titles)
 		{
-			Session session = new() { Submission = new() { Titles = titles } };
+			Session session = new()
+			{
+				Disc = new() { Titles = titles },
+				Release = new() {}
+			};
+			SessionList.Sessions.Add(session);
+
+			return session;
+		}
+
+		public Session CreateDiscOnlySession(List<Types.Title> titles)
+		{
+			Session session = new()
+			{
+				Disc = new() { Titles = titles },
+			};
 			SessionList.Sessions.Add(session);
 
 			return session;

@@ -1,4 +1,6 @@
-﻿namespace DiscRipper.Types.Hash;
+﻿using System.Xml.Serialization;
+
+namespace DiscRipper.Types.Hash;
 
 // Copied from ImportBuddy
 public record File
@@ -9,6 +11,7 @@ public record File
 	public long Size { get; set; }
 }
 
+[XmlType("DiscHash")]
 public class Disc
 {
 	public required string Hash { get; set; }

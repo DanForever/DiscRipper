@@ -7,7 +7,8 @@ namespace DiscRipper.TheDiscDb.Submit;
 
 public class SubmissionContext
 {
-    public required Submission Submission { get; init; }
+    public required Submission.Disc Disc { get; init; }
+	public Submission.Release? Release { get; init; }
     public required InitializationData InitializationData { get; init; }
     public required string Log { get; init; }
     public int? DriveIndex { get; init; }
