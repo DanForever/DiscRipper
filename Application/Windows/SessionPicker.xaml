@@ -4,15 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiscRipper.Windows"
+        xmlns:utilities="clr-namespace:DiscRipper.Utilities"
         mc:Ignorable="d"
         Title="SessionPicker" Height="450" Width="800">
     <Grid>
         <DataGrid AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Sessions}" MouseDoubleClick="Session_MouseDoubleClick">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Created" Binding="{Binding CreatedOn}" Width="*"/>
-                <DataGridTextColumn Header="TMDB ID" Binding="{Binding Submission.TMDB}" Width="*"/>
-                <DataGridTextColumn Header="Edition/Release Name" Binding="{Binding Submission.EditionName}" Width="*"/>
-                <DataGridTextColumn Header="Disc Name" Binding="{Binding Submission.DiscTitle}" Width="*"/>
+                <DataGridTextColumn Header="Created" Binding="{Binding CreatedOn}"/>
+                <DataGridTemplateColumn Header="Description" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock utilities:TextFormatter.FormattedText="{Binding IdentifyingDescription}" TextWrapping="Wrap" Margin="5" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

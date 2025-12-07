@@ -37,6 +37,7 @@ internal partial class SubmitSecondDisc : Window
 
 		Session = SessionManager.Instance.Value.CreateDiscOnlySession(titles);
 		Session.Log = Log.ExportRawLog();
+		Session.ExistingRelease = release;
 
 		Submission = new()
 		{
@@ -63,6 +64,25 @@ internal partial class SubmitSecondDisc : Window
 		}
 
 		Loaded += async (_, _) => await GenerateHashData();
+	}
+
+	public SubmitSecondDisc(Session session, MakeMkv.Log log)
+	{
+		InitializeComponent();
+
+		Log = log;
+		Session = session;
+
+		IList<SubmissionTitle> submissionTitles = Session.Disc.Titles.Select(t => new SubmissionTitle { Model = t }).ToList();
+
+		Submission = new()
+		{
+			DiscModel = Session.Disc,
+			Model = Session.Release,
+			Titles = submissionTitles,
+		};
+
+		DataContext = Submission;
 	}
 
 	private async Task<TheDiscDb.Submit.SubmissionContext> RunSteps(IList<TheDiscDb.Submit.IStep> steps)
@@ -123,7 +143,7 @@ internal partial class SubmitSecondDisc : Window
 
 	private void Cancel_Click(object sender, RoutedEventArgs e)
 	{
-
+		Close();
 	}
 
 	private void MediaType_Changed(object sender, SelectionChangedEventArgs e)

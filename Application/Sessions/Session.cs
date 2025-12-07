@@ -19,6 +19,7 @@ namespace DiscRipper.Sessions
 		public required TheDiscDb.Submission.Disc Disc { get; set; }
 		public TheDiscDb.Submission.Release? Release { get; set; }
 		public Types.Hash.Disc? DiscHash { get; set; }
+		public DiscRipper.Types.Release? ExistingRelease { get; set; }
 
 		[XmlIgnore]
 		public bool LogDirty { get; set; } = false;
@@ -36,6 +37,20 @@ namespace DiscRipper.Sessions
 				}
 			}
 		}
+
+		// todo: Move to seperate viewmodel
+		[XmlIgnore]
+		public string IdentifyingDescription =>
+			string.Join('\n',
+				new []{
+					(Release is not null) ? "<b>New release</b>" : null,
+					(ExistingRelease is not null) ? "<b>New disc for existing release</b>" : null,
+					!string.IsNullOrWhiteSpace(Release?.EditionName) ? $"<b>Edition:</b> {Release.EditionName}" : null,
+					!string.IsNullOrWhiteSpace(ExistingRelease?.Path) ? $"<b>Existing release:</b> {ExistingRelease.Path}" : string.Empty,
+					!string.IsNullOrWhiteSpace(Disc.DiscTitle) ? $"<b>Disc name:</b> {Disc.DiscTitle}" : string.Empty,
+					!string.IsNullOrWhiteSpace(Release?.TMDB) ? $"<b>TBDB Id:</b> {Release.TMDB}" : string.Empty
+				}.Where(s => !string.IsNullOrWhiteSpace(s))
+			);
 	}
 
 	public class SessionList
