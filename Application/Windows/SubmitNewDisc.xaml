@@ -9,12 +9,8 @@
         xmlns:localtddb="clr-namespace:DiscRipper.TheDiscDb;assembly=DiscRipper.TheDiscDb"
         xmlns:types="clr-namespace:DiscRipper.Types;assembly=DiscRipper.Types"
         xmlns:controls="clr-namespace:DiscRipper.Controls"
-        xmlns:converters="clr-namespace:DiscRipper.Converters"
         mc:Ignorable="d"
         Title="SubmitNewDisc" Height="600" Width="1024">
-    <Window.Resources>
-        <converters:StringToCollapsedConverter x:Key="CollapseOnMovie" MatchString="Movie" />
-    </Window.Resources>
     <Grid IsSharedSizeScope="True">
         <DockPanel>
             
@@ -26,66 +22,10 @@
                     <TextBlock Text="Submit!" FontSize="32" Margin="5" />
                 </Button>
             </StackPanel>
-            
-            <StackPanel DockPanel.Dock="Left" MinWidth="400">
-                <StackPanel.Resources>
-                    <Style TargetType="TextBox">
-                        <Setter Property="VerticalContentAlignment" Value="Center"/>
-                    </Style>
 
-                    <ObjectDataProvider x:Key="RegionCodes"
-                            MethodName="GetValues"
-                            ObjectType="{x:Type sys:Enum}">
-                        <ObjectDataProvider.MethodParameters>
-                            <x:Type TypeName="localtddb:RegionCode"/>
-                        </ObjectDataProvider.MethodParameters>
-                    </ObjectDataProvider>
-                </StackPanel.Resources>
-                <local:Setting Label="TMDB ID">
-                    <TextBox Text="{Binding TMDB, UpdateSourceTrigger=PropertyChanged}" />
-                </local:Setting>
-                <local:Setting Label="Disc format">
-                    <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.DiscFormats }}" SelectedValue="{Binding DiscFormat}" />
-                </local:Setting>
-                <local:Setting Label="Media type">
-                    <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.MediaTypes }}" SelectedValue="{Binding MediaType}" SelectionChanged="MediaType_Changed"/>
-                </local:Setting>
-                <local:Setting Label="Season" Visibility="{Binding MediaType, Mode=OneWay, Converter={StaticResource CollapseOnMovie}}">
-                    <TextBox Text="{Binding Season, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" />
-                </local:Setting>
-                <local:Setting Label="Release slug">
-                    <TextBox Text="{Binding ReleaseSlug, UpdateSourceTrigger=PropertyChanged}" />
-                </local:Setting>
-                <local:Setting Label="UPC">
-                    <TextBox Text="{Binding UPC, UpdateSourceTrigger=PropertyChanged}" />
-                </local:Setting>
-                <local:Setting Label="ASIN">
-                    <TextBox Text="{Binding ASIN, UpdateSourceTrigger=PropertyChanged}" />
-                </local:Setting>
-                <local:Setting Label="Release publication date">
-                    <DatePicker SelectedDate="{Binding PublicationDate, UpdateSourceTrigger=PropertyChanged}" />
-                </local:Setting>
-                <local:Setting Label="Front cover image URL">
-                    <TextBox Text="{Binding FrontCoverUrl, UpdateSourceTrigger=PropertyChanged}" />
-                </local:Setting>
-                <local:Setting Label="Back cover image URL">
-                    <TextBox Text="{Binding BackCoverUrl, UpdateSourceTrigger=PropertyChanged}" />
-                </local:Setting>
-                <local:Setting Label="Name of release/edition">
-                    <TextBox Text="{Binding EditionName, UpdateSourceTrigger=PropertyChanged}" />
-                </local:Setting>
-                <local:Setting Label="Name of disc">
-                    <TextBox Text="{Binding DiscTitle, UpdateSourceTrigger=PropertyChanged}" />
-                </local:Setting>
-                <local:Setting Label="Disc slug">
-                    <TextBox Text="{Binding DiscSlug, UpdateSourceTrigger=PropertyChanged}" />
-                </local:Setting>
-                <local:Setting Label="Region code">
-                    <ComboBox ItemsSource="{Binding Source={StaticResource RegionCodes}}" SelectedItem="{Binding RegionCode, UpdateSourceTrigger=PropertyChanged}" />
-                </local:Setting>
-                <local:Setting Label="Locale">
-                    <ComboBox ItemsSource="{Binding Mode=OneWay, Source={x:Static local:SubmitNewDisc.AllRegions }}" SelectedValuePath="Name" DisplayMemberPath="DisplayName" SelectedValue="{Binding Locale, UpdateSourceTrigger=PropertyChanged}" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" IsEditable="True" />
-                </local:Setting>
+            <StackPanel DockPanel.Dock="Left">
+                <controls:ReleaseProperties MediaTypeChanged="MediaType_Changed" />
+                <controls:DiscProperties />
             </StackPanel>
             <controls:DiscTitles x:Name="DiscTitles" />
         </DockPanel>

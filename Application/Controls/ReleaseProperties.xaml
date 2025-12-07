@@ -6,8 +6,12 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:localtddb="clr-namespace:DiscRipper.TheDiscDb;assembly=DiscRipper.TheDiscDb"
              xmlns:local="clr-namespace:DiscRipper"
+             xmlns:converters="clr-namespace:DiscRipper.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:StringToCollapsedConverter x:Key="CollapseOnMovie" MatchString="Movie" />
+    </UserControl.Resources>
     <Grid IsSharedSizeScope="True">
 
         <StackPanel DockPanel.Dock="Left" MinWidth="400">
@@ -31,8 +35,7 @@
                 <TextBox Text="{Binding TMDB, UpdateSourceTrigger=PropertyChanged}" />
             </local:Setting>
             <local:Setting Label="Media type">
-                <!--ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.MediaTypes }}" SelectedValue="{Binding MediaType}" SelectionChanged="MediaType_Changed"/-->
-                <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.MediaTypes }}" SelectedValue="{Binding MediaType}" />
+                <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.MediaTypes }}" SelectedValue="{Binding MediaType}" SelectionChanged="OnMediaTypeChanged" />
             </local:Setting>
             <local:Setting Label="Season" Visibility="{Binding MediaType, Mode=OneWay, Converter={StaticResource CollapseOnMovie}}">
                 <TextBox Text="{Binding Season, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" />

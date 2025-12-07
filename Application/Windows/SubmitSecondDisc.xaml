@@ -20,27 +20,8 @@
                 </Button>
             </StackPanel>
 
-        <controls:DiscProperties DockPanel.Dock="Left" />
-<!--
-        <StackPanel DockPanel.Dock="Left" MinWidth="400">
-            <StackPanel.Resources>
-                <Style TargetType="TextBox">
-                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                </Style>
-
-            </StackPanel.Resources>
-            <local:Setting Label="Disc format">
-                <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.DiscFormats }}" SelectedValue="{Binding DiscFormat}" />
-            </local:Setting>
-            <local:Setting Label="Name of disc">
-                <TextBox Text="{Binding DiscTitle, UpdateSourceTrigger=PropertyChanged}" />
-            </local:Setting>
-            <local:Setting Label="Disc slug">
-                <TextBox Text="{Binding DiscSlug, UpdateSourceTrigger=PropertyChanged}" />
-            </local:Setting>
-        </StackPanel>
-        -->
-        <controls:DiscTitles x:Name="DiscTitles" />
+            <controls:DiscProperties DockPanel.Dock="Left" />
+            <controls:DiscTitles x:Name="DiscTitles" />
         </DockPanel>
     </Grid>
 </Window>
