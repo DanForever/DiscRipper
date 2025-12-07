@@ -28,6 +28,12 @@ namespace DiscRipper
 
 			DataContext = _viewModel;
 
+#if DEBUG
+			DebugMenu.Visibility = Visibility.Visible;
+#else
+			DebugMenu.Visibility = Visibility.Collapsed;
+#endif
+
 			Loaded += MainWindow_Loaded;
 		}
 
