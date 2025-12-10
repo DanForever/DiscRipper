@@ -27,7 +27,7 @@ namespace DiscRipper.Windows
 
 				if (session.Release is not null)
 				{
-					SubmitNewDisc submitNewDisc = new(session, log) { Owner = this };
+					SubmitRelease submitNewDisc = new(session, log) { Owner = this };
 					submitNewDisc.Show();
 				}
 				else

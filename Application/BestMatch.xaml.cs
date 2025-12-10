@@ -23,7 +23,7 @@ namespace DiscRipper
 
 		#endregion Private properties
 
-		public required SubmitNewDisc SubmitNewDisc { get; init; }
+		public required SubmitRelease SubmitNewDisc { get; init; }
 
 		#region C-Tor
 

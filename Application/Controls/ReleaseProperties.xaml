@@ -35,7 +35,7 @@
                 <TextBox Text="{Binding TMDB, UpdateSourceTrigger=PropertyChanged}" />
             </local:Setting>
             <local:Setting Label="Media type">
-                <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.MediaTypes }}" SelectedValue="{Binding MediaType}" SelectionChanged="OnMediaTypeChanged" />
+                <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitRelease.MediaTypes }}" SelectedValue="{Binding MediaType}" SelectionChanged="OnMediaTypeChanged" />
             </local:Setting>
             <local:Setting Label="Season" Visibility="{Binding MediaType, Mode=OneWay, Converter={StaticResource CollapseOnMovie}}">
                 <TextBox Text="{Binding Season, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" />
@@ -65,7 +65,7 @@
                 <ComboBox ItemsSource="{Binding Source={StaticResource RegionCodes}}" SelectedItem="{Binding RegionCode, UpdateSourceTrigger=PropertyChanged}" />
             </local:Setting>
             <local:Setting Label="Locale">
-                <ComboBox ItemsSource="{Binding Mode=OneWay, Source={x:Static local:SubmitNewDisc.AllRegions }}" SelectedValuePath="Name" DisplayMemberPath="DisplayName" SelectedValue="{Binding Locale, UpdateSourceTrigger=PropertyChanged}" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" IsEditable="True" />
+                <ComboBox ItemsSource="{Binding Mode=OneWay, Source={x:Static local:SubmitRelease.AllRegions }}" SelectedValuePath="Name" DisplayMemberPath="DisplayName" SelectedValue="{Binding Locale, UpdateSourceTrigger=PropertyChanged}" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" IsEditable="True" />
             </local:Setting>
         </StackPanel>
 

@@ -18,7 +18,7 @@
             <TextBlock Text="Disc" />
 
             <local:Setting Label="Disc format">
-                <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitNewDisc.DiscFormats }}" SelectedValue="{Binding DiscFormat}" />
+                <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitRelease.DiscFormats }}" SelectedValue="{Binding DiscFormat}" />
             </local:Setting>
             <local:Setting Label="Name of disc">
                 <TextBox Text="{Binding DiscTitle, UpdateSourceTrigger=PropertyChanged}" />

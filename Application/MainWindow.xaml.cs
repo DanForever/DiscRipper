@@ -108,7 +108,7 @@ namespace DiscRipper
 				MakeMkv.TitleEngine titleEngine = new();
 				await titleEngine.Read(runner.Log);
 
-				SubmitNewDisc submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), drive) { Owner = this };
+				SubmitRelease submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), drive) { Owner = this };
 				submitNewDisc.Show();
 			}
 		}
@@ -177,7 +177,7 @@ namespace DiscRipper
 
 			List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
 
-			SubmitNewDisc submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), drive) { Owner = this };
+			SubmitRelease submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), drive) { Owner = this };
 
 			if (mappedDiscs.Count > 0)
 			{
@@ -205,7 +205,7 @@ namespace DiscRipper
 			await titleEngine.Read(runner.Log);
 
 			List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
-			SubmitNewDisc submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), null) { Owner = this };
+			SubmitRelease submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), null) { Owner = this };
 
 			if (mappedDiscs.Count > 0)
 			{
@@ -262,7 +262,7 @@ namespace DiscRipper
 
 			List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
 
-			SubmitNewDisc submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), null) { Owner = this };
+			SubmitRelease submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), null) { Owner = this };
 			submitNewDisc.Show();
 		}
 	}
