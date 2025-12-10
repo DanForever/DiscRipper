@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,7 +12,7 @@ using DiscRipper.ViewModel;
 
 namespace DiscRipper.Windows;
 
-internal partial class SubmitSecondDisc : Window
+internal partial class SubmitAdditionalDisc : Window
 {
 	public Session Session { get; init; }
 	public ViewModel.Submission Submission { get; init; }
@@ -25,7 +24,7 @@ internal partial class SubmitSecondDisc : Window
 
 	public static string[] DiscFormats { get; } = ["Blu-Ray", "UHD", "DVD"];
 
-	public SubmitSecondDisc(MakeMkv.Log log, List<Types.Title> titles, DiscRipper.Types.Release release, MakeMkv.Drive? drive = null)
+	public SubmitAdditionalDisc(MakeMkv.Log log, List<Types.Title> titles, DiscRipper.Types.Release release, MakeMkv.Drive? drive = null)
 	{
 		InitializeComponent();
 
@@ -66,7 +65,7 @@ internal partial class SubmitSecondDisc : Window
 		Loaded += async (_, _) => await GenerateHashData();
 	}
 
-	public SubmitSecondDisc(Session session, MakeMkv.Log log)
+	public SubmitAdditionalDisc(Session session, MakeMkv.Log log)
 	{
 		InitializeComponent();
 

@@ -134,7 +134,7 @@ namespace DiscRipper
 
 				if (picker.Release is not null)
 				{
-					SubmitSecondDisc submitSecondDisc = new(runner.Log, titleEngine.Titles.ToList(), picker.Release, drive) { Owner = this };
+					SubmitAdditionalDisc submitSecondDisc = new(runner.Log, titleEngine.Titles.ToList(), picker.Release, drive) { Owner = this };
 					submitSecondDisc.Show();
 				}
 			}
@@ -241,7 +241,7 @@ namespace DiscRipper
 
 			if (picker.Release is not null)
 			{
-				SubmitSecondDisc submitSecondDisc = new(runner.Log, titleEngine.Titles.ToList(), picker.Release) { Owner = this };
+				SubmitAdditionalDisc submitSecondDisc = new(runner.Log, titleEngine.Titles.ToList(), picker.Release) { Owner = this };
 				submitSecondDisc.Show();
 			}
 		}

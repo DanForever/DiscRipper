@@ -32,7 +32,7 @@ namespace DiscRipper.Windows
 				}
 				else
 				{
-					SubmitSecondDisc submitSecondDisc = new(session, log) { Owner = this };
+					SubmitAdditionalDisc submitSecondDisc = new(session, log) { Owner = this };
 					submitSecondDisc.Show();
 					return;
 				}
