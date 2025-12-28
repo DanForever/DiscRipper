@@ -14,41 +14,55 @@
         WindowCornerPreference="Round"
         WindowStartupLocation="CenterScreen">
     <DockPanel>
-        <ui:TitleBar DockPanel.Dock="Top" Title="Disc Ripper" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">
-            <ui:TitleBar.TrailingContent>
-                <WrapPanel>
-                    <ui:Button Appearance="Caution">Beta</ui:Button>
-                    <ui:Button Width="48" Height="32" Margin="5" Background="{ui:ThemeResource ApplicationBackgroundBrush}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">
-                        <Viewbox Stretch="Uniform">
-                            <ContentControl Content="{StaticResource GitHubIcon}" />
-                        </Viewbox>
-                    </ui:Button>
-                    <ui:Button Width="48" Height="32" Margin="5" Click="SwitchTheme_Click" Background="{ui:ThemeResource ApplicationBackgroundBrush}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">
-                        <Viewbox Stretch="Uniform">
-                            <ContentControl Content="{StaticResource ThemeSwitchIcon}" />
-                        </Viewbox>
-                    </ui:Button>
-                </WrapPanel>
-            </ui:TitleBar.TrailingContent>
-        </ui:TitleBar>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
-                <MenuItem Header="_Settings" Click="Settings_Click"/>
-                <Separator/>
-                <MenuItem Header="Rescan Drives" Click="RescanDrives_Click"/>
-                <Separator/>
-                <MenuItem Header="_Exit" Click="Exit_Click"/>
-            </MenuItem>
-            <MenuItem Header="_Session">
-                <MenuItem Header="_Load previous session" Click="LoadPreviousSession_Click"/>
-                <Separator/>
-                <MenuItem Header="Add new disc to existing release" Click="AddNewDisc_Click"/>
-            </MenuItem>
-            <MenuItem Header="_Debug" x:Name="DebugMenu">
-                <MenuItem Header="Test new release" Click="TestRelease_Click"/>
-                <MenuItem Header="Test new disc" Click="TestDisc_Click"/>
-            </MenuItem>
-        </Menu>
+        <DockPanel DockPanel.Dock="Top">
+
+            <ui:Button Width="48" Height="32" Margin="5" DockPanel.Dock="Left" >
+                <Viewbox Stretch="Uniform">
+                    <ContentControl Content="{StaticResource GitHubIcon}" Background="{ui:ThemeResource ApplicationBackgroundBrush}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}" />
+                </Viewbox>
+            </ui:Button>
+            <Grid Width="48" Height="32" Margin="5" DockPanel.Dock="Left" Background="{ui:ThemeResource ApplicationBackgroundBrush}">
+                <!-- Use StaticResource to add the Canvas to the visual tree -->
+                <Viewbox Stretch="Uniform">
+                    <ContentControl Content="{StaticResource GitHubIcon}" />
+                </Viewbox>
+            </Grid>
+            <Menu DockPanel.Dock="Left">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Settings" Click="Settings_Click"/>
+                    <Separator/>
+                    <MenuItem Header="Rescan Drives" Click="RescanDrives_Click"/>
+                    <Separator/>
+                    <MenuItem Header="_Exit" Click="Exit_Click"/>
+                </MenuItem>
+                <MenuItem Header="_Session">
+                    <MenuItem Header="_Load previous session" Click="LoadPreviousSession_Click"/>
+                    <Separator/>
+                    <MenuItem Header="Add new disc to existing release" Click="AddNewDisc_Click"/>
+                </MenuItem>
+                <MenuItem Header="_Debug" x:Name="DebugMenu">
+                    <MenuItem Header="Test new release" Click="TestRelease_Click"/>
+                    <MenuItem Header="Test new disc" Click="TestDisc_Click"/>
+                </MenuItem>
+            </Menu>
+            <ui:TitleBar Title="Disc Ripper">
+                <ui:TitleBar.TrailingContent>
+                    <WrapPanel>
+                        <ui:Button Appearance="Caution">Beta</ui:Button>
+                        <ui:Button Width="48" Height="32" Margin="5">
+                            <Viewbox Stretch="Uniform">
+                                <ContentControl Content="{StaticResource GitHubIcon}" />
+                            </Viewbox>
+                        </ui:Button>
+                        <ui:Button Width="48" Height="32" Margin="5" Click="SwitchTheme_Click">
+                            <Viewbox Stretch="Uniform">
+                                <ContentControl Content="{StaticResource ThemeSwitchIcon}" />
+                            </Viewbox>
+                        </ui:Button>
+                    </WrapPanel>
+                </ui:TitleBar.TrailingContent>
+            </ui:TitleBar>
+        </DockPanel>
         <DockPanel Margin="5">
             <TextBlock DockPanel.Dock="Top" Text="Drives" Margin="0,0,0,5" />
             <ui:DataGrid x:Name="Drives" DockPanel.Dock="Left" ItemsSource="{Binding Drives}" AutoGenerateColumns="False" Width="500" IsReadOnly="True" MouseDoubleClick="Drives_MouseDoubleClick">
