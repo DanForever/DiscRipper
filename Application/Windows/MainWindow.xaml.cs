@@ -323,6 +323,25 @@ public partial class MainWindow
 			break;
 		}
 	}
+
+	private void GotoGithub_Click(object sender, RoutedEventArgs e)
+	{
+		const string url = "https://github.com/DanForever/DiscRipper";
+
+		try
+		{
+			var psi = new System.Diagnostics.ProcessStartInfo
+			{
+				FileName = url,
+				UseShellExecute = true
+			};
+			System.Diagnostics.Process.Start(psi);
+		}
+		catch (System.Exception ex)
+		{
+			MessageBox.Show(this, $"Unable to open browser: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+		}
+	}
 }
 
 

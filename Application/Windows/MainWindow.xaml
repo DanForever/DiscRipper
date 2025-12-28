@@ -15,18 +15,7 @@
         WindowStartupLocation="CenterScreen">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
-
-            <ui:Button Width="48" Height="32" Margin="5" DockPanel.Dock="Left" >
-                <Viewbox Stretch="Uniform">
-                    <ContentControl Content="{StaticResource GitHubIcon}" Background="{ui:ThemeResource ApplicationBackgroundBrush}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}" />
-                </Viewbox>
-            </ui:Button>
-            <Grid Width="48" Height="32" Margin="5" DockPanel.Dock="Left" Background="{ui:ThemeResource ApplicationBackgroundBrush}">
-                <!-- Use StaticResource to add the Canvas to the visual tree -->
-                <Viewbox Stretch="Uniform">
-                    <ContentControl Content="{StaticResource GitHubIcon}" />
-                </Viewbox>
-            </Grid>
+            <Control Width="48" Height="32" Margin="5" DockPanel.Dock="Left" Template="{StaticResource GitHubIconTemplate}" />
             <Menu DockPanel.Dock="Left">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Settings" Click="Settings_Click"/>
@@ -45,23 +34,26 @@
                     <MenuItem Header="Test new disc" Click="TestDisc_Click"/>
                 </MenuItem>
             </Menu>
-            <ui:TitleBar Title="Disc Ripper">
-                <ui:TitleBar.TrailingContent>
-                    <WrapPanel>
-                        <ui:Button Appearance="Caution">Beta</ui:Button>
-                        <ui:Button Width="48" Height="32" Margin="5">
-                            <Viewbox Stretch="Uniform">
-                                <ContentControl Content="{StaticResource GitHubIcon}" />
-                            </Viewbox>
-                        </ui:Button>
-                        <ui:Button Width="48" Height="32" Margin="5" Click="SwitchTheme_Click">
-                            <Viewbox Stretch="Uniform">
-                                <ContentControl Content="{StaticResource ThemeSwitchIcon}" />
-                            </Viewbox>
-                        </ui:Button>
-                    </WrapPanel>
-                </ui:TitleBar.TrailingContent>
-            </ui:TitleBar>
+            <Grid>
+                <Border DockPanel.Dock="Left" IsHitTestVisible="False" CornerRadius="8" Margin="10" Background="{ui:ThemeResource AccentTextFillColorTertiaryBrush}" >
+                    <TextBlock Text="Disc Ripper" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5" FontWeight="SemiBold" Foreground="{ui:ThemeResource TextFillColorInverseBrush}" />
+                </Border>
+                <ui:TitleBar>
+                    <ui:TitleBar.TrailingContent>
+                        <WrapPanel Margin="0,0,5,0">
+                            <ui:Button Appearance="Caution">Beta</ui:Button>
+                            <ui:Button Width="48" Height="32" Margin="5" Click="GotoGithub_Click">
+                                <Control Template="{StaticResource GitHubIconTemplate}" />
+                            </ui:Button>
+                            <ui:Button Width="48" Height="32" Click="SwitchTheme_Click">
+                                <Viewbox Stretch="Uniform">
+                                    <ContentControl Content="{StaticResource ThemeSwitchIcon}" />
+                                </Viewbox>
+                            </ui:Button>
+                        </WrapPanel>
+                    </ui:TitleBar.TrailingContent>
+                </ui:TitleBar>
+            </Grid>
         </DockPanel>
         <DockPanel Margin="5">
             <TextBlock DockPanel.Dock="Top" Text="Drives" Margin="0,0,0,5" />
