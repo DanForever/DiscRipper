@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace DiscRipper.Windows;
 
-public partial class MainWindow : Window
+public partial class MainWindow
 {
 	#region Private fields
 
@@ -24,6 +26,8 @@ public partial class MainWindow : Window
 	{
 		InitializeComponent();
 
+		Wpf.Ui.Appearance.SystemThemeWatcher.Watch(this);
+
 		DataContext = _viewModel;
 
 #if DEBUG
@@ -33,6 +37,44 @@ public partial class MainWindow : Window
 #endif
 
 		Loaded += MainWindow_Loaded;
+
+	}
+
+
+	public static void ApplyTheme(FrameworkElement frameworkElement)
+	{
+		Wpf.Ui.Appearance.ApplicationThemeManager.Apply(frameworkElement);
+
+		void themeChanged(Wpf.Ui.Appearance.ApplicationTheme sender, Color args)
+		{
+			Wpf.Ui.Appearance.ApplicationThemeManager.Apply(frameworkElement);
+			if (frameworkElement is Window window)
+			{
+				if (window != Wpf.Ui.UiApplication.Current.MainWindow)
+				{
+					Wpf.Ui.Appearance.WindowBackgroundManager.UpdateBackground(
+						window,
+						sender,
+						Wpf.Ui.Controls.WindowBackdropType.None
+					);
+				}
+			}
+		}
+
+		if (frameworkElement.IsLoaded)
+		{
+			Wpf.Ui.Appearance.ApplicationThemeManager.Changed += themeChanged;
+		}
+
+		frameworkElement.Loaded += (s, e) =>
+		{
+			Wpf.Ui.Appearance.ApplicationThemeManager.Changed += themeChanged;
+		};
+		frameworkElement.Unloaded += (s, e) =>
+		{
+			Wpf.Ui.Appearance.ApplicationThemeManager.Changed -= themeChanged;
+		};
+
 	}
 
 	#endregion C-Tor
@@ -46,7 +88,7 @@ public partial class MainWindow : Window
 		// On startup we want to automatically populate the list of drives,
 		// but we can't do it in the constructor because the gui hasn't yet
 		// been initialized, and it can't be made async, so we do it here instead
-		await ScanDrives();
+		//await ScanDrives();
 	}
 
 	private async void Drives_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -262,5 +304,181 @@ public partial class MainWindow : Window
 
 		SubmitRelease submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), null) { Owner = this };
 		submitNewDisc.Show();
+	}
+
+	private void SwitchTheme_Click(object sender, RoutedEventArgs e)
+	{
+		Wpf.Ui.Appearance.ApplicationTheme currentAppTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
+
+		switch (currentAppTheme)
+		{
+		case Wpf.Ui.Appearance.ApplicationTheme.Light:
+			Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Dark, Wpf.Ui.Controls.WindowBackdropType.None);
+			//ThemeService.ApplyThemeMasked(Wpf.Ui.Appearance.ApplicationTheme.Dark);
+			break;
+
+		case Wpf.Ui.Appearance.ApplicationTheme.Dark:
+			Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Light, Wpf.Ui.Controls.WindowBackdropType.None);
+			//ThemeService.ApplyThemeMasked(Wpf.Ui.Appearance.ApplicationTheme.Light);
+			break;
+		}
+	}
+}
+
+
+
+public static class ThemeService
+{
+	public static void ApplyTheme2(Wpf.Ui.Appearance.ApplicationTheme theme)
+	{
+		var old = Application.Current.MainWindow;
+
+		var newWindow = new MainWindow
+		{
+			Left = -10000, // off-screen
+			Top = -10000
+		};
+
+		Wpf.Ui.Appearance.ApplicationThemeManager.Apply(theme);
+
+		Application.Current.MainWindow = newWindow;
+		newWindow.Show();
+
+		old.Close();
+
+		// move new window to original position
+		newWindow.Left = old.Left;
+		newWindow.Top = old.Top;
+	}
+
+	public static void ApplyTheme(Wpf.Ui.Appearance.ApplicationTheme theme)
+	{
+		var app = Application.Current;
+		if (app?.MainWindow == null)
+			return;
+
+		var oldWindow = app.MainWindow;
+
+		// Capture window state
+		var state = new WindowStateSnapshot(oldWindow);
+
+		// Apply theme BEFORE creating new window
+		Wpf.Ui.Appearance.ApplicationThemeManager.Apply(theme);
+
+		// Create new window
+		var newWindow = (Window)System.Activator.CreateInstance(oldWindow.GetType())!;
+
+		newWindow.Opacity = 0;
+		newWindow.ContentRendered += (object? sender, System.EventArgs e) => { newWindow.Opacity = 1; };
+
+		// Restore state
+		state.Restore(newWindow);
+
+		app.MainWindow = newWindow;
+		newWindow.Show();
+
+		oldWindow.Close();
+	}
+
+	public static void ApplyThemeMasked(Wpf.Ui.Appearance.ApplicationTheme theme)
+	{
+		var oldWindow = Application.Current.MainWindow;
+		if (oldWindow == null)
+			return;
+
+		var snapshot = Capture(oldWindow);
+		var mask = new ThemeMaskWindow(snapshot, oldWindow);
+		mask.Show();
+
+		Wpf.Ui.Appearance.ApplicationThemeManager.Apply(theme);
+
+		var state = new WindowStateSnapshot(oldWindow);
+		var newWindow = (Window)System.Activator.CreateInstance(oldWindow.GetType())!;
+		state.Restore(newWindow);
+
+		Application.Current.MainWindow = newWindow;
+		newWindow.Show();
+
+		oldWindow.Close();
+
+		// fade out mask
+		var fade = new System.Windows.Media.Animation.DoubleAnimation(1, 0, System.TimeSpan.FromMilliseconds(150));
+
+		fade.Completed += (_, _) => mask.Close();
+		mask.BeginAnimation(Window.OpacityProperty, fade);
+	}
+
+	static BitmapSource Capture(Window window)
+	{
+		var dpi = VisualTreeHelper.GetDpi(window);
+
+		var rtb = new RenderTargetBitmap(
+			(int)(window.ActualWidth * dpi.DpiScaleX),
+			(int)(window.ActualHeight * dpi.DpiScaleY),
+			dpi.PixelsPerInchX,
+			dpi.PixelsPerInchY,
+			PixelFormats.Pbgra32);
+
+		rtb.Render(window);
+		return rtb;
+	}
+
+	private sealed class WindowStateSnapshot
+	{
+		private readonly WindowState _state;
+		private readonly double _top;
+		private readonly double _left;
+		private readonly double _width;
+		private readonly double _height;
+
+		public WindowStateSnapshot(Window window)
+		{
+			_state = window.WindowState;
+
+			if (_state == WindowState.Normal)
+			{
+				_top = window.Top;
+				_left = window.Left;
+				_width = window.Width;
+				_height = window.Height;
+			}
+		}
+
+		public void Restore(Window window)
+		{
+			window.WindowStartupLocation = WindowStartupLocation.Manual;
+
+			if (_state == WindowState.Normal)
+			{
+				window.Top = _top;
+				window.Left = _left;
+				window.Width = _width;
+				window.Height = _height;
+			}
+
+			window.WindowState = _state;
+		}
+	}
+}
+class ThemeMaskWindow : Window
+{
+	public ThemeMaskWindow(ImageSource snapshot, Window owner)
+	{
+		Owner = owner;
+		WindowStyle = WindowStyle.None;
+		ResizeMode = ResizeMode.NoResize;
+		ShowInTaskbar = false;
+		Topmost = true;
+
+		Left = owner.Left;
+		Top = owner.Top;
+		Width = owner.ActualWidth;
+		Height = owner.ActualHeight;
+
+		Content = new System.Windows.Controls.Image
+		{
+			Source = snapshot,
+			Stretch = Stretch.None
+		};
 	}
 }
