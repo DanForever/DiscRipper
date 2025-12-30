@@ -88,7 +88,7 @@ public partial class MainWindow
 		// On startup we want to automatically populate the list of drives,
 		// but we can't do it in the constructor because the gui hasn't yet
 		// been initialized, and it can't be made async, so we do it here instead
-		//await ScanDrives();
+		await ScanDrives();
 	}
 
 	private async void Drives_MouseDoubleClick(object sender, MouseButtonEventArgs e)

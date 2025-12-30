@@ -14,6 +14,8 @@
         WindowCornerPreference="Round"
         WindowStartupLocation="CenterScreen">
     <DockPanel>
+        
+        <!-- Titlebar and combined menubar -->
         <DockPanel DockPanel.Dock="Top">
             <Control Width="48" Height="32" Margin="5" DockPanel.Dock="Left" Template="{StaticResource GitHubIconTemplate}" />
             <Menu DockPanel.Dock="Left">
@@ -35,8 +37,8 @@
                 </MenuItem>
             </Menu>
             <Grid>
-                <Border DockPanel.Dock="Left" IsHitTestVisible="False" CornerRadius="8" Margin="10" Background="{ui:ThemeResource AccentTextFillColorTertiaryBrush}" >
-                    <TextBlock Text="Disc Ripper" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5" FontWeight="SemiBold" Foreground="{ui:ThemeResource TextFillColorInverseBrush}" />
+                <Border IsHitTestVisible="False" CornerRadius="8" Padding="5" Background="{ui:ThemeResource AccentTextFillColorTertiaryBrush}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <TextBlock Text="Disc Ripper" IsHitTestVisible="False" FontWeight="SemiBold" Foreground="{ui:ThemeResource TextFillColorInverseBrush}" />
                 </Border>
                 <ui:TitleBar>
                     <ui:TitleBar.TrailingContent>
@@ -55,9 +57,11 @@
                 </ui:TitleBar>
             </Grid>
         </DockPanel>
+        
+        <!-- Drives listing -->
         <DockPanel Margin="5">
-            <TextBlock DockPanel.Dock="Top" Text="Drives" Margin="0,0,0,5" />
-            <ui:DataGrid x:Name="Drives" DockPanel.Dock="Left" ItemsSource="{Binding Drives}" AutoGenerateColumns="False" Width="500" IsReadOnly="True" MouseDoubleClick="Drives_MouseDoubleClick">
+            <Label DockPanel.Dock="Top" Target="{Binding ElementName=Drives}" Content="Drives"  Margin="10,0,0,5" />
+            <ui:DataGrid x:Name="Drives" DockPanel.Dock="Left" ItemsSource="{Binding Drives}" AutoGenerateColumns="False" Width="650" IsReadOnly="True" MouseDoubleClick="Drives_MouseDoubleClick" >
                 <ui:DataGrid.Columns>
                     <DataGridTextColumn Header="Type" Binding="{Binding DiscType}" />
                     <DataGridTextColumn Header="Path" Binding="{Binding DrivePath}" />
@@ -66,20 +70,24 @@
                 </ui:DataGrid.Columns>
             </ui:DataGrid>
         </DockPanel>
+
+        <!-- Primary interaction choices -->
         <StackPanel Margin="5" Width="200">
-            <TextBlock DockPanel.Dock="Top" Text="What do you want to do today?" Margin="0,0,0,25" />
-            <Button Margin="5,5,5,10" Click="Rip_Click">
+            <Label Content="What do you want to do today?" Margin="5,0,0,5" />
+            <ui:Button Appearance="Primary" Margin="5" Click="Rip_Click" HorizontalAlignment="Stretch">
                 <TextBlock Text="Rip" FontSize="48" Margin="10" />
+            </ui:Button>
+            <Button Margin="5" Click="SubmitNewRelease_Click" HorizontalAlignment="Stretch">
+                <TextBlock Text="Submit new release" FontSize="38" Margin="10" TextWrapping="Wrap" />
             </Button>
-            <Button Margin="5,5,5,10" Click="SubmitNewRelease_Click">
-                <TextBlock Text="Submit new release" FontSize="48" Margin="10" TextWrapping="Wrap" />
-            </Button>
-            <Button Margin="5,5,5,10" Click="AddNewDisc_Click">
-                <TextBlock Text="Add disc to release" FontSize="48" Margin="10" TextWrapping="Wrap" />
+            <Button Margin="5" Click="AddNewDisc_Click" HorizontalAlignment="Stretch">
+                <TextBlock Text="Add disc to release" FontSize="38" Margin="10" TextWrapping="Wrap" />
             </Button>
         </StackPanel>
+        
+        <!-- Log -->
         <DockPanel Margin="5">
-            <TextBlock DockPanel.Dock="Top" Text="Log" Margin="0,0,0,5" />
+            <Label DockPanel.Dock="Top" Target="{Binding ElementName=Feedback}" Content="Log" Margin="5,0,0,5" />
             <local:Feedback x:Name="Feedback" />
         </DockPanel>
     </DockPanel>
