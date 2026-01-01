@@ -1,4 +1,4 @@
-﻿<ui:FluentWindow x:Class="DiscRipper.Windows.SessionPicker"
+﻿<windows:ThemedWindow x:Class="DiscRipper.Windows.SessionPicker"
         x:ClassModifier="internal"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:local="clr-namespace:DiscRipper.Windows"
+        xmlns:windows="clr-namespace:DiscRipper.Windows.Base"
         xmlns:utilities="clr-namespace:DiscRipper.Utilities"
         mc:Ignorable="d"
         ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
@@ -33,4 +34,4 @@
             </DataGrid>
         </Grid>
     </DockPanel>
-</ui:FluentWindow>
+</windows:ThemedWindow>

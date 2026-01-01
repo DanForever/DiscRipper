@@ -11,16 +11,14 @@ namespace DiscRipper
 		{
 			var accentColour = System.Windows.Media.Color.FromArgb(0xFF, 0xEE, 0x00, 0xBB);
 
-			Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Light, Wpf.Ui.Controls.WindowBackdropType.None);
-			Wpf.Ui.Appearance.ApplicationAccentColorManager.Apply(accentColour, Wpf.Ui.Appearance.ApplicationTheme.Light);
+			Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Dark, Wpf.Ui.Controls.WindowBackdropType.None);
+			Wpf.Ui.Appearance.ApplicationAccentColorManager.Apply(accentColour, Wpf.Ui.Appearance.ApplicationTheme.Dark);
 
 			await SessionManager.Instance.Value.LoadAsync();
 
 			MainWindow window = new MainWindow();
 			MainWindow = window;
 			window.Show();
-
-			Wpf.Ui.Appearance.WindowBackgroundManager.UpdateBackground(window,Wpf.Ui.Appearance.ApplicationTheme.Light, Wpf.Ui.Controls.WindowBackdropType.None);
 		}
 
 		private void OnExit(object sender, ExitEventArgs e)
