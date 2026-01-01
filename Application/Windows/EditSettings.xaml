@@ -15,8 +15,7 @@
         WindowStartupLocation="CenterScreen"
         Title="Settings" Height="450" Width="800" Closing="Window_Closing">
     <DockPanel>
-
-        <ui:TitleBar Title="Settings" FontWeight="SemiBold" DockPanel.Dock="Top" />
+        <ui:TitleBar Title="{Binding Title, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}" FontWeight="SemiBold" DockPanel.Dock="Top" />
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>

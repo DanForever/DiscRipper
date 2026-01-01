@@ -1,24 +1,36 @@
-﻿<Window x:Class="DiscRipper.Windows.SessionPicker"
+﻿<ui:FluentWindow x:Class="DiscRipper.Windows.SessionPicker"
+        x:ClassModifier="internal"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:local="clr-namespace:DiscRipper.Windows"
         xmlns:utilities="clr-namespace:DiscRipper.Utilities"
         mc:Ignorable="d"
-        Title="SessionPicker" Height="450" Width="800">
-    <Grid>
-        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Sessions}" MouseDoubleClick="Session_MouseDoubleClick">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Created" Binding="{Binding CreatedOn}"/>
-                <DataGridTemplateColumn Header="Description" Width="*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock utilities:TextFormatter.FormattedText="{Binding IdentifyingDescription}" TextWrapping="Wrap" Margin="5" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
-</Window>
+        ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+        ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Auto"
+        WindowCornerPreference="Round"
+        WindowStartupLocation="CenterScreen"
+        Title="Resume session" Height="450" Width="800">
+    <DockPanel>
+        <ui:TitleBar Title="{Binding Title, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}" FontWeight="SemiBold" DockPanel.Dock="Top" />
+        <Label Content="Select a previously scanned disc to continue filling out metadata for" DockPanel.Dock="Top" Margin="15,0,0,0" />
+        <Grid>
+            <DataGrid AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Sessions}" MouseDoubleClick="Session_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Created" Binding="{Binding CreatedOn}"/>
+                    <DataGridTemplateColumn Header="Description" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock utilities:TextFormatter.FormattedText="{Binding IdentifyingDescription}" TextWrapping="Wrap" Margin="5" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </DockPanel>
+</ui:FluentWindow>
