@@ -14,7 +14,7 @@ using Microsoft.Extensions.Options;
 
 namespace DiscRipper;
 
-internal partial class SubmitRelease : Window
+internal partial class SubmitRelease
 {
 	public Session Session { get; init; }
 	public ViewModel.Submission Submission { get; init; }
