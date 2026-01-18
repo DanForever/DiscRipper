@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace DiscRipper.Controls;
 
-/// <summary>
-/// Interaction logic for DiscTitles.xaml
-/// </summary>
 public partial class DiscTitles : UserControl
 {
 	public DiscTitles()

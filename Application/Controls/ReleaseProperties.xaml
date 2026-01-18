@@ -7,6 +7,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:localtddb="clr-namespace:DiscRipper.TheDiscDb;assembly=DiscRipper.TheDiscDb"
              xmlns:local="clr-namespace:DiscRipper"
+             xmlns:controls="clr-namespace:DiscRipper.Controls"
              xmlns:converters="clr-namespace:DiscRipper.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -30,7 +31,7 @@
                 </ObjectDataProvider>
             </StackPanel.Resources>
 
-            <TextBlock Text="Release" />
+            <controls:Heading Text="Release metadata" />
 
             <local:Setting Label="TMDB ID">
                 <ui:TextBox Text="{Binding TMDB, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="1234 or https://www.themoviedb.org/movie/1234-a-movie-url" />

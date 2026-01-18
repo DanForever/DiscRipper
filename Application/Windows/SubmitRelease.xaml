@@ -12,26 +12,46 @@
         xmlns:controls="clr-namespace:DiscRipper.Controls"
         mc:Ignorable="d"
         Title="SubmitNewDisc" Height="600" Width="1024">
-    <DockPanel>
-        <ui:TitleBar Title="{Binding Title, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}" FontWeight="SemiBold" DockPanel.Dock="Top" />
-        <Grid IsSharedSizeScope="True">
-            <DockPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <ui:TitleBar Grid.Row="0" Title="{Binding Title, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}" FontWeight="SemiBold" />
+        
+        <Grid Grid.Row="1" IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <ui:Button Margin="10" Click="Cancel_Click" VerticalAlignment="Stretch">
-                        <TextBlock Text="Cancel" FontSize="32" Margin="20,10,20,10" />
-                    </ui:Button>
-                    <ui:Button Appearance="Primary" Margin="10" Click="Submit_Click" VerticalAlignment="Stretch">
-                        <TextBlock Text="Submit!" FontSize="48" Margin="20,10,20,10" />
-                    </ui:Button>
-                </StackPanel>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-                <StackPanel DockPanel.Dock="Left">
-                    <controls:ReleaseProperties MediaTypeChanged="MediaType_Changed" />
-                    <controls:DiscProperties />
-                </StackPanel>
-                <controls:DiscTitles x:Name="DiscTitles" />
-            </DockPanel>
+                <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <controls:ReleaseProperties MediaTypeChanged="MediaType_Changed" />
+                        <controls:DiscProperties />
+                    </StackPanel>
+                </ScrollViewer>
+
+                <controls:DiscTitles x:Name="DiscTitles" Grid.Column="1" VerticalAlignment="Stretch" />
+
+            </Grid>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <ui:Button Margin="10" Click="Cancel_Click" VerticalAlignment="Stretch">
+                    <TextBlock Text="Cancel" FontSize="32" Margin="20,10,20,10" />
+                </ui:Button>
+                <ui:Button Appearance="Primary" Margin="10" Click="Submit_Click" VerticalAlignment="Stretch">
+                    <TextBlock Text="Submit!" FontSize="48" Margin="20,10,20,10" />
+                </ui:Button>
+            </StackPanel>
+
         </Grid>
-    </DockPanel>
+    </Grid>
 </windows:ThemedWindow>
