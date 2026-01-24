@@ -9,9 +9,17 @@
         xmlns:windows="clr-namespace:DiscRipper.Windows.Base"
         xmlns:types="clr-namespace:DiscRipper.Types;assembly=DiscRipper.Types"
         mc:Ignorable="d"
-        Title="ReleasePicker" Height="450" Width="800">
+        Title="Pick existing release to add a new disc to" Height="450" Width="800">
     <DockPanel Margin="5">
-        <ui:TextBox DockPanel.Dock="Top" FontSize="16" Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Search" />
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <ui:TitleBar Grid.Column="1" FontWeight="SemiBold" />
+            <ui:TextBox Grid.Column="0" FontSize="16" Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Search" VerticalAlignment="Top" VerticalContentAlignment="Center" />
+        </Grid>
+        
         <TreeView ItemsSource="{Binding FilteredMedia}" FontSize="14" MouseDoubleClick="Tree_DoubleClick">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type types:Media}" ItemsSource="{Binding Releases}">
