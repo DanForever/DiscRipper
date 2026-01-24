@@ -10,7 +10,7 @@ using DiscRipper.TheDiscDb.Repo;
 
 namespace DiscRipper.Windows;
 
-public partial class ReleasePicker : Window
+internal partial class ReleasePicker
 {
 	private string _filterText;
 
