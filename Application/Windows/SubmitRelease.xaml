@@ -11,7 +11,7 @@
         xmlns:types="clr-namespace:DiscRipper.Types;assembly=DiscRipper.Types"
         xmlns:controls="clr-namespace:DiscRipper.Controls"
         mc:Ignorable="d"
-        Title="SubmitNewDisc" Height="600" Width="1024">
+        Title="Submit new release" Height="600" Width="1024">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -43,15 +43,7 @@
 
             </Grid>
 
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <ui:Button Margin="10" Click="Cancel_Click" VerticalAlignment="Stretch">
-                    <TextBlock Text="Cancel" FontSize="32" Margin="20,10,20,10" />
-                </ui:Button>
-                <ui:Button Appearance="Primary" Margin="10" Click="Submit_Click" VerticalAlignment="Stretch">
-                    <TextBlock Text="Submit!" FontSize="48" Margin="20,10,20,10" />
-                </ui:Button>
-            </StackPanel>
-
+            <controls:SubmitButtons Grid.Row="1" Submit="Submit_Click" Cancel="Cancel_Click" />
         </Grid>
     </Grid>
 </windows:ThemedWindow>
