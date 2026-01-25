@@ -34,6 +34,7 @@
                     <MenuItem Header="Add new disc to existing release" Click="AddNewDisc_Click"/>
                 </MenuItem>
                 <MenuItem Header="_Debug" x:Name="DebugMenu">
+                    <MenuItem Header="Test rip" Click="TestRip_Click"/>
                     <MenuItem Header="Test new release" Click="TestRelease_Click"/>
                     <MenuItem Header="Test new disc" Click="TestDisc_Click"/>
                 </MenuItem>

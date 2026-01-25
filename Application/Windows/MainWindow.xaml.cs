@@ -248,6 +248,37 @@ internal partial class MainWindow
 		}
 	}
 
+	private async void TestRip_Click(object sender, RoutedEventArgs e)
+	{
+		MakeMkv.Runner runner = new()
+		{
+			MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+			SynchronizationContext = SynchronizationContext.Current!,
+		};
+
+		Feedback += runner.Log;
+		await runner.RunPreloaded(DummyData.TellNoOne);
+
+		MakeMkv.TitleEngine titleEngine = new();
+		await titleEngine.Read(runner.Log);
+
+		await _querier.Query(titleEngine.LongestTitle?.Duration);
+
+		List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
+
+		SubmitRelease submitNewDisc = new(runner.Log, titleEngine.Titles.ToList()) { Owner = this };
+
+		if (mappedDiscs.Count > 0)
+		{
+			BestMatch bestMatch = new(mappedDiscs) { Owner = this, SubmitNewDisc = submitNewDisc };
+			bestMatch.Show();
+		}
+		else
+		{
+			submitNewDisc.Show();
+		}
+	}
+
 	private async void TestRelease_Click(object sender, RoutedEventArgs e)
 	{
 		MakeMkv.Runner runner = new()
