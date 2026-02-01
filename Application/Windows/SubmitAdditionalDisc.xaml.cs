@@ -12,7 +12,7 @@ using DiscRipper.ViewModel;
 
 namespace DiscRipper.Windows;
 
-internal partial class SubmitAdditionalDisc : Window
+internal partial class SubmitAdditionalDisc
 {
 	public Session Session { get; init; }
 	public ViewModel.Submission Submission { get; init; }

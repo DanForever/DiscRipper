@@ -12,12 +12,12 @@ namespace DiscRipper.Windows;
 /// This window presents the user with what it thinks is the correct match from TheDiscDb based on the information retrieved from MakeMkv
 /// The user can then choose to rip the disc using that match, or switch to a different match (if there are any)
 /// </summary>
-internal partial class BestMatch : Window
+internal partial class BestMatch
 {
 	#region Private properties
 
 	private List<Mapped.Disc> MappedDiscs { get; init; }
-	private MakeMkv.Drive Drive { get; set; }
+	private MakeMkv.Drive? Drive { get; set; }
 	private MappedTitleViewModelList? MappedTitleViewModelList { get; set; }
 	private int ActiveDiscIndex { get; set; } = 0;
 
@@ -27,7 +27,7 @@ internal partial class BestMatch : Window
 
 	#region C-Tor
 
-	internal BestMatch(List<Mapped.Disc> mappedDiscs, MakeMkv.Drive drive)
+	internal BestMatch(List<Mapped.Disc> mappedDiscs, MakeMkv.Drive? drive = null)
 	{
 		InitializeComponent();
 

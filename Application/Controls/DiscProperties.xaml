@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:local="clr-namespace:DiscRipper"
+             xmlns:controls="clr-namespace:DiscRipper.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid IsSharedSizeScope="True">
@@ -15,16 +17,16 @@
                 </Style>
             </StackPanel.Resources>
 
-            <TextBlock Text="Disc" />
+            <controls:Heading Text="Disc metadata" />
 
             <local:Setting Label="Disc format">
                 <ComboBox ItemsSource="{Binding Mode=OneTime, Source={x:Static local:SubmitRelease.DiscFormats }}" SelectedValue="{Binding DiscFormat}" />
             </local:Setting>
             <local:Setting Label="Name of disc">
-                <TextBox Text="{Binding DiscTitle, UpdateSourceTrigger=PropertyChanged}" />
+                <ui:TextBox Text="{Binding DiscTitle, UpdateSourceTrigger=PropertyChanged}" />
             </local:Setting>
             <local:Setting Label="Disc slug">
-                <TextBox Text="{Binding DiscSlug, UpdateSourceTrigger=PropertyChanged}" />
+                <ui:TextBox Text="{Binding DiscSlug, UpdateSourceTrigger=PropertyChanged}" />
             </local:Setting>
         </StackPanel>
         

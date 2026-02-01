@@ -1,14 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace DiscRipper.Windows;
 
-public partial class MainWindow : Window
+internal partial class MainWindow
 {
 	#region Private fields
 
@@ -32,6 +35,7 @@ public partial class MainWindow : Window
 		DebugMenu.Visibility = Visibility.Collapsed;
 #endif
 
+		
 		Loaded += MainWindow_Loaded;
 	}
 
@@ -46,7 +50,7 @@ public partial class MainWindow : Window
 		// On startup we want to automatically populate the list of drives,
 		// but we can't do it in the constructor because the gui hasn't yet
 		// been initialized, and it can't be made async, so we do it here instead
-		await ScanDrives();
+		//await ScanDrives();
 	}
 
 	private async void Drives_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -244,6 +248,37 @@ public partial class MainWindow : Window
 		}
 	}
 
+	private async void TestRip_Click(object sender, RoutedEventArgs e)
+	{
+		MakeMkv.Runner runner = new()
+		{
+			MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+			SynchronizationContext = SynchronizationContext.Current!,
+		};
+
+		Feedback += runner.Log;
+		await runner.RunPreloaded(DummyData.TellNoOne);
+
+		MakeMkv.TitleEngine titleEngine = new();
+		await titleEngine.Read(runner.Log);
+
+		await _querier.Query(titleEngine.LongestTitle?.Duration);
+
+		List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
+
+		SubmitRelease submitNewDisc = new(runner.Log, titleEngine.Titles.ToList()) { Owner = this };
+
+		if (mappedDiscs.Count > 0)
+		{
+			BestMatch bestMatch = new(mappedDiscs) { Owner = this, SubmitNewDisc = submitNewDisc };
+			bestMatch.Show();
+		}
+		else
+		{
+			submitNewDisc.Show();
+		}
+	}
+
 	private async void TestRelease_Click(object sender, RoutedEventArgs e)
 	{
 		MakeMkv.Runner runner = new()
@@ -262,5 +297,42 @@ public partial class MainWindow : Window
 
 		SubmitRelease submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), null) { Owner = this };
 		submitNewDisc.Show();
+	}
+
+	private void SwitchTheme_Click(object sender, RoutedEventArgs e)
+	{
+		Wpf.Ui.Appearance.ApplicationTheme currentAppTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
+
+		switch (currentAppTheme)
+		{
+		case Wpf.Ui.Appearance.ApplicationTheme.Light:
+			Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Dark, Wpf.Ui.Controls.WindowBackdropType.None);
+			//ThemeService.ApplyThemeMasked(Wpf.Ui.Appearance.ApplicationTheme.Dark);
+			break;
+
+		case Wpf.Ui.Appearance.ApplicationTheme.Dark:
+			Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Light, Wpf.Ui.Controls.WindowBackdropType.None);
+			//ThemeService.ApplyThemeMasked(Wpf.Ui.Appearance.ApplicationTheme.Light);
+			break;
+		}
+	}
+
+	private void GotoGithub_Click(object sender, RoutedEventArgs e)
+	{
+		const string url = "https://github.com/DanForever/DiscRipper";
+
+		try
+		{
+			var psi = new System.Diagnostics.ProcessStartInfo
+			{
+				FileName = url,
+				UseShellExecute = true
+			};
+			System.Diagnostics.Process.Start(psi);
+		}
+		catch (System.Exception ex)
+		{
+			MessageBox.Show(this, $"Unable to open browser: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+		}
 	}
 }
