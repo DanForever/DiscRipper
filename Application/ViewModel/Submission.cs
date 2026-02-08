@@ -118,6 +118,18 @@ internal class Submission : ViewModel
 		set => ChangeProperty(Model, value);
 	}
 
+	public Types.MediaTypes MediaType_New
+	{
+		get
+		{
+			Types.MediaTypes mediaType = Types.MediaTypes.Movie;
+			Enum.TryParse<Types.MediaTypes>(MediaType, out mediaType);
+			return mediaType;
+		}
+
+		set => MediaType = value.ToString();
+	}
+
 	public string? ReleaseSlug
 	{
 		get => Model.ReleaseSlug;

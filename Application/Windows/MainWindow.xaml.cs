@@ -299,6 +299,164 @@ internal partial class MainWindow
 		submitNewDisc.Show();
 	}
 
+	private async void TestGuidedRelease_Click(object sender, RoutedEventArgs e)
+	{
+		MakeMkv.Runner runner = new()
+		{
+			MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+			SynchronizationContext = SynchronizationContext.Current!,
+		};
+
+		Feedback += runner.Log;
+		await runner.RunPreloaded(DummyData.TellNoOne);
+
+		MakeMkv.TitleEngine titleEngine = new();
+		await titleEngine.Read(runner.Log);
+
+		List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
+
+		//Guided.Tmdb window = new() { Owner = this };
+		//window.ShowDialog();
+
+		//Guided.MediaType window = new() { Owner = this };
+		//window.ShowDialog();
+
+		Sessions.Session session = Sessions.SessionManager.Instance.Value.CreateSession(titleEngine.Titles.ToList());
+		IList<ViewModel.SubmissionTitle> submissionTitles = session.Disc.Titles.Select(t => new ViewModel.SubmissionTitle { Model = t }).ToList();
+
+		ViewModel.Submission submission = new()
+		{
+			DiscModel = session.Disc,
+			Model = session.Release,
+			Titles = submissionTitles,
+		};
+
+		Base.GuidedStep tmdb = new()
+		{
+			Owner = this,
+			Title = "Step One - TMDB ID",
+			Description = "The first bit of information we require is the ID for the show or movie you want to submit to TheDiscDb. This simply involves going to the website (which you can do by clicking the button below), and then navigating to the page for the movie or show in question. After that, you can copy and paste the URL into the text field below.",
+			InnerContent = new Controls.Guided.Tmdb(),
+
+			Submission = submission,
+			Session = session,
+			Log = runner.Log,
+		};
+
+		Base.GuidedStep mediaType = new()
+		{
+			Owner = this,
+			Title = "Step two - Select the type of media on the disc",
+			Description = """
+				Does this disc contain a movie (or movie extras), or is it part of a TV series/show?
+				If, in the previous step, you copied and pasted the URL of the TMDB page, then we've probably automatically filled this in already, in that case, just verify that we got it right and move on to the next step.
+				""",
+			InnerContent = new Controls.Guided.MediaType(),
+
+			Submission = submission,
+			Session = session,
+			Log = runner.Log,
+		};
+
+		Base.GuidedStep upc = new()
+		{
+			Owner = this,
+			Title = "Step three - UPC",
+			Description = """
+				Here we want the Universal product code, or "UPC". This should be the number underneath the barcode on the back of the box. It should also be possible to find this on the amazon product page under "Manufacturer reference" in the "Product details" section.
+				""",
+			InnerContent = new Controls.Guided.Upc(),
+
+			Submission = submission,
+			Session = session,
+			Log = runner.Log,
+		};
+
+		Base.GuidedStep asin = new()
+		{
+			Owner = this,
+			Title = "Step four - ASIN",
+			Description = """
+				Looking for another form of ID, but this time it's unique to amazon - "Amazon Standard Identification Number".
+				Like the UPC, this one can be also found on the amazon product page in the "Product details" section, simply labelled "ASIN".
+				However, again you can also simply copy and paste the url to the amazon product page directly into the textbox below and we'll extract it from that automatically.
+				""",
+			InnerContent = new Controls.Guided.Asin(),
+
+			Submission = submission,
+			Session = session,
+			Log = runner.Log,
+		};
+
+		Base.GuidedStep releaseDate = new()
+		{
+			Owner = this,
+			Title = "Step five - Release publication date",
+			Description = """
+				The date that this particular disc edition was released (so not the date for when the movie first entered cinemas).
+				Just like previously, it should be possible to find this information on the amazon product page under "Release date" in the "Product details" section.
+				""",
+			InnerContent = new Controls.Guided.PublicationDate(),
+
+			Submission = submission,
+			Session = session,
+			Log = runner.Log,
+		};
+
+		Base.GuidedStep coverArt = new()
+		{
+			Owner = this,
+			Title = "Step six - Cover art",
+			Description = """
+				Here we would like you to specify urls to where we can download images for the front and back cover of the box for this release.
+				Search for the cover art on the internet, and when you find it, right click -> "copy image link", and then paste that in the appropriate field below.
+				Usually, the artwork should be available on the amazon product site, but if it's not there, you may also have luck at blu-ray.com.
+				""",
+			InnerContent = new Controls.Guided.CoverArt(),
+
+			Submission = submission,
+			Session = session,
+			Log = runner.Log,
+		};
+
+		Base.GuidedStep regionCode = new()
+		{
+			Owner = this,
+			Title = "Step six - Region locking code",
+			Description = """
+				Is this disc locked to a specific region? Usually you can find the region code on the back of the box, it will be a letter (A, B or C) inside a globe icon. If there is no such icon, then the disc is most likely region free.
+				Sites like blu-ray.com usually also have the region code listed on the product page, so if you have trouble finding it on the box, you can also try looking there.
+
+				You can find out more about the different region codes and what they mean at Wikipedia.
+				""",
+			InnerContent = new Controls.Guided.RegionCode(),
+
+			Submission = submission,
+			Session = session,
+			Log = runner.Log,
+		};
+
+
+		//Base.GuidedStep coverArt = new()
+		//{
+		//	Owner = this,
+		//	Title = "Step six - Cover art",
+		//	Description = """
+		//		Here we would like you to specify urls to where we can download images for the front and back cover of the box for this release.
+		//		Search for the cover art on the internet, and when you find it, right click -> "copy image link", and then paste that in the appropriate field below.
+		//		Usually, the artwork should be available on the amazon product site, but if it's not there, you may also have luck at blu-ray.com.
+		//		""",
+		//	InnerContent = new Controls.Guided.CoverArt(),
+
+		//	Submission = submission,
+		//	Session = session,
+		//	Log = runner.Log,
+		//};
+
+		regionCode.DataContext = submission;
+		regionCode.ShowDialog();
+	}
+
 	private void SwitchTheme_Click(object sender, RoutedEventArgs e)
 	{
 		Wpf.Ui.Appearance.ApplicationTheme currentAppTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
@@ -307,12 +465,10 @@ internal partial class MainWindow
 		{
 		case Wpf.Ui.Appearance.ApplicationTheme.Light:
 			Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Dark, Wpf.Ui.Controls.WindowBackdropType.None);
-			//ThemeService.ApplyThemeMasked(Wpf.Ui.Appearance.ApplicationTheme.Dark);
 			break;
 
 		case Wpf.Ui.Appearance.ApplicationTheme.Dark:
 			Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Light, Wpf.Ui.Controls.WindowBackdropType.None);
-			//ThemeService.ApplyThemeMasked(Wpf.Ui.Appearance.ApplicationTheme.Light);
 			break;
 		}
 	}

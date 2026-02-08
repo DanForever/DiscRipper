@@ -1,0 +1,46 @@
+﻿<!-- ####################################################################
+
+This file was partly generated via the 
+IconPacks.Browser (MIT-License). 
+
+Visit https://github.com/MahApps/MahApps.Metro.IconPacks and 
+https://github.com/MahApps/MahApps.Metro.IconPacks/blob/develop/LICENSE 
+for more information.
+
+##################################################################### -->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ####################################################################
+ 
+    Icon-Name: 			NumberCircleOneFill
+    Iconpack:			PhosphorIcons
+    Iconpack-Homepage: 	https://phosphoricons.com/
+    Iconpack-License:	https://github.com/phosphor-icons/core?tab=MIT-1-ov-file#readme
+
+    ##################################################################### -->
+
+    <ControlTemplate x:Key="OneIconTemplate" TargetType="Control">
+        <Viewbox Stretch="Uniform">
+            <Canvas Width="48" Height="48">
+                <Canvas.LayoutTransform>
+                    <MatrixTransform Matrix="1,0,0,-1,0,0" />
+                </Canvas.LayoutTransform>
+                <Path Data="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm12,152a8,8,0,0,1-16,0V95l-11.56,7.71a8,8,0,1,1-8.88-13.32l24-16A8,8,0,0,1,140,80Z"
+                    Stroke="{x:Null}"
+                    Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                    Stretch="Uniform"
+                    Width="48"
+                    Height="48"
+                    SnapsToDevicePixels="False"
+                    UseLayoutRounding="False"
+                    StrokeThickness="0"
+                    StrokeStartLineCap="flat"
+                    StrokeEndLineCap="flat"
+                    StrokeLineJoin="miter" />
+            </Canvas>
+        </Viewbox>
+    </ControlTemplate>
+    
+</ResourceDictionary>

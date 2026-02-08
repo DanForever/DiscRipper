@@ -49,6 +49,16 @@ internal partial class SubmitRelease
 		DataContext = Submission;
 	}
 
+	public SubmitRelease(Submission submission, Session session, MakeMkv.Log log)
+	{
+		InitializeComponent();
+
+		Log = log;
+		Session = session;
+		Submission = submission;
+		DataContext = submission;
+	}
+
 	public SubmitRelease(MakeMkv.Log log, List<Types.Title> titles, MakeMkv.Drive? drive = null) : this(SessionManager.Instance.Value.CreateSession(titles), log)
 	{
 		Session.Log = Log.ExportRawLog();
