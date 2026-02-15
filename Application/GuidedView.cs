@@ -88,6 +88,15 @@ namespace DiscRipper.Guided
 		}
 	}
 
+	internal sealed class DiscNameControlFactory : StepControlFactory
+	{
+		public Control Create()
+		{
+			return new Controls.Guided.DiscName();
+		}
+	}
+	
+
 	internal record Step
 	{
 		public string Title { get; init; }
@@ -184,6 +193,17 @@ namespace DiscRipper.Guided
 					If it's a 4k Blu-ray, then you should select "UHD".
 					""",
 				InnerContentControlFactory = new DiscFormatControlFactory(),
+			},
+			new Step
+			{
+				Title = "Disc name",
+				Description = """
+				A unique name for this disc (of possibly many discs from this release).
+
+				This is up to you, you could name them simply "disc1, disc2, disc3, etc", or if it's a 4k release (which also has the 1080p on another disc), you could name them after the formats: "uhd", "blu-ray", "bonus-content".
+				The name needs to uniquely identify this disc from all the other discs in this release, you don't need to care about other discs from other releases having the same name.
+				""",
+				InnerContentControlFactory = new DiscNameControlFactory(),
 			},
 		};
 
