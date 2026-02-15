@@ -72,6 +72,14 @@ namespace DiscRipper.Guided
 		}
 	}
 
+	internal sealed class LocalesControlFactory : StepControlFactory
+	{
+		public Control Create()
+		{
+			return new Controls.Guided.Locale();
+		}
+	}
+
 	internal record Step
 	{
 		public string Title { get; init; }
@@ -148,6 +156,16 @@ namespace DiscRipper.Guided
 					You can find out more about the different region codes and what they mean at Wikipedia.
 					""",
 				InnerContentControlFactory = new RegionCodeControlFactory(),
+			},
+			new Step
+			{
+				Title = "Locale",
+				Description = """
+					Here we want the country and (primary) language for this release. Not the country of origin for the film, but this particular disc release.
+					
+					If the blurb on the box is in German, and the age rating is "FSK" then you probably want to put "German (Germany)". If it's in English and you have BBFC age ratings, then you more than likely want "English (United Kingdom)".
+					""",
+				InnerContentControlFactory = new LocalesControlFactory(),
 			},
 		};
 
@@ -232,7 +250,6 @@ namespace DiscRipper.Guided
 
 				ShowPrevious(window.Left, window.Top);
 			};
-
 
 			stepWindow.ShowDialog();
 		}
