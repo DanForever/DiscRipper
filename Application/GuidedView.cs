@@ -80,6 +80,14 @@ namespace DiscRipper.Guided
 		}
 	}
 
+	internal sealed class DiscFormatControlFactory : StepControlFactory
+	{
+		public Control Create()
+		{
+			return new Controls.Guided.DiscFormat();
+		}
+	}
+
 	internal record Step
 	{
 		public string Title { get; init; }
@@ -166,6 +174,16 @@ namespace DiscRipper.Guided
 					If the blurb on the box is in German, and the age rating is "FSK" then you probably want to put "German (Germany)". If it's in English and you have BBFC age ratings, then you more than likely want "English (United Kingdom)".
 					""",
 				InnerContentControlFactory = new LocalesControlFactory(),
+			},
+			new Step
+			{
+				Title = "Disc format",
+				Description = """
+					What kind of disc is this?
+
+					If it's a 4k Blu-ray, then you should select "UHD".
+					""",
+				InnerContentControlFactory = new DiscFormatControlFactory(),
 			},
 		};
 
