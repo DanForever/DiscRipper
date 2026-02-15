@@ -14,10 +14,10 @@ for more information.
 
     <!-- ####################################################################
  
-    Icon-Name: 			NumberCircleOneFill
-    Iconpack:			PhosphorIcons
-    Iconpack-Homepage: 	https://phosphoricons.com/
-    Iconpack-License:	https://github.com/phosphor-icons/core?tab=MIT-1-ov-file#readme
+    Icon-Name: 			_1CircleFill
+    Iconpack:			BootstrapIcons
+    Iconpack-Homepage: 	https://icons.getbootstrap.com/
+    Iconpack-License:	https://github.com/twbs/icons?tab=MIT-1-ov-file#readme
 
     ##################################################################### -->
 
@@ -27,7 +27,255 @@ for more information.
                 <Canvas.LayoutTransform>
                     <MatrixTransform Matrix="1,0,0,-1,0,0" />
                 </Canvas.LayoutTransform>
-                <Path Data="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm12,152a8,8,0,0,1-16,0V95l-11.56,7.71a8,8,0,1,1-8.88-13.32l24-16A8,8,0,0,1,140,80Z"
+                <Path Data="M300 150A150 150 0 1 0 0 150A150 150 0 0 0 300 150M174.05625 224.9625H149.45625L113.85 199.03125V175.2L148.2375 199.9125H149.45625V75H174.05625z"
+                    Stroke="{x:Null}"
+                    Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                    Stretch="Uniform"
+                    Width="48"
+                    Height="48"
+                    SnapsToDevicePixels="False"
+                    UseLayoutRounding="False"
+                    StrokeThickness="0"
+                    StrokeStartLineCap="flat"
+                    StrokeEndLineCap="flat"
+                    StrokeLineJoin="miter" />
+            </Canvas>
+        </Viewbox>
+    </ControlTemplate>
+
+    <!-- ####################################################################
+ 
+    Icon-Name: 			_2CircleFill
+    Iconpack:			BootstrapIcons
+    Iconpack-Homepage: 	https://icons.getbootstrap.com/
+    Iconpack-License:	https://github.com/twbs/icons?tab=MIT-1-ov-file#readme
+
+    ##################################################################### -->
+
+    <ControlTemplate x:Key="TwoIconTemplate" TargetType="Control">
+        <Viewbox Stretch="Uniform">
+            <Canvas Width="48" Height="48">
+                <Canvas.LayoutTransform>
+                    <MatrixTransform Matrix="1,0,0,-1,0,0" />
+                </Canvas.LayoutTransform>
+                <Path Data="M300 150A150 150 0 1 0 0 150A150 150 0 0 0 300 150M124.6125 183C124.6125 195.95625 133.85625 207.4875 149.6625 207.4875C163.8375 207.4875 174.28125 198.2625 174.28125 184.3125C174.28125 171.24375 165.4875 161.25 157.36875 152.34375L101.6625 90.6V75H201.8625000000001V95.75625H136.275V97.2L173.2875 138.825L175.0875 140.83125C187.9875 155.1375 199.21875 167.60625 199.21875 186.39375C199.21875 210.13125 179.8875 227.925 150.225 227.925C117.2625 227.925 100.78125 205.6125 100.78125 182.8875V181.66875H124.6125V182.98125z"
+                    Stroke="{x:Null}"
+                    Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                    Stretch="Uniform"
+                    Width="48"
+                    Height="48"
+                    SnapsToDevicePixels="False"
+                    UseLayoutRounding="False"
+                    StrokeThickness="0"
+                    StrokeStartLineCap="flat"
+                    StrokeEndLineCap="flat"
+                    StrokeLineJoin="miter" />
+            </Canvas>
+        </Viewbox>
+    </ControlTemplate>
+
+    <!-- ####################################################################
+ 
+    Icon-Name: 			_3CircleFill
+    Iconpack:			BootstrapIcons
+    Iconpack-Homepage: 	https://icons.getbootstrap.com/
+    Iconpack-License:	https://github.com/twbs/icons?tab=MIT-1-ov-file#readme
+
+    ##################################################################### -->
+
+    <ControlTemplate x:Key="ThreeIconTemplate" TargetType="Control">
+        <Viewbox Stretch="Uniform">
+            <Canvas Width="48" Height="48">
+                <Canvas.LayoutTransform>
+                    <MatrixTransform Matrix="1,0,0,-1,0,0" />
+                </Canvas.LayoutTransform>
+                <Path Data="M300 150A150 150 0 1 0 0 150A150 150 0 0 0 300 150M148.4625 142.2375C165.7125 142.2375 177.24375 132.1125 177.35625 117.525C177.58125 102.69375 165.825 92.025 147.58125 92.1375C131.4375 92.25 119.79375 100.93125 118.70625 112.125H95.7C96.58125 90.0562500000001 115.3875 71.925 147.3375 71.925C178.33125 71.925 202.725 89.49375 202.275 116.8500000000001C201.84375 140.8125000000001 182.94375 151.4625000000001 169.7625 152.7750000000001V154.0875000000001C180.95625 155.9625000000001 197.98125 167.9437500000001 197.55 189.2625000000001C196.9875 211.3312500000001 177.99375 228.1500000000001 148.10625 227.9250000000001C116.7 227.8125000000001 99.54375 209.4750000000001 98.8875 188.1750000000001H122.2875C122.9625 198.6000000000001 132.73125 207.9375000000001 147.5625 207.9375000000001C162.28125 207.9375000000001 172.8375 198.8250000000001 172.8375 185.5312500000001C172.95 172.1250000000001 162.28125 162.3375000000001 147.675 162.3375000000001H131.9625V142.2375000000001H148.44375z"
+                    Stroke="{x:Null}"
+                    Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                    Stretch="Uniform"
+                    Width="48"
+                    Height="48"
+                    SnapsToDevicePixels="False"
+                    UseLayoutRounding="False"
+                    StrokeThickness="0"
+                    StrokeStartLineCap="flat"
+                    StrokeEndLineCap="flat"
+                    StrokeLineJoin="miter" />
+            </Canvas>
+        </Viewbox>
+    </ControlTemplate>
+
+    <!-- ####################################################################
+ 
+    Icon-Name: 			_4CircleFill
+    Iconpack:			BootstrapIcons
+    Iconpack-Homepage: 	https://icons.getbootstrap.com/
+    Iconpack-License:	https://github.com/twbs/icons?tab=MIT-1-ov-file#readme
+
+    ##################################################################### -->
+
+    <ControlTemplate x:Key="FourIconTemplate" TargetType="Control">
+        <Viewbox Stretch="Uniform">
+            <Canvas Width="48" Height="48">
+                <Canvas.LayoutTransform>
+                    <MatrixTransform Matrix="1,0,0,-1,0,0" />
+                </Canvas.LayoutTransform>
+                <Path Data="M300 150A150 150 0 1 0 0 150A150 150 0 0 0 300 150M140.98125 205.18125C124.36875 178.59375 107.75625 151.96875 93.31875 125.2125V104.2125H165.9375V75H189.5625V104.23125H208.44375V124.9875H189.5625V224.9625H153.3zM116.71875 125.98125V124.9875H165.9375V205.06875H164.71875C148.4625 180.13125 131.2125 152.45625 116.71875 125.98125"
+                    Stroke="{x:Null}"
+                    Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                    Stretch="Uniform"
+                    Width="48"
+                    Height="48"
+                    SnapsToDevicePixels="False"
+                    UseLayoutRounding="False"
+                    StrokeThickness="0"
+                    StrokeStartLineCap="flat"
+                    StrokeEndLineCap="flat"
+                    StrokeLineJoin="miter" />
+            </Canvas>
+        </Viewbox>
+    </ControlTemplate>
+
+    <!-- ####################################################################
+ 
+    Icon-Name: 			_5CircleFill
+    Iconpack:			BootstrapIcons
+    Iconpack-Homepage: 	https://icons.getbootstrap.com/
+    Iconpack-License:	https://github.com/twbs/icons?tab=MIT-1-ov-file#readme
+
+    ##################################################################### -->
+
+    <ControlTemplate x:Key="FiveIconTemplate" TargetType="Control">
+        <Viewbox Stretch="Uniform">
+            <Canvas Width="48" Height="48">
+                <Canvas.LayoutTransform>
+                    <MatrixTransform Matrix="1,0,0,-1,0,0" />
+                </Canvas.LayoutTransform>
+                <Path Data="M300 150A150 150 0 1 0 0 150A150 150 0 0 0 300 150M149.8875 72.0375C182.5125 72.0375 204.7125 93.01875 204.7125 124.65C204.7125 155.41875 182.625 173.1 156.7125 173.1C139.89375 173.1 129.675 165.20625 126.4875 160.35H125.2875L128.90625 204.3H196.8V224.9625H108.58125L102.09375 138.1875H123.6375C127.25625 144.9 136.1625 153.35625 150.54375 153.35625C166.48125 153.35625 180.20625 142.03125 180.20625 123.91875C180.20625 103.575 165.6 92.38125 150.76875 92.38125C137.7 92.38125 124.725 98.19375 122.08125 111.7125H98.925C100.14375 88.96875 120.46875 72.05625 149.925 72.05625z"
+                    Stroke="{x:Null}"
+                    Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                    Stretch="Uniform"
+                    Width="48"
+                    Height="48"
+                    SnapsToDevicePixels="False"
+                    UseLayoutRounding="False"
+                    StrokeThickness="0"
+                    StrokeStartLineCap="flat"
+                    StrokeEndLineCap="flat"
+                    StrokeLineJoin="miter" />
+            </Canvas>
+        </Viewbox>
+    </ControlTemplate>
+
+    <!-- ####################################################################
+ 
+    Icon-Name: 			_6CircleFill
+    Iconpack:			BootstrapIcons
+    Iconpack-Homepage: 	https://icons.getbootstrap.com/
+    Iconpack-License:	https://github.com/twbs/icons?tab=MIT-1-ov-file#readme
+
+    ##################################################################### -->
+
+    <ControlTemplate x:Key="SixIconTemplate" TargetType="Control">
+        <Viewbox Stretch="Uniform">
+            <Canvas Width="48" Height="48">
+                <Canvas.LayoutTransform>
+                    <MatrixTransform Matrix="1,0,0,-1,0,0" />
+                </Canvas.LayoutTransform>
+                <Path Data="M300 150A150 150 0 1 0 0 150A150 150 0 0 0 300 150M153.9375 227.71875C118.9125 227.71875 95.5125 201.5625 95.5125 145.0875C95.5125 122.90625 99.7875 106.85625 106.70625 95.55C117.375 78.1875 134.4 72.0375 151.875 72.0375C182.41875 72.0375 205.25625 91.03125 205.25625 124.21875C205.25625 155.64375 181.74375 172.125 158.23125 172.125C137.1375 172.125 125.38125 160.6875 121.10625 150.46875H119.56875C119.34375 186.95625 133.2 207.39375 153.4125 207.39375C168.45 207.39375 176.15625 198.825 178.0125 192.1125H202.2C201.075 209.1375 184.1625 227.71875 153.95625 227.71875zM152.08125 152.56875C134.83125 152.56875 122.75625 140.38125 122.75625 123.01875C122.75625 103.66875 135.9375 92.3625 151.96875 92.3625C168.24375 92.3625 181.0875 102.35625 181.0875 122.90625C181.0875 142.78125 167.1375 152.56875 152.08125 152.56875"
+                    Stroke="{x:Null}"
+                    Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                    Stretch="Uniform"
+                    Width="48"
+                    Height="48"
+                    SnapsToDevicePixels="False"
+                    UseLayoutRounding="False"
+                    StrokeThickness="0"
+                    StrokeStartLineCap="flat"
+                    StrokeEndLineCap="flat"
+                    StrokeLineJoin="miter" />
+            </Canvas>
+        </Viewbox>
+    </ControlTemplate>
+
+    <!-- ####################################################################
+ 
+    Icon-Name: 			_7CircleFill
+    Iconpack:			BootstrapIcons
+    Iconpack-Homepage: 	https://icons.getbootstrap.com/
+    Iconpack-License:	https://github.com/twbs/icons?tab=MIT-1-ov-file#readme
+
+    ##################################################################### -->
+
+    <ControlTemplate x:Key="SevenIconTemplate" TargetType="Control">
+        <Viewbox Stretch="Uniform">
+            <Canvas Width="48" Height="48">
+                <Canvas.LayoutTransform>
+                    <MatrixTransform Matrix="1,0,0,-1,0,0" />
+                </Canvas.LayoutTransform>
+                <Path Data="M300 150A150 150 0 1 0 0 150A150 150 0 0 0 300 150M100.6875 204.1875H175.1625V202.875L112.96875 75H139.125L200.2125 203.4375V224.9625H100.66875V204.20625z"
+                    Stroke="{x:Null}"
+                    Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                    Stretch="Uniform"
+                    Width="48"
+                    Height="48"
+                    SnapsToDevicePixels="False"
+                    UseLayoutRounding="False"
+                    StrokeThickness="0"
+                    StrokeStartLineCap="flat"
+                    StrokeEndLineCap="flat"
+                    StrokeLineJoin="miter" />
+            </Canvas>
+        </Viewbox>
+    </ControlTemplate>
+
+    <!-- ####################################################################
+ 
+    Icon-Name: 			_8CircleFill
+    Iconpack:			BootstrapIcons
+    Iconpack-Homepage: 	https://icons.getbootstrap.com/
+    Iconpack-License:	https://github.com/twbs/icons?tab=MIT-1-ov-file#readme
+
+    ##################################################################### -->
+
+    <ControlTemplate x:Key="EightIconTemplate" TargetType="Control">
+        <Viewbox Stretch="Uniform">
+            <Canvas Width="48" Height="48">
+                <Canvas.LayoutTransform>
+                    <MatrixTransform Matrix="1,0,0,-1,0,0" />
+                </Canvas.LayoutTransform>
+                <Path Data="M300 150A150 150 0 1 0 0 150A150 150 0 0 0 300 150M205.6875 116.19375C205.6875 139.59375 188.00625 150.69375 174.825 153.54375V154.7625C186.0375 158.26875 199.875 168.2625 199.875 188.15625C199.875 211.125 179.55 227.925 150.1125 227.925S100.2375 211.125 100.2375 188.175C100.2375 168.6 113.53125 158.38125 125.175 154.7625V153.54375C112.10625 150.69375 94.29375 139.81875 94.29375 115.9875C94.29375 89.925 116.60625 72.0375 149.6625 72.0375C182.8499999999999 72.0375 205.7062499999999 90.0375 205.7062499999999 116.19375zM124.18125 185.75625C124.18125 171.9 135.16875 162.225 150.1125 162.225S175.93125 171.9 175.93125 185.7375C175.93125 199.48125 165.05625 208.8 150.1125 208.8S124.18125 199.48125 124.18125 185.7375zM118.9125 117.4125C118.9125 101.7 132.4125 90.9375 150.1125 90.9375C167.79375 90.9375 181.2 101.7 181.2 117.4124999999999C181.2 133.21875 167.79375 144.1124999999999 150.1125 144.1124999999999C132.4125 144.1124999999999 118.9125 133.2374999999999 118.9125 117.4124999999999"
+                    Stroke="{x:Null}"
+                    Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                    Stretch="Uniform"
+                    Width="48"
+                    Height="48"
+                    SnapsToDevicePixels="False"
+                    UseLayoutRounding="False"
+                    StrokeThickness="0"
+                    StrokeStartLineCap="flat"
+                    StrokeEndLineCap="flat"
+                    StrokeLineJoin="miter" />
+            </Canvas>
+        </Viewbox>
+    </ControlTemplate>
+
+    <!-- ####################################################################
+ 
+    Icon-Name: 			_9CircleFill
+    Iconpack:			BootstrapIcons
+    Iconpack-Homepage: 	https://icons.getbootstrap.com/
+    Iconpack-License:	https://github.com/twbs/icons?tab=MIT-1-ov-file#readme
+
+    ##################################################################### -->
+
+    <ControlTemplate x:Key="NineIconTemplate" TargetType="Control">
+        <Viewbox Stretch="Uniform">
+            <Canvas Width="48" Height="48">
+                <Canvas.LayoutTransform>
+                    <MatrixTransform Matrix="1,0,0,-1,0,0" />
+                </Canvas.LayoutTransform>
+                <Path Data="M300 150A150 150 0 1 0 0 150A150 150 0 0 0 300 150M145.81875 72.2625C185.26875 72.2625 204.375 99.7125 204.375 152.8875C204.375 211.89375 177.01875 228.15 148.6875 228.15C118.125 228.15 94.85625 209.025 94.85625 176.9625C94.85625 144.975 116.8125 126.95625 142.96875 126.95625C162.84375 126.95625 174.84375 137.4 179.23125 149.15625H180.65625C181.5375 117.84375 171.75 92.475 146.26875 92.475C132.95625 92.475 124.725 99.28125 122.86875 105.975H98.5875C100.35 88.95 115.95 72.2625 145.8375 72.2625zM148.03125 146.7375C163.18125 146.7375 176.8125 156.6375 176.8125 176.625S164.2875 208.05 147.5625 208.05C131.85 208.05 119.11875 196.5 119.11875 176.94375C119.11875 156.84375 132.39375 146.75625 147.99375 146.75625z"
                     Stroke="{x:Null}"
                     Fill="{DynamicResource TextFillColorPrimaryBrush}"
                     Stretch="Uniform"

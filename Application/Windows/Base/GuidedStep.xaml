@@ -16,12 +16,17 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0">
-            <Control DockPanel.Dock="Left" Width="48" Height="32" Margin="5" Template="{StaticResource DiscIconTemplate}" />
+            <Control DockPanel.Dock="Left" Width="48" Height="32" Margin="5" Template="{Binding StepNumberIcon, RelativeSource={RelativeSource AncestorType=windows:GuidedStep}}" />
             <ui:TitleBar Title="Guided submission" FontWeight="SemiBold" />
         </DockPanel>
-        
+
         <DockPanel Grid.Row="1">
-            <TextBlock DockPanel.Dock="Top" TextWrapping="WrapWithOverflow" Margin="30,5,30,5" FontSize="32" FontWeight="DemiBold" Text="{Binding Title, RelativeSource={RelativeSource AncestorType=windows:GuidedStep}}" />
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="30,5,30,5">
+                <TextBlock FontSize="43" FontWeight="Bold" VerticalAlignment="Center" Text="{Binding StepNumber, RelativeSource={RelativeSource AncestorType=windows:GuidedStep}}" />
+                <TextBlock FontSize="43" FontWeight="Normal" VerticalAlignment="Center" Text=" - " />
+                <TextBlock FontSize="43" FontWeight="Light" VerticalAlignment="Bottom" Text="{Binding Title, RelativeSource={RelativeSource AncestorType=windows:GuidedStep}}" />
+            </StackPanel>
+            
             <TextBlock DockPanel.Dock="Top" TextWrapping="WrapWithOverflow" Margin="30,5,30,5" Text="{Binding Description, RelativeSource={RelativeSource AncestorType=windows:GuidedStep}}" />
 
             <TextBlock DockPanel.Dock="Top" />
@@ -45,12 +50,12 @@
                         <TextBlock Text="Advanced" FontSize="32" Margin="20,10,20,10" />
                     </Viewbox>
                 </ui:Button>
-                <ui:Button Grid.Column="2" Margin="10" VerticalAlignment="Stretch" Click="Previous_Click">
+                <ui:Button Grid.Column="2" Margin="10" VerticalAlignment="Stretch" x:Name="Previous" IsEnabled="{Binding HasPrevious, RelativeSource={RelativeSource AncestorType={x:Type windows:GuidedStep}}}">
                     <Viewbox Stretch="Uniform">
                         <TextBlock Text="Previous" FontSize="32" Margin="20,10,20,10" />
                     </Viewbox>
                 </ui:Button>
-                <ui:Button Grid.Column="3" Appearance="Primary" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="Next_Click">
+                <ui:Button Grid.Column="3" Appearance="Primary" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="Next">
                     <Viewbox Stretch="Uniform">
                         <TextBlock Text="Next" FontSize="48" Margin="20,10,20,10" />
                     </Viewbox>
