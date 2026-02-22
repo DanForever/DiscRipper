@@ -118,6 +118,14 @@ namespace DiscRipper.Guided
 		}
 	}
 
+	internal sealed class DiscTitlesControlFactory : StepControlFactory
+	{
+		public Control Create()
+		{
+			return new Controls.Guided.DiscTitles();
+		}
+	}
+
 	#endregion Factories
 
 	internal record Step
@@ -253,6 +261,16 @@ namespace DiscRipper.Guided
 				""",
 				InnerContentControlFactory = new ReleaseSlugControlFactory(),
 			},
+			new Step
+			{
+				Title = "Disc titles",
+				Description = """
+				Here we have the meat of the disc, the actual videos. Each video on a disc is called a "title", we know all the technical details about each of these titles, but we don't know which title is which video, which is where you come in.
+
+				You'll need to write down the name of the title (as it appears on the back of the box or in the menu), and also tell us what kind of title it is (main movie, deleted scene, trailer, extra, episode, etc). If it's an episode from a TV show, then also specify the season and episode number as well.
+				""",
+				InnerContentControlFactory = new DiscTitlesControlFactory(),
+			},
 		};
 
 		public string[] StepTitleStrings => stepTitleStrings_;
@@ -313,7 +331,7 @@ namespace DiscRipper.Guided
 			Windows.Base.GuidedStep stepWindow = new Windows.Base.GuidedStep
 			{
 				StepNumberIcon = FindIconResource(CurrentStepIndex),
-				StepNumber = StepTitleStrings[CurrentStepIndex],
+				StepNumber = StepTitleStrings.ElementAtOrDefault(CurrentStepIndex),
 				Title = step.Title,
 				Description = step.Description,
 				InnerContent = step.InnerContentControlFactory.Create(),
@@ -336,7 +354,12 @@ namespace DiscRipper.Guided
 				var window = Window.GetWindow((DependencyObject)sender);
 				window.Close();
 
-				ShowNext(window.Left, window.Top);
+				// If there are no more steps to show, then switch to the advanced view
+				if(!ShowNext(window.Left, window.Top))
+				{
+					SubmitRelease submitNewDisc = new(Submission, Session, Log) { Owner = Owner };
+					submitNewDisc.Show();
+				}
 			};
 
 			stepWindow.PreviousClicked += (sender, args) =>

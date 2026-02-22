@@ -114,7 +114,7 @@ internal class Submission : ViewModel
 
 	public string? MediaType
 	{
-		get => Model.MediaType;
+		get => Model?.MediaType ?? "Movie";
 		set => ChangeProperty(Model, value);
 	}
 

@@ -34,12 +34,12 @@
 
                 <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <controls:ReleaseProperties MediaTypeChanged="MediaType_Changed" />
+                        <controls:ReleaseProperties />
                         <controls:DiscProperties />
                     </StackPanel>
                 </ScrollViewer>
 
-                <controls:DiscTitles x:Name="DiscTitles" Grid.Column="1" VerticalAlignment="Stretch" />
+                <controls:DiscTitles Grid.Column="1" VerticalAlignment="Stretch" />
 
             </Grid>
 
