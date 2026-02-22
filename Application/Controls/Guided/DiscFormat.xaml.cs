@@ -2,9 +2,9 @@
 
 namespace DiscRipper.Controls.Guided;
 
-public partial class Locale : UserControl
+public partial class DiscFormat : UserControl
 {
-	public Locale()
+	public DiscFormat()
 	{
 		InitializeComponent();
 	}

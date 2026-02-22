@@ -2,9 +2,9 @@
 
 namespace DiscRipper.Controls.Guided;
 
-public partial class Locale : UserControl
+public partial class DiscName : UserControl
 {
-	public Locale()
+	public DiscName()
 	{
 		InitializeComponent();
 	}

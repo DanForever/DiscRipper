@@ -80,6 +80,23 @@ namespace DiscRipper.Guided
 		}
 	}
 
+	internal sealed class DiscFormatControlFactory : StepControlFactory
+	{
+		public Control Create()
+		{
+			return new Controls.Guided.DiscFormat();
+		}
+	}
+
+	internal sealed class DiscNameControlFactory : StepControlFactory
+	{
+		public Control Create()
+		{
+			return new Controls.Guided.DiscName();
+		}
+	}
+	
+
 	internal record Step
 	{
 		public string Title { get; init; }
@@ -166,6 +183,27 @@ namespace DiscRipper.Guided
 					If the blurb on the box is in German, and the age rating is "FSK" then you probably want to put "German (Germany)". If it's in English and you have BBFC age ratings, then you more than likely want "English (United Kingdom)".
 					""",
 				InnerContentControlFactory = new LocalesControlFactory(),
+			},
+			new Step
+			{
+				Title = "Disc format",
+				Description = """
+					What kind of disc is this?
+
+					If it's a 4k Blu-ray, then you should select "UHD".
+					""",
+				InnerContentControlFactory = new DiscFormatControlFactory(),
+			},
+			new Step
+			{
+				Title = "Disc name",
+				Description = """
+				A unique name for this disc (of possibly many discs from this release).
+
+				This is up to you, you could name them simply "disc1, disc2, disc3, etc", or if it's a 4k release (which also has the 1080p on another disc), you could name them after the formats: "uhd", "blu-ray", "bonus-content".
+				The name needs to uniquely identify this disc from all the other discs in this release, you don't need to care about other discs from other releases having the same name.
+				""",
+				InnerContentControlFactory = new DiscNameControlFactory(),
 			},
 		};
 
