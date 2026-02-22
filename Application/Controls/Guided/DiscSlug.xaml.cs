@@ -2,14 +2,14 @@
 
 namespace DiscRipper.Controls.Guided;
 
-public partial class DiscName : UserControl
+public partial class DiscSlug : UserControl
 {
 	#region C-Tor
 
-	public DiscName()
+	public DiscSlug()
 	{
 		InitializeComponent();
 	}
-	
+
 	#endregion C-Tor
 }

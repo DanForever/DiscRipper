@@ -11,10 +11,16 @@ using DiscRipper.ViewModel;
 
 namespace DiscRipper.Guided
 {
+	#region Factory Interface
+
 	internal interface StepControlFactory
 	{
 		public Control Create();
 	}
+
+	#endregion Factory Interface
+
+	#region Factories
 
 	internal sealed class AsinControlFactory : StepControlFactory
 	{
@@ -95,7 +101,24 @@ namespace DiscRipper.Guided
 			return new Controls.Guided.DiscName();
 		}
 	}
-	
+
+	internal sealed class DiscSlugControlFactory : StepControlFactory
+	{
+		public Control Create()
+		{
+			return new Controls.Guided.DiscSlug();
+		}
+	}
+
+	internal sealed class ReleaseSlugControlFactory : StepControlFactory
+	{
+		public Control Create()
+		{
+			return new Controls.Guided.ReleaseSlug();
+		}
+	}
+
+	#endregion Factories
 
 	internal record Step
 	{
@@ -107,7 +130,7 @@ namespace DiscRipper.Guided
 	internal class View
 	{
 		static readonly private string[] stepIconNames_ = ["OneIconTemplate", "TwoIconTemplate", "ThreeIconTemplate", "FourIconTemplate", "FiveIconTemplate", "SixIconTemplate", "SevenIconTemplate", "EightIconTemplate", "NineIconTemplate"];
-		static readonly private string[] stepTitleStrings_ = ["Step One", "Step Two", "Step Three", "Step Four", "Step Five", "Step Six", "Step Seven", "Step Eight", "Step Nine", "Step Ten"];
+		static readonly private string[] stepTitleStrings_ = ["Step One", "Step Two", "Step Three", "Step Four", "Step Five", "Step Six", "Step Seven", "Step Eight", "Step Nine", "Step Ten", "Step Eleven", "Step Twelve", "Step Thirteen", "Step Fourteen", "Step Fifteen", "Step Sixteen"];
 
 		static readonly private Step[] _steps = new[]
 		{
@@ -198,12 +221,37 @@ namespace DiscRipper.Guided
 			{
 				Title = "Disc name",
 				Description = """
-				A unique name for this disc (of possibly many discs from this release).
+				A name that uniquely identifies this disc from all the other discs in this release (if any).
 
 				This is up to you, you could name them simply "disc1, disc2, disc3, etc", or if it's a 4k release (which also has the 1080p on another disc), you could name them after the formats: "uhd", "blu-ray", "bonus-content".
 				The name needs to uniquely identify this disc from all the other discs in this release, you don't need to care about other discs from other releases having the same name.
 				""",
 				InnerContentControlFactory = new DiscNameControlFactory(),
+			},
+			new Step
+			{
+				Title = "Disc slug",
+				Description = """
+				This "slug" is used to create the URL that will take a site visitor directly to the page for this particular disc.
+				
+				The rules can generally be the same as for the disc name, but you cannot use any characters that are not url friendly, so no spaces, and no special characters. You can use dashes or underscores to separate words if you like.
+				In other words, only use alphanumeric (a-z, A-Z, 0-9) characters, and dashes (-) or underscores (_).
+				""",
+				InnerContentControlFactory = new DiscSlugControlFactory(),
+			},
+			new Step
+			{
+				Title = "Release slug",
+				Description = """
+				This "slug" is used to create the URL that will take a site visitor directly to the page for this particular release.
+				This slug uniquely identifies this release from all the other releases for this particular movie or show, but you don't need to worry having the same release names as other movies or shows.
+				
+				The rules can generally be the same as for the release name, but you cannot use any characters that are not url friendly, so no spaces, and no special characters. You can use dashes or underscores to separate words if you like.
+				In other words, only use alphanumeric (a-z, A-Z, 0-9) characters, and dashes (-) or underscores (_).
+
+				By convention, we usually name the release slug as "YEAR-MEDIATYPE-LOCALE", (where "year" is the publication year for this edition/release) and if you've already filled out that information, you should already be able to see it filled out below.
+				""",
+				InnerContentControlFactory = new ReleaseSlugControlFactory(),
 			},
 		};
 
@@ -250,11 +298,21 @@ namespace DiscRipper.Guided
 			return true;
 		}
 
+		private ControlTemplate FindIconResource(int index)
+		{
+			if(stepIconNames_.Length <= index)
+				return null;
+
+			string key = stepIconNames_[CurrentStepIndex];
+
+			return (ControlTemplate)Application.Current.TryFindResource(key);
+		}
+
 		private void ShowStep(Step step, Window owner, double? left, double? top)
 		{
 			Windows.Base.GuidedStep stepWindow = new Windows.Base.GuidedStep
 			{
-				StepNumberIcon = (CurrentStepIndex < stepIconNames_.Length) ? (ControlTemplate)Application.Current.FindResource(stepIconNames_[CurrentStepIndex]) : null,
+				StepNumberIcon = FindIconResource(CurrentStepIndex),
 				StepNumber = StepTitleStrings[CurrentStepIndex],
 				Title = step.Title,
 				Description = step.Description,
