@@ -7,6 +7,7 @@
              xmlns:localtddb="clr-namespace:DiscRipper.TheDiscDb;assembly=DiscRipper.TheDiscDb"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:DiscRipper.Controls.Guided"
+             xmlns:util="clr-namespace:DiscRipper.Utilities"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -28,6 +29,6 @@
             <ui:Anchor Margin="0,0,0,5" NavigateUri="https://en.wikipedia.org/wiki/DVD_region_code#Region_codes_and_countries" Content="DVD region codes at Wikipedia" Icon="{ui:SymbolIcon Link24}" />
             <ui:Anchor Margin="0,0,0,5" NavigateUri="https://en.wikipedia.org/wiki/DVD_region_code#Blu-ray_disc_region_codes" Content="Blu-ray region codes at Wikipedia" Icon="{ui:SymbolIcon Link24}" />
         </StackPanel>
-        <ComboBox Grid.Row="1" ItemsSource="{Binding Source={StaticResource RegionCodes}}" SelectedItem="{Binding RegionCode, UpdateSourceTrigger=PropertyChanged}" />
+        <ComboBox Grid.Row="1" ItemsSource="{Binding Source={StaticResource RegionCodes}}" SelectedItem="{Binding RegionCode, UpdateSourceTrigger=PropertyChanged}" util:FocusHelper.AutoFocus="True" />
     </Grid>
 </UserControl>

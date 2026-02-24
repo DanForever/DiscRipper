@@ -5,6 +5,7 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:DiscRipper.Controls.Guided"
+             xmlns:util="clr-namespace:DiscRipper.Utilities"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -14,6 +15,6 @@
         </Grid.RowDefinitions>
 
         <ui:Anchor Grid.Row="0" Margin="0,0,0,10" NavigateUri="https://www.amazon.com" Content="Go to amazon.com" Icon="{ui:SymbolIcon Link24}" />
-        <ui:TextBox Grid.Row="1" Text="{Binding UPC, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Barcode number" />
+        <ui:TextBox Grid.Row="1" Text="{Binding UPC, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Barcode number" util:FocusHelper.AutoFocus="True" />
     </Grid>
 </UserControl>

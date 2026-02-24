@@ -6,9 +6,10 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:localtypes="clr-namespace:DiscRipper.Types;assembly=DiscRipper.Types"
+             xmlns:util="clr-namespace:DiscRipper.Utilities"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ComboBox ItemsSource="{Binding Mode=OneWay, Source={x:Static localtypes:Locales.AllRegions }}" SelectedValuePath="Name" DisplayMemberPath="DisplayName" SelectedValue="{Binding Locale, UpdateSourceTrigger=PropertyChanged}" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" IsEditable="True" />
+        <ComboBox ItemsSource="{Binding Mode=OneWay, Source={x:Static localtypes:Locales.AllRegions }}" SelectedValuePath="Name" DisplayMemberPath="DisplayName" SelectedValue="{Binding Locale, UpdateSourceTrigger=PropertyChanged}" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" IsEditable="True" util:FocusHelper.AutoFocus="True" />
     </Grid>
 </UserControl>
