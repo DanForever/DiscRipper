@@ -117,6 +117,7 @@ jobs:
             skip-tag: "true"
             skip-version-file: "true"
             output-file: "changelog-body.md"
+            release-count: '1'
 
       - name: Upload changelog artifact
         uses: actions/upload-artifact@v4
