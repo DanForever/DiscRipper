@@ -144,18 +144,4 @@ internal partial class SubmitAdditionalDisc
 	{
 		Close();
 	}
-
-	private void MediaType_Changed(object sender, SelectionChangedEventArgs e)
-	{
-		switch (Submission.MediaType)
-		{
-		case "Series":
-			DiscTitles.SetSeriesPropertiesVisible(true);
-			break;
-
-		case "Movie":
-			DiscTitles.SetSeriesPropertiesVisible(visible: false);
-			break;
-		}
-	}
 }

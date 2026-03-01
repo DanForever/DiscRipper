@@ -8,7 +8,13 @@
              xmlns:local="clr-namespace:DiscRipper.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <ui:Button x:Name="GuidedViewButton" Margin="10" VerticalAlignment="Stretch" Visibility="{Binding GuidedViewVisible, RelativeSource={RelativeSource AncestorType=local:SubmitButtons}, Converter={StaticResource BoolToVisibilityConverter}}">
+            <TextBlock Text="Switch to guided view" FontSize="24" Margin="20,10,20,10" />
+        </ui:Button>
         <ui:Button x:Name="CancelButton" Margin="10" VerticalAlignment="Stretch">
             <TextBlock Text="Cancel" FontSize="32" Margin="20,10,20,10" />
         </ui:Button>

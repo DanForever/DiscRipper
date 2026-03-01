@@ -11,7 +11,7 @@
         xmlns:types="clr-namespace:DiscRipper.Types;assembly=DiscRipper.Types"
         xmlns:controls="clr-namespace:DiscRipper.Controls"
         mc:Ignorable="d"
-        Title="Submit new release" Height="600" Width="1024">
+        Title="Submit new release" Height="750" Width="1024">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -34,16 +34,16 @@
 
                 <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <controls:ReleaseProperties MediaTypeChanged="MediaType_Changed" />
+                        <controls:ReleaseProperties />
                         <controls:DiscProperties />
                     </StackPanel>
                 </ScrollViewer>
 
-                <controls:DiscTitles x:Name="DiscTitles" Grid.Column="1" VerticalAlignment="Stretch" />
+                <controls:DiscTitles Grid.Column="1" VerticalAlignment="Stretch" />
 
             </Grid>
 
-            <controls:SubmitButtons Grid.Row="1" Submit="Submit_Click" Cancel="Cancel_Click" />
+            <controls:SubmitButtons Grid.Row="1" Submit="Submit_Click" Cancel="Cancel_Click" SwitchToGuidedView="GuidedViewSwitch_Click" />
         </Grid>
     </Grid>
 </windows:ThemedWindow>

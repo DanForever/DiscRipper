@@ -49,6 +49,16 @@ internal partial class SubmitRelease
 		DataContext = Submission;
 	}
 
+	public SubmitRelease(Submission submission, Session session, MakeMkv.Log log)
+	{
+		InitializeComponent();
+
+		Log = log;
+		Session = session;
+		Submission = submission;
+		DataContext = submission;
+	}
+
 	public SubmitRelease(MakeMkv.Log log, List<Types.Title> titles, MakeMkv.Drive? drive = null) : this(SessionManager.Instance.Value.CreateSession(titles), log)
 	{
 		Session.Log = Log.ExportRawLog();
@@ -146,17 +156,19 @@ internal partial class SubmitRelease
 		Close();
 	}
 
-	private void MediaType_Changed(object sender, SelectionChangedEventArgs e)
+	private void GuidedViewSwitch_Click(object sender, RoutedEventArgs e)
 	{
-		switch (Submission.MediaType)
-		{
-		case "Series":
-			DiscTitles.SetSeriesPropertiesVisible(true);
-			break;
+		Close();
 
-		case "Movie":
-			DiscTitles.SetSeriesPropertiesVisible(visible: false);
-			break;
-		}
+		Guided.View guidedView = new()
+		{
+			Owner = Owner,
+
+			Submission = Submission,
+			Session = Session,
+			Log = Log,
+		};
+
+		guidedView.ShowFirst();
 	}
 }

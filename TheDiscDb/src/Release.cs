@@ -15,7 +15,7 @@ public class Disc
 public class Release
 {
     public string? TMDB { get; set; }
-    public string? MediaType { get; set; }
+    public string? MediaType { get; set; } = "Movie";
     public string? ReleaseSlug { get; set; }
     public string? UPC { get; set; }
     public string? ASIN { get; set; }

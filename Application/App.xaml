@@ -10,8 +10,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />
-                <ResourceDictionary Source="/Icons/GithubIcon.xaml"/>
-                <ResourceDictionary Source="/Icons/ThemeSwitchIcon.xaml"/>
+                <ResourceDictionary Source="/Icons/GithubIcon.xaml" />
+                <ResourceDictionary Source="/Icons/ThemeSwitchIcon.xaml" />
+                <ResourceDictionary Source="/Icons/DiscIcon.xaml" />
+                <ResourceDictionary Source="/Icons/NumberIcons.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
