@@ -43,7 +43,7 @@
 
             </Grid>
 
-            <controls:SubmitButtons Grid.Row="1" Submit="Submit_Click" Cancel="Cancel_Click" />
+            <controls:SubmitButtons Grid.Row="1" Submit="Submit_Click" Cancel="Cancel_Click" SwitchToGuidedView="GuidedViewSwitch_Click" />
         </Grid>
     </Grid>
 </windows:ThemedWindow>

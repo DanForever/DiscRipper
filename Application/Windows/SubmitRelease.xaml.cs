@@ -155,4 +155,20 @@ internal partial class SubmitRelease
 	{
 		Close();
 	}
+
+	private void GuidedViewSwitch_Click(object sender, RoutedEventArgs e)
+	{
+		Close();
+
+		Guided.View guidedView = new()
+		{
+			Owner = Owner,
+
+			Submission = Submission,
+			Session = Session,
+			Log = Log,
+		};
+
+		guidedView.ShowFirst();
+	}
 }
