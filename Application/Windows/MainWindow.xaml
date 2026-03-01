@@ -14,12 +14,13 @@
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Auto"
         WindowCornerPreference="Round"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Title="Disc ripper">
     <DockPanel>
         
         <!-- Titlebar and combined menubar -->
         <DockPanel DockPanel.Dock="Top">
-            <Control Width="48" Height="32" Margin="5" DockPanel.Dock="Left" Template="{StaticResource GitHubIconTemplate}" />
+            <Control Width="48" Height="32" Margin="5" DockPanel.Dock="Left" Template="{StaticResource DiscIconTemplate}" />
             <Menu DockPanel.Dock="Left">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Settings" Click="Settings_Click"/>
@@ -37,6 +38,7 @@
                     <MenuItem Header="Test rip" Click="TestRip_Click"/>
                     <MenuItem Header="Test new release" Click="TestRelease_Click"/>
                     <MenuItem Header="Test new disc" Click="TestDisc_Click"/>
+                    <MenuItem Header="Test guided new release" Click="TestGuidedRelease_Click"/>
                 </MenuItem>
             </Menu>
             <Grid>

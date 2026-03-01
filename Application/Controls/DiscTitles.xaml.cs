@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
+using DiscRipper.ViewModel;
 
 namespace DiscRipper.Controls;
 
 public partial class DiscTitles : UserControl
 {
+	#region C-Tor
+
 	public DiscTitles()
 	{
 		InitializeComponent();
+
+		Loaded += OnLoaded;
 	}
 
-	public void SetSeriesPropertiesVisible(bool visible)
+	#endregion C-Tor
+
+	#region Private Methods
+
+	private void SetSeriesPropertiesVisible(bool visible)
 	{
 		var seasonColumn = TitleDetails.Columns.First(c => c.Header?.ToString() == "Season");
 		var episodeColumn = TitleDetails.Columns.First(c => c.Header?.ToString() == "Episode");
@@ -39,6 +39,30 @@ public partial class DiscTitles : UserControl
 		}
 	}
 
+	#endregion Private Methods
+
+	#region Event Handlers
+
+	private void OnLoaded(object sender, RoutedEventArgs e)
+	{
+		if (DataContext is Submission submission)
+		{
+			submission.PropertyChanged += SubmissionPropertyChanged;
+
+			SetSeriesPropertiesVisible(submission.MediaType_New == Types.MediaTypes.Series);
+		}
+	}
+
+	private void SubmissionPropertyChanged(object? sender, PropertyChangedEventArgs e)
+	{
+		if(e.PropertyName == nameof(Submission.MediaType) || e.PropertyName == nameof(Submission.MediaType_New))
+		{
+			Submission submission = (Submission)DataContext;
+
+			SetSeriesPropertiesVisible(submission.MediaType_New == Types.MediaTypes.Series);
+		}
+	}
+
 	private void Title_Selected(object sender, SelectionChangedEventArgs e)
 	{
 		var grid = (DataGrid)sender;
@@ -47,4 +71,6 @@ public partial class DiscTitles : UserControl
 			SelectedTitleDetails.DataContext = grid.SelectedItem;
 		}
 	}
+
+	#endregion Event Handlers
 }

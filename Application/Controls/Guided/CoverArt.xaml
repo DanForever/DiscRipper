@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="DiscRipper.Controls.Guided.CoverArt"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:DiscRipper.Controls.Guided"
+             xmlns:util="clr-namespace:DiscRipper.Utilities"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal">
+            <ui:Anchor Grid.Row="0" Margin="0,0,0,10" NavigateUri="https://www.amazon.com/" Content="Go to amazon.com" Icon="{ui:SymbolIcon Link24}" />
+            <ui:Anchor Grid.Row="0" Margin="10,0,0,10" NavigateUri="https://www.blu-ray.com/" Content="Go to blu-ray.com" Icon="{ui:SymbolIcon Link24}" />
+        </StackPanel>
+        <ui:TextBox Grid.Row="1" Margin="0,0,0,10" Text="{Binding FrontCoverUrl, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Frontcover image url" util:FocusHelper.AutoFocus="True" />
+        <ui:TextBox Grid.Row="2" Text="{Binding BackCoverUrl, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Backcover image url" />
+    </Grid>
+</UserControl>

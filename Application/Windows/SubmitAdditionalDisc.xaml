@@ -18,7 +18,7 @@
             <controls:SubmitButtons DockPanel.Dock="Bottom" Submit="Submit_Click" Cancel="Cancel_Click" />
 
             <controls:DiscProperties DockPanel.Dock="Left" />
-            <controls:DiscTitles x:Name="DiscTitles" />
+            <controls:DiscTitles />
         </DockPanel>
     </Grid>
 </windows:ThemedWindow>

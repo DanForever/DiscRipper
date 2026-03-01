@@ -98,20 +98,7 @@ internal partial class MainWindow
 	{
 		if (Drives.SelectedItem is MakeMkv.Drive drive)
 		{
-			MakeMkv.Runner runner = new()
-			{
-				MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
-				SynchronizationContext = SynchronizationContext.Current!,
-			};
-
-			Feedback += runner.Log;
-			await runner.Info(drive.Index, Settings.Default.MakeMkvMinimumTitleLength);
-
-			MakeMkv.TitleEngine titleEngine = new();
-			await titleEngine.Read(runner.Log);
-
-			SubmitRelease submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), drive) { Owner = this };
-			submitNewDisc.Show();
+			await StartNewReleaseFlow(drive);
 		}
 	}
 
@@ -220,6 +207,67 @@ internal partial class MainWindow
 		}
 	}
 
+	private async Task<(ViewModel.Submission Submission, Sessions.Session Session, MakeMkv.Log Log)> PrepareDiscData(MakeMkv.Drive drive)
+	{
+		MakeMkv.Runner runner = new()
+		{
+			MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+			SynchronizationContext = SynchronizationContext.Current!,
+		};
+
+		Feedback += runner.Log;
+		await runner.RunPreloaded(DummyData.TellNoOne);
+
+		MakeMkv.TitleEngine titleEngine = new();
+		await titleEngine.Read(runner.Log);
+
+		Sessions.Session session = Sessions.SessionManager.Instance.Value.CreateSession(titleEngine.Titles.ToList());
+		IList<ViewModel.SubmissionTitle> submissionTitles = session.Disc.Titles.Select(t => new ViewModel.SubmissionTitle { Model = t }).ToList();
+
+		ViewModel.Submission submission = new()
+		{
+			DiscModel = session.Disc,
+			Model = session.Release,
+			Titles = submissionTitles,
+		};
+
+		return (submission, session, runner.Log);
+	}
+
+	private async Task StartNewReleaseFlow(MakeMkv.Drive drive)
+	{
+		var (submission, session, log) = await PrepareDiscData(drive);
+
+		if (Settings.Default.GuidedViewEnabledByDefault)
+		{
+			ShowNewReleaseGuidedView(submission, session, log);
+		}
+		else
+		{
+			ShowNewReleaseAdvancedView(submission, session, log);
+		}
+	}
+
+	private void ShowNewReleaseAdvancedView(ViewModel.Submission submission, Sessions.Session session, MakeMkv.Log log)
+	{
+		SubmitRelease submitNewDisc = new(submission, session, log) { Owner = this };
+		submitNewDisc.Show();
+	}
+
+	private void ShowNewReleaseGuidedView(ViewModel.Submission submission, Sessions.Session session, MakeMkv.Log log)
+	{
+		Guided.View guidedView = new()
+		{
+			Owner = this,
+
+			Submission = submission,
+			Session = session,
+			Log = log,
+		};
+
+		guidedView.ShowFirst();
+	}
+
 	#endregion Private methods
 
 	private async void TestDisc_Click(object sender, RoutedEventArgs e)
@@ -299,6 +347,42 @@ internal partial class MainWindow
 		submitNewDisc.Show();
 	}
 
+	private async void TestGuidedRelease_Click(object sender, RoutedEventArgs e)
+	{
+		MakeMkv.Runner runner = new()
+		{
+			MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+			SynchronizationContext = SynchronizationContext.Current!,
+		};
+
+		Feedback += runner.Log;
+		await runner.RunPreloaded(DummyData.TellNoOne);
+
+		MakeMkv.TitleEngine titleEngine = new();
+		await titleEngine.Read(runner.Log);
+
+		Sessions.Session session = Sessions.SessionManager.Instance.Value.CreateSession(titleEngine.Titles.ToList());
+		IList<ViewModel.SubmissionTitle> submissionTitles = session.Disc.Titles.Select(t => new ViewModel.SubmissionTitle { Model = t }).ToList();
+
+		ViewModel.Submission submission = new()
+		{
+			DiscModel = session.Disc,
+			Model = session.Release,
+			Titles = submissionTitles,
+		};
+
+		Guided.View guidedView = new()
+		{
+			Owner = this,
+
+			Submission = submission,
+			Session = session,
+			Log = runner.Log,
+		};
+
+		guidedView.ShowFirst();
+	}
+
 	private void SwitchTheme_Click(object sender, RoutedEventArgs e)
 	{
 		Wpf.Ui.Appearance.ApplicationTheme currentAppTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
@@ -307,12 +391,10 @@ internal partial class MainWindow
 		{
 		case Wpf.Ui.Appearance.ApplicationTheme.Light:
 			Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Dark, Wpf.Ui.Controls.WindowBackdropType.None);
-			//ThemeService.ApplyThemeMasked(Wpf.Ui.Appearance.ApplicationTheme.Dark);
 			break;
 
 		case Wpf.Ui.Appearance.ApplicationTheme.Dark:
 			Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Light, Wpf.Ui.Controls.WindowBackdropType.None);
-			//ThemeService.ApplyThemeMasked(Wpf.Ui.Appearance.ApplicationTheme.Light);
 			break;
 		}
 	}
