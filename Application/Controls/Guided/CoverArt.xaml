@@ -19,7 +19,7 @@
             <ui:Anchor Grid.Row="0" Margin="0,0,0,10" NavigateUri="https://www.amazon.com/" Content="Go to amazon.com" Icon="{ui:SymbolIcon Link24}" />
             <ui:Anchor Grid.Row="0" Margin="10,0,0,10" NavigateUri="https://www.blu-ray.com/" Content="Go to blu-ray.com" Icon="{ui:SymbolIcon Link24}" />
         </StackPanel>
-        <ui:TextBox Grid.Row="1" Margin="0,0,0,10" Text="{Binding FrontCoverUrl, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Frontcover image url" />
-        <ui:TextBox Grid.Row="2" Text="{Binding BackCoverUrl, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Backcover image url" util:FocusHelper.AutoFocus="True" />
+        <ui:TextBox Grid.Row="1" Margin="0,0,0,10" Text="{Binding FrontCoverUrl, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Frontcover image url" util:FocusHelper.AutoFocus="True" />
+        <ui:TextBox Grid.Row="2" Text="{Binding BackCoverUrl, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Backcover image url" />
     </Grid>
 </UserControl>
