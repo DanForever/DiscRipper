@@ -27,6 +27,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock Text="MakeMkv install path"  Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="5" />
             <DockPanel Grid.Column="1" Grid.Row="1" Margin="5">
@@ -47,6 +48,11 @@
             <TextBlock Text="Makemkv minimum title length" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Margin="5" />
             <DockPanel Grid.Column="1" Grid.Row="3" Margin="5">
                 <ui:NumberBox MaxDecimalPlaces="0" Padding="5" Value="{Binding Source={x:Static local:Settings.Default}, Path=MakeMkvMinimumTitleLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />
+            </DockPanel>
+
+            <TextBlock Text="Use Guided view by default" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" Margin="5" />
+            <DockPanel Grid.Column="1" Grid.Row="4" Margin="5">
+                <ui:ToggleSwitch OffContent="Off" OnContent="On" Padding="5" IsChecked="{Binding Source={x:Static local:Settings.Default}, Path=GuidedViewEnabledByDefault, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />
             </DockPanel>
         </Grid>
     </DockPanel>
