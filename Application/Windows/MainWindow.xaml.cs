@@ -265,24 +265,15 @@ internal partial class MainWindow
 
 	private void GotoGithub_Click(object sender, RoutedEventArgs e)
 	{
-		const string url = "https://github.com/DanForever/DiscRipper";
-
-		try
-		{
-			var psi = new System.Diagnostics.ProcessStartInfo
-			{
-				FileName = url,
-				UseShellExecute = true
-			};
-			System.Diagnostics.Process.Start(psi);
-		}
-		catch (System.Exception ex)
-		{
-			MessageBox.Show(this, $"Unable to open browser: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-		}
+		OpenUrlInBrowser("https://github.com/DanForever/DiscRipper");
 	}
 
-#endregion Event handlers
+	private void GotoTheDiscDb_Click(object sender, RoutedEventArgs e)
+	{
+		OpenUrlInBrowser("https://thediscdb.com/");
+	}
+
+	#endregion Event handlers
 
 	#region Private methods
 
@@ -419,6 +410,23 @@ internal partial class MainWindow
 		};
 
 		guidedView.ShowFirst();
+	}
+
+	private void OpenUrlInBrowser(string url)
+	{
+		try
+		{
+			var psi = new System.Diagnostics.ProcessStartInfo
+			{
+				FileName = url,
+				UseShellExecute = true
+			};
+			System.Diagnostics.Process.Start(psi);
+		}
+		catch (System.Exception ex)
+		{
+			MessageBox.Show(this, $"Unable to open browser: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+		}
 	}
 
 	#endregion Private methods
