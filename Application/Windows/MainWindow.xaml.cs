@@ -50,7 +50,13 @@ internal partial class MainWindow
 		// On startup we want to automatically populate the list of drives,
 		// but we can't do it in the constructor because the gui hasn't yet
 		// been initialized, and it can't be made async, so we do it here instead
-		//await ScanDrives();
+		if (Settings.Default.ScanDrivesOnStart)
+		{
+			// Disable this in debug builds because we don't wanna waste time scanning drives when debugging other things
+#if !DEBUG
+			await ScanDrives();
+#endif
+		}
 	}
 
 	private async void Drives_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -128,148 +134,6 @@ internal partial class MainWindow
 			}
 		}
 	}
-
-	#endregion Event handlers
-
-	#region Private methods
-
-	private async Task ScanDrives()
-	{
-		MakeMkv.Runner runner = new()
-		{
-			MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
-			SynchronizationContext = SynchronizationContext.Current!,
-		};
-
-		Feedback += runner.Log;
-		await runner.Drives();
-
-		foreach (var item in runner.Log.Drives)
-			_viewModel.Drives.Add(item);
-	}
-
-	private async Task ScanDisc(MakeMkv.Drive drive)
-	{
-		MakeMkv.Runner runner = new()
-		{
-			MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
-			SynchronizationContext = SynchronizationContext.Current!,
-		};
-
-		Feedback += runner.Log;
-		await runner.Info(drive.Index, Settings.Default.MakeMkvMinimumTitleLength);
-
-		MakeMkv.TitleEngine titleEngine = new();
-		await titleEngine.Read(runner.Log);
-
-		await _querier.Query(titleEngine.LongestTitle?.Duration);
-
-		List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
-
-		SubmitRelease submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), drive) { Owner = this };
-
-		if (mappedDiscs.Count > 0)
-		{
-			BestMatch bestMatch = new(mappedDiscs, drive) { Owner = this, SubmitNewDisc = submitNewDisc };
-			bestMatch.Show();
-		}
-		else
-		{
-			submitNewDisc.Show();
-		}
-	}
-
-	private async Task ScanDiscDummy()
-	{
-		MakeMkv.Runner runner = new()
-		{
-			MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
-			SynchronizationContext = SynchronizationContext.Current!,
-		};
-
-		Feedback += runner.Log;
-		await runner.RunPreloaded(DummyData.TellNoOne);
-
-		MakeMkv.TitleEngine titleEngine = new();
-		await titleEngine.Read(runner.Log);
-
-		List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
-		SubmitRelease submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), null) { Owner = this };
-
-		if (mappedDiscs.Count > 0)
-		{
-			BestMatch bestMatch = new(mappedDiscs, null!) { Owner = this, SubmitNewDisc = submitNewDisc };
-			bestMatch.Show();
-		}
-		else
-		{
-			submitNewDisc.Show();
-		}
-	}
-
-	private async Task<(ViewModel.Submission Submission, Sessions.Session Session, MakeMkv.Log Log)> PrepareDiscData(MakeMkv.Drive drive)
-	{
-		MakeMkv.Runner runner = new()
-		{
-			MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
-			SynchronizationContext = SynchronizationContext.Current!,
-		};
-
-		Feedback += runner.Log;
-		await runner.RunPreloaded(DummyData.TellNoOne);
-
-		MakeMkv.TitleEngine titleEngine = new();
-		await titleEngine.Read(runner.Log);
-
-		Sessions.Session session = Sessions.SessionManager.Instance.Value.CreateSession(titleEngine.Titles.ToList());
-		IList<ViewModel.SubmissionTitle> submissionTitles = session.Disc.Titles.Select(t => new ViewModel.SubmissionTitle { Model = t }).ToList();
-
-		ViewModel.Submission submission = new()
-		{
-			DiscModel = session.Disc,
-			Model = session.Release,
-			Titles = submissionTitles,
-		};
-
-		return (submission, session, runner.Log);
-	}
-
-	private async Task StartNewReleaseFlow(MakeMkv.Drive drive)
-	{
-		var (submission, session, log) = await PrepareDiscData(drive);
-
-		if (Settings.Default.GuidedViewEnabledByDefault)
-		{
-			ShowNewReleaseGuidedView(submission, session, log);
-		}
-		else
-		{
-			ShowNewReleaseAdvancedView(submission, session, log);
-		}
-	}
-
-	private void ShowNewReleaseAdvancedView(ViewModel.Submission submission, Sessions.Session session, MakeMkv.Log log)
-	{
-		SubmitRelease submitNewDisc = new(submission, session, log) { Owner = this };
-		submitNewDisc.Show();
-	}
-
-	private void ShowNewReleaseGuidedView(ViewModel.Submission submission, Sessions.Session session, MakeMkv.Log log)
-	{
-		Guided.View guidedView = new()
-		{
-			Owner = this,
-
-			Submission = submission,
-			Session = session,
-			Log = log,
-		};
-
-		guidedView.ShowFirst();
-	}
-
-	#endregion Private methods
-
 	private async void TestDisc_Click(object sender, RoutedEventArgs e)
 	{
 		MakeMkv.Runner runner = new()
@@ -417,4 +281,145 @@ internal partial class MainWindow
 			MessageBox.Show(this, $"Unable to open browser: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 	}
+
+#endregion Event handlers
+
+	#region Private methods
+
+	private async Task ScanDrives()
+	{
+		MakeMkv.Runner runner = new()
+		{
+			MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+			SynchronizationContext = SynchronizationContext.Current!,
+		};
+
+		Feedback += runner.Log;
+		await runner.Drives();
+
+		foreach (var item in runner.Log.Drives)
+			_viewModel.Drives.Add(item);
+	}
+
+	private async Task ScanDisc(MakeMkv.Drive drive)
+	{
+		MakeMkv.Runner runner = new()
+		{
+			MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+			SynchronizationContext = SynchronizationContext.Current!,
+		};
+
+		Feedback += runner.Log;
+		await runner.Info(drive.Index, Settings.Default.MakeMkvMinimumTitleLength);
+
+		MakeMkv.TitleEngine titleEngine = new();
+		await titleEngine.Read(runner.Log);
+
+		await _querier.Query(titleEngine.LongestTitle?.Duration);
+
+		List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
+
+		SubmitRelease submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), drive) { Owner = this };
+
+		if (mappedDiscs.Count > 0)
+		{
+			BestMatch bestMatch = new(mappedDiscs, drive) { Owner = this, SubmitNewDisc = submitNewDisc };
+			bestMatch.Show();
+		}
+		else
+		{
+			submitNewDisc.Show();
+		}
+	}
+
+	private async Task ScanDiscDummy()
+	{
+		MakeMkv.Runner runner = new()
+		{
+			MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+			SynchronizationContext = SynchronizationContext.Current!,
+		};
+
+		Feedback += runner.Log;
+		await runner.RunPreloaded(DummyData.TellNoOne);
+
+		MakeMkv.TitleEngine titleEngine = new();
+		await titleEngine.Read(runner.Log);
+
+		List<Mapped.Disc> mappedDiscs = TitleMapper.Map(titleEngine.Titles.ToList(), _querier.Nodes);
+		SubmitRelease submitNewDisc = new(runner.Log, titleEngine.Titles.ToList(), null) { Owner = this };
+
+		if (mappedDiscs.Count > 0)
+		{
+			BestMatch bestMatch = new(mappedDiscs, null!) { Owner = this, SubmitNewDisc = submitNewDisc };
+			bestMatch.Show();
+		}
+		else
+		{
+			submitNewDisc.Show();
+		}
+	}
+
+	private async Task<(ViewModel.Submission Submission, Sessions.Session Session, MakeMkv.Log Log)> PrepareDiscData(MakeMkv.Drive drive)
+	{
+		MakeMkv.Runner runner = new()
+		{
+			MakeMkvDir = Settings.Default.MakeMkvInstallFolder,
+			SynchronizationContext = SynchronizationContext.Current!,
+		};
+
+		Feedback += runner.Log;
+		await runner.RunPreloaded(DummyData.TellNoOne);
+
+		MakeMkv.TitleEngine titleEngine = new();
+		await titleEngine.Read(runner.Log);
+
+		Sessions.Session session = Sessions.SessionManager.Instance.Value.CreateSession(titleEngine.Titles.ToList());
+		IList<ViewModel.SubmissionTitle> submissionTitles = session.Disc.Titles.Select(t => new ViewModel.SubmissionTitle { Model = t }).ToList();
+
+		ViewModel.Submission submission = new()
+		{
+			DiscModel = session.Disc,
+			Model = session.Release,
+			Titles = submissionTitles,
+		};
+
+		return (submission, session, runner.Log);
+	}
+
+	private async Task StartNewReleaseFlow(MakeMkv.Drive drive)
+	{
+		var (submission, session, log) = await PrepareDiscData(drive);
+
+		if (Settings.Default.GuidedViewEnabledByDefault)
+		{
+			ShowNewReleaseGuidedView(submission, session, log);
+		}
+		else
+		{
+			ShowNewReleaseAdvancedView(submission, session, log);
+		}
+	}
+
+	private void ShowNewReleaseAdvancedView(ViewModel.Submission submission, Sessions.Session session, MakeMkv.Log log)
+	{
+		SubmitRelease submitNewDisc = new(submission, session, log) { Owner = this };
+		submitNewDisc.Show();
+	}
+
+	private void ShowNewReleaseGuidedView(ViewModel.Submission submission, Sessions.Session session, MakeMkv.Log log)
+	{
+		Guided.View guidedView = new()
+		{
+			Owner = this,
+
+			Submission = submission,
+			Session = session,
+			Log = log,
+		};
+
+		guidedView.ShowFirst();
+	}
+
+	#endregion Private methods
 }

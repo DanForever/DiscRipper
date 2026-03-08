@@ -70,5 +70,17 @@ namespace DiscRipper {
                 this["GuidedViewEnabledByDefault"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ScanDrivesOnStart {
+            get {
+                return ((bool)(this["ScanDrivesOnStart"]));
+            }
+            set {
+                this["ScanDrivesOnStart"] = value;
+            }
+        }
     }
 }
